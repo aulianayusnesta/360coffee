@@ -220,7 +220,7 @@
                     </div>
                     <div class="menu-card-desc">{{ $menu->deskripsi ?: '—' }}</div>
                     <div class="menu-card-actions">
-                        <button class="btn-edit" onclick="bukaPopupEdit({{ $menu->id }},'{{ addslashes($menu->nama) }}',{{ $menu->harga }},'{{ addslashes($menu->deskripsi) }}','{{ $menu->kategori }}','{{ $menu->badge }}')">
+                        <button class="btn-edit" onclick="bukaPopupEdit({{ $menu->id }},'{{ addslashes($menu->nama) }}',{{ $menu->harga }},'{{ addslashes($menu->deskripsi) }}','{{ $menu->kategori }}','{{ $menu->badge }}','{{ $menu->gambar ? asset('storage/'.$menu->gambar) : '' }}')">
                             Edit
                         </button>
                         <button class="btn-hapus" onclick="bukaPopupHapus({{ $menu->id }},'{{ addslashes($menu->nama) }}')">
@@ -247,50 +247,60 @@
             <form id="formMenu" method="POST" enctype="multipart/form-data" action="{{ route('admin.menu.store') }}">
                 @csrf
                 <input type="hidden" name="_method" id="formMethod" value="POST">
+
                 <div class="form-group">
                     <div class="form-label">Foto Menu</div>
-                    <div class="foto-upload" onclick="document.getElementById('inputFoto').click()">
+                    <div class="foto-upload" id="fotoUploadArea" onclick="document.getElementById('inputFoto').click()">
                         <img id="previewFoto" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
                         <div class="foto-placeholder" id="fotoPlaceholder">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                             Klik untuk pilih foto
                         </div>
-                        <input type="file" id="inputFoto" name="gambar" accept="image/*" onchange="previewImage(this)">
+                        <input type="file" id="inputFoto" name="gambar" accept="image/*" onchange="previewImage(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
                     </div>
                 </div>
+
                 <div class="form-row">
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Nama Menu</div>
-                        <input type="text" class="form-input" name="nama" id="inputNama" placeholder="Nama menu" required>
+                        <input type="text" class="form-input" name="nama" id="inputNama"
+                            placeholder="Nama menu"
+                            value="{{ old('nama') }}" required>
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Harga (Rp)</div>
-                        <input type="number" class="form-input" name="harga" id="inputHarga" placeholder="0" min="0" required>
+                        <input type="number" class="form-input" name="harga" id="inputHarga"
+                            placeholder="0" min="0"
+                            value="{{ old('harga') }}" required>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="form-label">Deskripsi</div>
-                    <textarea class="form-input" name="deskripsi" id="inputDeskripsi" placeholder="Deskripsi menu" rows="3" style="resize:none"></textarea>
+                    <textarea class="form-input" name="deskripsi" id="inputDeskripsi"
+                        placeholder="Deskripsi menu" rows="3" style="resize:none">{{ old('deskripsi') }}</textarea>
                 </div>
+
                 <div class="form-row">
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Kategori</div>
                         <select class="form-select" name="kategori" id="inputKategori" required>
-                            <option value="" disabled selected>Pilih Kategori</option>
-                            <option value="kopi">Kopi</option>
-                            <option value="non-kopi">Non - Kopi</option>
-                            <option value="snack">Snack</option>
+                            <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>Pilih Kategori</option>
+                            <option value="kopi"     {{ old('kategori') == 'kopi'     ? 'selected' : '' }}>Kopi</option>
+                            <option value="non-kopi" {{ old('kategori') == 'non-kopi' ? 'selected' : '' }}>Non - Kopi</option>
+                            <option value="snack"    {{ old('kategori') == 'snack'    ? 'selected' : '' }}>Snack</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Label</div>
                         <select class="form-select" name="badge" id="inputBadge">
-                            <option value="">- Tidak Ada</option>
-                            <option value="New">New</option>
-                            <option value="Best Seller">Best Seller</option>
+                            <option value=""            {{ old('badge') == ''            ? 'selected' : '' }}>- Tidak Ada</option>
+                            <option value="New"         {{ old('badge') == 'New'         ? 'selected' : '' }}>New</option>
+                            <option value="Best Seller" {{ old('badge') == 'Best Seller' ? 'selected' : '' }}>Best Seller</option>
                         </select>
                     </div>
                 </div>
+
                 <button type="submit" class="btn-simpan">Simpan Menu</button>
             </form>
         </div>
@@ -320,6 +330,16 @@
     const baseMenuUrl = '{{ url('admin/menu') }}';
     const storeUrl    = '{{ route('admin.menu.store') }}';
 
+    // ── Auto buka popup kalau ada error validasi ──
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('popupMenuTitle').textContent = 'Tambah Menu';
+            document.getElementById('formMenu').action = storeUrl;
+            document.getElementById('formMethod').value = 'POST';
+            document.getElementById('popupMenu').classList.add('show');
+        });
+    @endif
+
     function filterCat(btn) {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -328,6 +348,7 @@
             card.style.display = (cat === 'semua' || card.dataset.cat === cat) ? '' : 'none';
         });
     }
+
     function bukaPopupTambah() {
         document.getElementById('popupMenuTitle').textContent = 'Tambah Menu';
         document.getElementById('formMenu').reset();
@@ -337,7 +358,8 @@
         document.getElementById('fotoPlaceholder').style.display = '';
         document.getElementById('popupMenu').classList.add('show');
     }
-    function bukaPopupEdit(id, nama, harga, deskripsi, kategori, badge) {
+
+    function bukaPopupEdit(id, nama, harga, deskripsi, kategori, badge, gambarUrl) {
         document.getElementById('popupMenuTitle').textContent = 'Edit Menu';
         document.getElementById('formMenu').action = baseMenuUrl + '/' + id;
         document.getElementById('formMethod').value = 'PUT';
@@ -346,18 +368,35 @@
         document.getElementById('inputDeskripsi').value = deskripsi;
         document.getElementById('inputKategori').value  = kategori;
         document.getElementById('inputBadge').value     = badge;
-        document.getElementById('previewFoto').style.display = 'none';
-        document.getElementById('fotoPlaceholder').style.display = '';
-        document.getElementById('inputFoto').value = '';
+        document.getElementById('inputFoto').value      = '';
+
+        // Tampilkan preview gambar yang sudah ada
+        if (gambarUrl) {
+            document.getElementById('previewFoto').src = gambarUrl;
+            document.getElementById('previewFoto').style.display = 'block';
+            document.getElementById('fotoPlaceholder').style.display = 'none';
+        } else {
+            document.getElementById('previewFoto').style.display = 'none';
+            document.getElementById('fotoPlaceholder').style.display = '';
+        }
+
         document.getElementById('popupMenu').classList.add('show');
     }
-    function tutupPopup() { document.getElementById('popupMenu').classList.remove('show'); }
+
+    function tutupPopup() {
+        document.getElementById('popupMenu').classList.remove('show');
+    }
+
     function bukaPopupHapus(id, nama) {
         document.getElementById('hapusNama').textContent = '"' + nama + '" akan dihapus permanen.';
         document.getElementById('formHapus').action = baseMenuUrl + '/' + id;
         document.getElementById('popupHapus').classList.add('show');
     }
-    function tutupPopupHapus() { document.getElementById('popupHapus').classList.remove('show'); }
+
+    function tutupPopupHapus() {
+        document.getElementById('popupHapus').classList.remove('show');
+    }
+
     function previewImage(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
@@ -369,6 +408,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
     document.getElementById('popupMenu').addEventListener('click',  function(e) { if(e.target===this) tutupPopup(); });
     document.getElementById('popupHapus').addEventListener('click', function(e) { if(e.target===this) tutupPopupHapus(); });
     document.addEventListener('keydown', e => { if(e.key==='Escape') { tutupPopup(); tutupPopupHapus(); } });
