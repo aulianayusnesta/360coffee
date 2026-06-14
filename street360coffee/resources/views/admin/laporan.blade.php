@@ -80,7 +80,7 @@
 
         /* ── Summary Cards ── */
         .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:26px; }
-        .summary-card { position:relative; overflow:hidden; cursor:pointer; background:var(--navy-3); border:1px solid var(--border); border-radius:18px; padding:22px 22px 18px; transition:all .28s cubic-bezier(.34,1.2,.64,1); display:block; }
+        .summary-card { position:relative; overflow:hidden; cursor:pointer; background:var(--navy-3); border:1px solid var(--border); border-radius:18px; padding:22px 22px 18px; transition:all .28s cubic-bezier(.34,1.2,.64,1); display:block; border:none; width:100%; text-align:left; font-family:'DM Sans',sans-serif; }
         .summary-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent); border-radius:18px 18px 0 0; transform:scaleX(0); transform-origin:left; transition:transform .35s cubic-bezier(.34,1.2,.64,1); }
         .summary-card::after { content:''; position:absolute; inset:0; border-radius:18px; background:radial-gradient(ellipse at 30% 0%,rgba(232,176,75,.1) 0%,transparent 65%); opacity:0; transition:opacity .28s; }
         .summary-card:hover { border-color:rgba(232,176,75,.35); transform:translateY(-4px); box-shadow:0 16px 44px rgba(0,0,0,.35),0 0 0 1px rgba(232,176,75,.15); }
@@ -125,12 +125,10 @@
         .terjual-val { font-size:14px; font-weight:700; color:var(--text); }
         .terjual-sub { font-size:11px; color:var(--muted); margin-top:1px; }
         .pendapatan-val { color:var(--gold); font-weight:800; font-size:14px; }
-
-        /* ── Kolom Waktu Simpel ── */
         .td-tgl { font-size:13px; font-weight:700; color:var(--text); }
         .td-jam { font-size:12px; color:var(--muted); margin-top:2px; }
 
-        /* ── Tabel Transaksi Waktu ── */
+        /* ── Tabel Transaksi ── */
         .trx-table { width:100%; border-collapse:collapse; font-size:13px; }
         .trx-table thead th { background:rgba(0,0,0,.18); color:var(--muted); font-size:10px; letter-spacing:.12em; font-weight:700; padding:11px 20px; text-align:left; border-bottom:1px solid var(--border); text-transform:uppercase; white-space:nowrap; }
         .trx-table tbody tr { border-bottom:1px solid rgba(255,255,255,.03); transition:background .12s; }
@@ -139,44 +137,44 @@
         .trx-table td { padding:12px 20px; vertical-align:middle; }
         .trx-nomor { font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800; color:#fff; }
         .trx-tipe { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; }
-        .trx-tipe-dine { background:rgba(232,176,75,.12); color:var(--gold); border:1px solid rgba(232,176,75,.2); }
-        .trx-tipe-take { background:rgba(255,255,255,.05); color:var(--muted-2); border:1px solid var(--border-2); }
+        .trx-tipe-dine  { background:rgba(232,176,75,.12); color:var(--gold); border:1px solid rgba(232,176,75,.2); }
+        .trx-tipe-take  { background:rgba(255,255,255,.05); color:var(--muted-2); border:1px solid var(--border-2); }
         .trx-total-td { font-size:14px; font-weight:800; color:var(--gold); }
         .trx-metode { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; }
         .trx-metode-qris  { background:rgba(96,165,250,.12); color:var(--blue); border:1px solid rgba(96,165,250,.2); }
         .trx-metode-tunai { background:rgba(74,222,128,.12); color:var(--green); border:1px solid rgba(74,222,128,.2); }
         .trx-items-col { font-size:12px; color:var(--muted-2); max-width:180px; }
+        .trx-status { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+        .trx-status::before { content:''; width:5px; height:5px; border-radius:50%; }
+        .trx-status-selesai { background:rgba(74,222,128,.11); color:#4ade80; } .trx-status-selesai::before { background:#4ade80; }
+        .trx-status-antrian { background:rgba(251,191,36,.11); color:#fbbf24; } .trx-status-antrian::before { background:#fbbf24; }
+        .trx-status-arsip   { background:rgba(255,255,255,.06); color:var(--muted); } .trx-status-arsip::before { background:var(--muted); }
 
         .empty-state { text-align:center; padding:64px; color:var(--muted); font-size:14px; }
 
         /* ── Popup ── */
-        .popup-overlay { display:none; position:fixed; inset:0; background:rgba(8,15,30,.88); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(8px); }
+        .popup-overlay { display:none; position:fixed; inset:0; background:rgba(8,15,30,.72); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
         .popup-overlay.show { display:flex; }
-        .popup-box { background:var(--navy-3); border:1px solid var(--border-2); border-radius:22px; width:100%; max-width:480px; margin:16px; animation:popUp .24s cubic-bezier(.34,1.4,.64,1) both; max-height:90vh; overflow-y:auto; box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(232,176,75,.08); }
-        @keyframes popUp { from{opacity:0;transform:scale(.9) translateY(24px)} to{opacity:1;transform:scale(1) translateY(0)} }
-        .popup-head { display:flex; justify-content:space-between; align-items:center; padding:22px 26px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--navy-3); z-index:1; border-radius:22px 22px 0 0; }
-        .popup-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:17px; font-weight:800; color:#fff; }
-        .popup-sub { font-size:12px; color:var(--gold); font-weight:600; margin-top:3px; }
-        .popup-close { background:rgba(255,255,255,.07); border:1px solid var(--border); color:var(--muted-2); width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; transition:all .18s; flex-shrink:0; }
+        .popup-box { background:var(--navy-3); border:1px solid var(--border-2); border-radius:20px; width:100%; max-width:440px; margin:16px; max-height:86vh; overflow-y:auto; animation:slideUp .22s cubic-bezier(.34,1.4,.64,1) both; }
+        @keyframes slideUp { from{opacity:0;transform:translateY(20px) scale(.96)} to{opacity:1;transform:none} }
+        .popup-head { display:flex; justify-content:space-between; align-items:center; padding:20px 22px 18px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--navy-3); z-index:1; border-radius:20px 20px 0 0; }
+        .popup-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:800; color:#fff; }
+        .popup-meta  { font-size:12px; color:var(--muted); margin-top:3px; }
+        .popup-close { width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--muted-2); display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; transition:all .15s; flex-shrink:0; line-height:1; }
         .popup-close:hover { background:rgba(248,113,113,.15); border-color:var(--red); color:var(--red); }
-        .popup-body { padding:24px 26px 28px; }
-        .popup-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .popup-stat { background:var(--navy-4); border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
-        .popup-stat-label { font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
-        .popup-stat-value { font-size:20px; font-weight:800; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
-        .popup-stat-value.gold { color:var(--gold); }
-        .popup-stat-value.sm { font-size:14px; }
-        .popup-section { font-size:10px; font-weight:700; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; display:flex; align-items:center; gap:10px; margin:20px 0 12px; }
-        .popup-section::after { content:''; flex:1; height:1px; background:var(--border); }
-        .popup-menu-list { display:flex; flex-direction:column; gap:6px; }
-        .popup-menu-row { display:flex; justify-content:space-between; align-items:center; padding:11px 14px; background:var(--navy-4); border-radius:11px; border:1px solid var(--border); }
-        .popup-menu-name { font-size:13px; font-weight:600; color:var(--text); }
-        .popup-menu-qty { font-size:11px; color:var(--muted); margin-top:1px; }
-        .popup-menu-val { font-size:13px; font-weight:800; color:var(--gold); }
-        .popup-periode-block { background:linear-gradient(135deg,rgba(232,176,75,.1),rgba(245,204,122,.04)); border:1px solid rgba(232,176,75,.2); border-radius:12px; padding:14px 18px; display:flex; align-items:center; gap:12px; margin-bottom:4px; }
-        .popup-periode-icon { width:36px; height:36px; background:var(--gold-dim); border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .popup-periode-text { font-size:13px; font-weight:700; color:var(--text); }
-        .popup-periode-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+        .popup-body { padding:20px 22px 26px; }
+        .p-chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:0; }
+        .p-chip { background:var(--navy-4); border:1px solid var(--border); border-radius:10px; padding:10px 14px; }
+        .p-chip-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+        .p-chip-value { font-size:13px; font-weight:700; color:var(--text); }
+        .p-chip-value.gold { color:var(--gold); font-size:16px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; }
+        .p-section { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:10px; margin:16px 0 10px; }
+        .p-section::after { content:''; flex:1; height:1px; background:var(--border); }
+        .p-menu-list { display:flex; flex-direction:column; gap:5px; }
+        .p-menu-row { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--navy-4); border:1px solid var(--border); border-radius:10px; gap:8px; }
+        .p-menu-name { font-size:13px; font-weight:600; color:var(--text); }
+        .p-menu-qty  { font-size:11px; color:var(--muted); margin-top:2px; }
+        .p-menu-val  { font-size:13px; font-weight:800; color:var(--gold); white-space:nowrap; }
     </style>
 </head>
 <body>
@@ -192,15 +190,23 @@
             if ($periode === 'hari') {
                 $tgl = \Carbon\Carbon::parse(request('tanggal', now()->toDateString()));
                 $labelTanggal = $namaHari[$tgl->dayOfWeek] . ', ' . $tgl->format('d') . ' ' . $namaBulan[(int)$tgl->format('m')] . ' ' . $tgl->format('Y');
-                $labelWaktu   = 'Laporan harian · ' . now()->format('d/m/Y') . ' ' . now()->format('H:i') . ' WIB';
+                $labelWaktu   = 'Laporan harian · ' . now()->format('d/m/Y H:i') . ' WIB';
             } elseif ($periode === 'bulan') {
                 $blnObj = \Carbon\Carbon::createFromFormat('Y-m', request('bulan', now()->format('Y-m')));
                 $labelTanggal = $namaBulan[(int)$blnObj->format('m')] . ' ' . $blnObj->format('Y');
-                $labelWaktu   = 'Laporan bulanan · dibuat ' . now()->format('d/m/Y') . ' ' . now()->format('H:i') . ' WIB';
+                $labelWaktu   = 'Laporan bulanan · dibuat ' . now()->format('d/m/Y H:i') . ' WIB';
             } else {
                 $labelTanggal = 'Tahun ' . request('tahun', now()->year);
-                $labelWaktu   = 'Laporan tahunan · dibuat ' . now()->format('d/m/Y') . ' ' . now()->format('H:i') . ' WIB';
+                $labelWaktu   = 'Laporan tahunan · dibuat ' . now()->format('d/m/Y H:i') . ' WIB';
             }
+
+            $menusJson = $penjualanPerMenu->map(function($m) {
+                return [
+                    'nama'       => $m->nama_menu,
+                    'qty'        => $m->total_terjual,
+                    'pendapatan' => number_format($m->total_pendapatan, 0, ',', '.'),
+                ];
+            })->values();
         @endphp
 
         {{-- Page Header --}}
@@ -231,13 +237,13 @@
 
                     @if($periode==='hari')
                         <input type="hidden" name="periode" value="hari">
-                        <input type="date" name="tanggal" class="filter-input" value="{{ request('tanggal', now()->toDateString()) }}">
+                        <input type="date"   name="tanggal" class="filter-input" value="{{ request('tanggal', now()->toDateString()) }}">
                     @elseif($periode==='bulan')
                         <input type="hidden" name="periode" value="bulan">
-                        <input type="month" name="bulan" class="filter-input" value="{{ request('bulan', now()->format('Y-m')) }}">
+                        <input type="month"  name="bulan"   class="filter-input" value="{{ request('bulan', now()->format('Y-m')) }}">
                     @else
-                        <input type="hidden" name="periode" value="tahun">
-                        <input type="number" name="tahun" class="filter-input" style="width:110px"
+                        <input type="hidden" name="periode"  value="tahun">
+                        <input type="number" name="tahun"    class="filter-input" style="width:110px"
                                value="{{ request('tahun', now()->year) }}" min="2020" max="{{ now()->year }}">
                     @endif
 
@@ -258,7 +264,7 @@
         {{-- Summary Cards --}}
         <div class="summary-grid">
 
-            <div class="summary-card" onclick="bukaPopup('pendapatan')">
+            <button class="summary-card" onclick="bukaPopup('pendapatan')">
                 <div class="card-icon-wrap">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
                 </div>
@@ -266,11 +272,11 @@
                 <div class="summary-value rp">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
                 <div class="card-hint">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    Dari transaksi selesai · klik detail
+                    Semua transaksi · klik detail
                 </div>
-            </div>
+            </button>
 
-            <div class="summary-card" onclick="bukaPopup('rata')">
+            <button class="summary-card" onclick="bukaPopup('rata')">
                 <div class="card-icon-wrap">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 </div>
@@ -278,23 +284,23 @@
                 <div class="summary-value rp">Rp {{ number_format($rataRata, 0, ',', '.') }}</div>
                 <div class="card-hint">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    Per transaksi selesai · klik detail
+                    Per transaksi · klik detail
                 </div>
-            </div>
+            </button>
 
-            <div class="summary-card" onclick="bukaPopup('terlaris')">
+            <button class="summary-card" onclick="bukaPopup('terlaris')">
                 <div class="card-icon-wrap">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
                 <div class="summary-label">Menu Terlaris</div>
-                <div class="summary-value nm">{{ $menuTerlaris ? strtoupper($menuTerlaris->nama_menu) : '-' }}</div>
+                <div class="summary-value nm">{{ $menuTerlaris ? $menuTerlaris->nama_menu : '-' }}</div>
                 <div class="card-hint">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     {{ $menuTerlaris ? $menuTerlaris->total_terjual.' cup terjual' : 'Belum ada data' }} · klik detail
                 </div>
-            </div>
+            </button>
 
-            <div class="summary-card" onclick="bukaPopup('transaksi')">
+            <button class="summary-card" onclick="bukaPopup('transaksi')">
                 <div class="card-icon-wrap">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                 </div>
@@ -302,19 +308,19 @@
                 <div class="summary-value">{{ $totalTransaksi }}</div>
                 <div class="card-hint">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    Semua transaksi selesai · klik detail
+                    Semua status · klik detail
                 </div>
-            </div>
+            </button>
 
         </div>
 
-        {{-- TAB --}}
+        {{-- Tab --}}
         <div class="tab-row">
             <button class="tab-btn active" onclick="switchTab('menu', this)">Penjualan Per Menu</button>
-            <button class="tab-btn" onclick="switchTab('waktu', this)">Riwayat Transaksi &amp; Waktu</button>
+            <button class="tab-btn"        onclick="switchTab('waktu', this)">Riwayat Transaksi &amp; Waktu</button>
         </div>
 
-        {{-- TAB 1: Per Menu --}}
+        {{-- Tab 1: Per Menu --}}
         <div class="tab-content show" id="tab-menu">
             <div class="table-card">
                 <div class="table-card-header">
@@ -330,21 +336,20 @@
                             <th>Rank</th>
                             <th>Menu</th>
                             <th>Terjual</th>
-                            <th>Tanggal / Waktu</th>
+                            <th>Pertama Dipesan</th>
                             <th>Pendapatan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($penjualanPerMenu as $i => $item)
                         @php
-                            $rank     = $i + 1;
-                            $pertama  = $item->pertama_terjual  ? \Carbon\Carbon::parse($item->pertama_terjual)  : null;
-                            $terakhir = $item->terakhir_terjual ? \Carbon\Carbon::parse($item->terakhir_terjual) : null;
+                            $rank    = $i + 1;
+                            $pertama = $item->pertama_terjual ? \Carbon\Carbon::parse($item->pertama_terjual) : null;
                         @endphp
                         <tr>
                             <td>
                                 <span class="rank-badge {{ $rank===1?'rank-1':($rank===2?'rank-2':($rank===3?'rank-3':'rank-other')) }}">
-                                    {{ $rank===1 ? '🥇' : ($rank===2 ? '🥈' : ($rank===3 ? '🥉' : $rank)) }}
+                                    {{ $rank <= 3 ? ['🥇','🥈','🥉'][$rank-1] : $rank }}
                                 </span>
                             </td>
                             <td class="menu-name-td">{{ $item->nama_menu }}</td>
@@ -352,8 +357,6 @@
                                 <div class="terjual-val">{{ $item->total_terjual }}</div>
                                 <div class="terjual-sub">cup terjual</div>
                             </td>
-
-                            {{-- ✅ KOLOM TANGGAL/WAKTU SIMPEL --}}
                             <td>
                                 @if($pertama)
                                     <div class="td-tgl">{{ $pertama->format('d/m/Y') }}</div>
@@ -362,7 +365,6 @@
                                     <span style="color:var(--muted);font-size:12px;">—</span>
                                 @endif
                             </td>
-
                             <td class="pendapatan-val">Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
                         </tr>
                         @empty
@@ -373,7 +375,7 @@
             </div>
         </div>
 
-        {{-- TAB 2: Riwayat Transaksi --}}
+        {{-- Tab 2: Riwayat Transaksi --}}
         <div class="tab-content" id="tab-waktu">
             <div class="table-card">
                 <div class="table-card-header">
@@ -391,6 +393,7 @@
                             <th>Item</th>
                             <th>Tipe</th>
                             <th>Metode</th>
+                            <th>Status</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -398,13 +401,10 @@
                         @forelse($transaksiDenganWaktu as $trx)
                         <tr>
                             <td class="trx-nomor">#{{ str_pad($trx->nomor, 3, '0', STR_PAD_LEFT) }}</td>
-
-                            {{-- ✅ KOLOM TANGGAL/WAKTU SIMPEL --}}
                             <td>
                                 <div class="td-tgl">{{ $trx->created_at->format('d/m/Y') }}</div>
                                 <div class="td-jam">{{ $trx->created_at->format('H:i') }}</div>
                             </td>
-
                             <td class="trx-items-col">{{ $trx->getNamaItems() }}</td>
                             <td>
                                 <span class="trx-tipe {{ $trx->tipe === 'dine_in' ? 'trx-tipe-dine' : 'trx-tipe-take' }}">
@@ -416,10 +416,14 @@
                                     {{ strtoupper($trx->metode) }}
                                 </span>
                             </td>
+                            <td>
+                                @php $st = $trx->status === 'arsip' ? 'selesai' : $trx->status; @endphp
+                                <span class="trx-status trx-status-{{ $st }}">{{ ucfirst($st) }}</span>
+                            </td>
                             <td class="trx-total-td">Rp {{ number_format($trx->total, 0, ',', '.') }}</td>
                         </tr>
                         @empty
-                        <tr><td colspan="6" class="empty-state">Belum ada data transaksi untuk periode ini.</td></tr>
+                        <tr><td colspan="7" class="empty-state">Belum ada data transaksi untuk periode ini.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -434,29 +438,23 @@
     <div class="popup-box">
         <div class="popup-head">
             <div>
-                <div class="popup-title" id="popupTitle">Detail</div>
-                <div class="popup-sub" id="popupSub"></div>
+                <div class="popup-title" id="popTitle">—</div>
+                <div class="popup-meta"  id="popMeta">—</div>
             </div>
-            <button class="popup-close" onclick="tutupPopup()">×</button>
+            <button class="popup-close" id="btnTutup">×</button>
         </div>
-        <div class="popup-body" id="popupBody"></div>
+        <div class="popup-body" id="popBody"></div>
     </div>
 </div>
 
 <script>
 var DATA = {
-    periodeLabel:    "{{ $labelTanggal }}",
-    labelWaktu:      "{{ $labelWaktu }}",
+    periodeLabel:    @json($labelTanggal),
     totalPendapatan: "Rp {{ number_format($totalPendapatan, 0, ',', '.') }}",
     rataRata:        "Rp {{ number_format($rataRata, 0, ',', '.') }}",
     totalTransaksi:  "{{ $totalTransaksi }}",
-    menuTerlaris:    "{{ $menuTerlaris ? $menuTerlaris->nama_menu : '-' }}",
-    menuTerlarisQty: "{{ $menuTerlaris ? $menuTerlaris->total_terjual : 0 }}",
-    menus: {!! json_encode($penjualanPerMenu->map(fn($m) => [
-        'nama'       => $m->nama_menu,
-        'qty'        => $m->total_terjual,
-        'pendapatan' => number_format($m->total_pendapatan, 0, ',', '.')
-    ])->values()) !!}
+    menuTerlaris:    @json($menuTerlaris ? $menuTerlaris->nama_menu : '-'),
+    menus:           @json($menusJson)
 };
 
 function switchTab(id, btn) {
@@ -466,69 +464,85 @@ function switchTab(id, btn) {
     btn.classList.add('active');
 }
 
-function periodeBlock() {
-    return '<div class="popup-periode-block">'
-        + '<div class="popup-periode-icon">'
-        + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
-        + '</div><div>'
-        + '<div class="popup-periode-text">' + DATA.periodeLabel + '</div>'
-        + '<div class="popup-periode-sub">' + DATA.labelWaktu + '</div>'
-        + '</div></div>';
-}
-
-function stat(label, value, cls) {
-    return '<div class="popup-stat"><div class="popup-stat-label">' + label + '</div>'
-         + '<div class="popup-stat-value ' + (cls||'') + '">' + value + '</div></div>';
+function chips(arr) {
+    return '<div class="p-chips">' + arr.map(function(c) {
+        return '<div class="p-chip"><div class="p-chip-label">' + c[0] + '</div>'
+             + '<div class="p-chip-value' + (c[2] ? ' ' + c[2] : '') + '">' + c[1] + '</div></div>';
+    }).join('') + '</div>';
 }
 
 function bukaPopup(id) {
-    var title, sub, body = '';
+    var title, meta, body = '';
+
     if (id === 'pendapatan') {
-        title = 'Total Pendapatan'; sub = 'Akumulasi dari semua transaksi selesai';
-        body  = periodeBlock() + '<div class="popup-section">Ringkasan</div><div class="popup-stat-grid">'
-            + stat('Total Pendapatan', DATA.totalPendapatan, 'gold')
-            + stat('Total Transaksi', DATA.totalTransaksi + ' trx', '')
-            + stat('Rata-rata / Trx', DATA.rataRata, 'gold sm')
-            + stat('Menu Tersedia', DATA.menus.length + ' menu', '')
-            + '</div>';
+        title = 'Total Pendapatan';
+        meta  = DATA.periodeLabel;
+        body  = chips([
+            ['Total Pendapatan', DATA.totalPendapatan, 'gold'],
+            ['Total Transaksi',  DATA.totalTransaksi + ' transaksi', ''],
+            ['Rata-rata / Trx',  DATA.rataRata, 'gold'],
+            ['Menu Terlaris',    DATA.menuTerlaris, ''],
+        ]);
+
     } else if (id === 'rata') {
-        title = 'Rata-rata per Transaksi'; sub = 'Nilai tengah setiap transaksi selesai';
-        body  = periodeBlock() + '<div class="popup-section">Kalkulasi</div><div class="popup-stat-grid">'
-            + stat('Rata-rata', DATA.rataRata, 'gold')
-            + stat('Total Transaksi', DATA.totalTransaksi + ' trx', '')
-            + stat('Total Pendapatan', DATA.totalPendapatan, 'gold sm')
-            + stat('Periode', DATA.periodeLabel, 'sm')
-            + '</div>';
+        title = 'Rata-rata per Transaksi';
+        meta  = DATA.periodeLabel;
+        body  = chips([
+            ['Rata-rata',        DATA.rataRata, 'gold'],
+            ['Total Transaksi',  DATA.totalTransaksi + ' transaksi', ''],
+            ['Total Pendapatan', DATA.totalPendapatan, 'gold'],
+            ['Periode',          DATA.periodeLabel, ''],
+        ]);
+
     } else if (id === 'terlaris') {
-        title = 'Menu Terlaris'; sub = 'Ranking penjualan semua menu';
-        body  = periodeBlock() + '<div class="popup-section">Semua Menu</div><div class="popup-menu-list">';
+        title = 'Menu Terlaris';
+        meta  = DATA.periodeLabel + ' · ' + DATA.menus.length + ' menu';
         var medals = ['🥇','🥈','🥉'];
-        DATA.menus.forEach(function(m, i) {
-            var prefix = i < 3 ? medals[i] + ' ' : (i+1) + '. ';
-            body += '<div class="popup-menu-row"><div><div class="popup-menu-name">' + prefix + m.nama + '</div>'
-                  + '<div class="popup-menu-qty">' + m.qty + ' cup terjual</div></div>'
-                  + '<div class="popup-menu-val">Rp ' + m.pendapatan + '</div></div>';
-        });
-        if (!DATA.menus.length) body += '<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center">Belum ada data menu.</div>';
+        body = '<div class="p-section">Semua Menu</div><div class="p-menu-list">';
+        if (DATA.menus.length) {
+            DATA.menus.forEach(function(m, i) {
+                var prefix = i < 3 ? medals[i] + ' ' : (i + 1) + '. ';
+                body += '<div class="p-menu-row">'
+                      + '<div><div class="p-menu-name">' + prefix + m.nama + '</div>'
+                      + '<div class="p-menu-qty">' + m.qty + ' cup terjual</div></div>'
+                      + '<div class="p-menu-val">Rp ' + m.pendapatan + '</div></div>';
+            });
+        } else {
+            body += '<div style="color:var(--muted);font-size:13px;padding:14px;text-align:center">Belum ada data menu.</div>';
+        }
         body += '</div>';
+
     } else if (id === 'transaksi') {
-        title = 'Total Transaksi'; sub = 'Jumlah seluruh transaksi selesai';
-        body  = periodeBlock() + '<div class="popup-section">Detail</div><div class="popup-stat-grid">'
-            + stat('Jumlah Transaksi', DATA.totalTransaksi + ' trx', '')
-            + stat('Total Pendapatan', DATA.totalPendapatan, 'gold')
-            + stat('Rata-rata / Trx', DATA.rataRata, 'gold sm')
-            + stat('Menu Terlaris', DATA.menuTerlaris, 'sm')
-            + '</div>';
+        title = 'Total Transaksi';
+        meta  = DATA.periodeLabel;
+        body  = chips([
+            ['Jumlah Transaksi', DATA.totalTransaksi + ' transaksi', ''],
+            ['Total Pendapatan', DATA.totalPendapatan, 'gold'],
+            ['Rata-rata / Trx',  DATA.rataRata, 'gold'],
+            ['Menu Terlaris',    DATA.menuTerlaris, ''],
+        ]);
     }
-    document.getElementById('popupTitle').textContent = title;
-    document.getElementById('popupSub').textContent   = sub;
-    document.getElementById('popupBody').innerHTML    = body;
+
+    document.getElementById('popTitle').textContent = title;
+    document.getElementById('popMeta').textContent  = meta;
+    document.getElementById('popBody').innerHTML    = body;
     document.getElementById('popupOverlay').classList.add('show');
 }
 
-function tutupPopup() { document.getElementById('popupOverlay').classList.remove('show'); }
-document.getElementById('popupOverlay').addEventListener('click', function(e) { if (e.target === this) tutupPopup(); });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tutupPopup(); });
+function tutupPopup() {
+    document.getElementById('popupOverlay').classList.remove('show');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('btnTutup').addEventListener('click', tutupPopup);
+    document.getElementById('popupOverlay').addEventListener('click', function(e) {
+        if (e.target === this) tutupPopup();
+    });
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') tutupPopup();
+});
 </script>
 </body>
 </html>

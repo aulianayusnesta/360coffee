@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'nama',
         'harga',
@@ -17,10 +14,22 @@ class Menu extends Model
         'badge',
         'gambar',
         'tersedia',
+        'stok_bahan_id',
     ];
 
     protected $casts = [
         'tersedia' => 'boolean',
-        'harga'    => 'integer',
     ];
+
+    // Relasi ke StokBahan
+    public function stokBahan()
+    {
+        return $this->belongsTo(StokBahan::class, 'stok_bahan_id');
+    }
+
+    // Relasi ke TransaksiItem
+    public function transaksiItems()
+    {
+        return $this->hasMany(TransaksiItem::class, 'menu_id');
+    }
 }

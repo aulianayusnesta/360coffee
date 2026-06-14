@@ -376,11 +376,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Stok Saat Ini</label>
-                        <input type="number" name="stok_saat_ini" class="form-input" min="0" step="0.1" placeholder="0" required>
+                        <input type="number" name="stok_saat_ini" id="tambahStokSaatIni" class="form-input" min="0" step="0.1" placeholder="0" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Stok Maksimal</label>
-                        <input type="number" name="stok_maks" class="form-input" min="1" step="0.1" placeholder="10" required>
+                        <input type="number" name="stok_maks" id="tambahStokMaks" class="form-input" min="1" step="0.1" placeholder="10" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -395,6 +395,10 @@
                         <option value="sachet">sachet</option>
                     </select>
                 </div>
+                {{-- Pesan error validasi stok_maks < stok_saat_ini --}}
+                @error('stok_maks')
+                    <div style="color:var(--red);font-size:12px;margin-bottom:8px;">{{ $message }}</div>
+                @enderror
                 <div class="modal-footer">
                     <button type="button" class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
                     <button type="submit" class="btn-simpan">Simpan</button>
@@ -424,6 +428,8 @@
                         <input type="number" name="stok_maks" id="editStokMaks" class="form-input" min="1" step="0.1" required>
                     </div>
                 </div>
+                {{-- Error validasi client-side --}}
+                <div id="editError" style="display:none;color:var(--red);font-size:12px;margin-bottom:8px;"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
                     <button type="submit" class="btn-simpan">Update</button>
@@ -463,43 +469,84 @@ const badgeLabel = { aman:'Aman', hampir_habis:'Hampir Habis', kritis:'Kritis' }
 const titleMap   = { aman:'🟢 Stok Aman', hampir_habis:'🟡 Hampir Habis', kritis:'🔴 Stok Kritis' };
 const colorMap   = { aman:'green', hampir_habis:'yellow', kritis:'red' };
 
+/* ── Modal helpers ── */
 function bukaModal(id)  { document.getElementById(id).classList.add('show'); }
 function tutupModal(id) { document.getElementById(id).classList.remove('show'); }
 
 document.querySelectorAll('.modal-overlay').forEach(el => {
-    el.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('show'); });
+    el.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 });
 document.addEventListener('keydown', e => {
-    if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
 });
 
+/* ── Buka modal edit dengan data bahan ── */
 function bukaEdit(id, stok, maks) {
     document.getElementById('editStokSaatIni').value = stok;
     document.getElementById('editStokMaks').value    = maks;
     document.getElementById('formEdit').action       = `/admin/stok/${id}/edit`;
+    document.getElementById('editError').style.display = 'none';
     bukaModal('modalEdit');
 }
 
+/* ── Validasi client-side form edit sebelum submit ── */
+document.getElementById('formEdit').addEventListener('submit', function(e) {
+    const saat_ini = parseFloat(document.getElementById('editStokSaatIni').value);
+    const maks     = parseFloat(document.getElementById('editStokMaks').value);
+    const errEl    = document.getElementById('editError');
+
+    if (saat_ini > maks) {
+        e.preventDefault();
+        errEl.textContent = 'Stok saat ini tidak boleh melebihi stok maksimal.';
+        errEl.style.display = 'block';
+        return;
+    }
+    errEl.style.display = 'none';
+});
+
+/* ── Adjust stok ±1 via AJAX
+     FIX: sinkronisasi bahansData setelah response ── */
 async function adjustStok(id, delta) {
     try {
         const res  = await fetch(`/admin/stok/${id}/adjust`, {
             method: 'PATCH',
-            headers: { 'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}' },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
             body: JSON.stringify({ delta })
         });
         const data = await res.json();
         if (!data.success) return;
+
+        /* Update teks stok / maks */
         document.getElementById(`angka-${id}`).textContent = `${data.stok} / ${data.maks} ${data.satuan}`;
+
+        /* Update progress bar */
         const bar = document.getElementById(`bar-${id}`);
         bar.style.width = data.persen + '%';
         bar.className   = 'progres-bar ' + data.bar_class;
+
+        /* Update persentase */
         document.getElementById(`persen-${id}`).textContent = Math.round(data.persen) + '%';
+
+        /* Update animasi baris kritis */
         const row = document.getElementById(`row-${id}`);
         if (data.bar_class === 'bar-kritis') row.classList.add('row-kritis');
         else row.classList.remove('row-kritis');
-    } catch(e) { console.error(e); }
+
+        /* FIX: sinkronisasi bahansData agar modal detail tidak stale */
+        const idx = bahansData.findIndex(b => b.id === id);
+        if (idx !== -1) {
+            bahansData[idx].stok   = data.stok;
+            bahansData[idx].persen = Math.round(data.persen);
+            bahansData[idx].status = data.status;
+        }
+
+    } catch (e) { console.error(e); }
 }
 
+/* ── Modal detail per kategori ── */
 function bukaDetailStok(filter) {
     const items = bahansData.filter(b => b.status === filter);
     document.getElementById('detailModalTitle').textContent = titleMap[filter];

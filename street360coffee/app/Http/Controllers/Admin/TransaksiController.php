@@ -20,16 +20,14 @@ class TransaksiController extends Controller
             $query->where('metode', $request->metode);
         }
 
-        // ✅ Default tampilkan selesai+arsip, bukan antrian
         if ($request->filled('status') && $request->status !== 'semua') {
             $query->where('status', $request->status);
         } else {
-            // Kalau tidak ada filter, exclude 'antrian' — kasir belum selesai
-            $query->whereIn('status', ['selesai', 'arsip']);
+            $query->whereIn('status', ['antrian', 'selesai', 'arsip']);
         }
 
         $transaksis      = $query->get();
-        $totalPendapatan = $transaksis->whereIn('status', ['selesai', 'arsip'])->sum('total');
+        $totalPendapatan = $transaksis->sum('total');
 
         return view('admin.transaksi', compact('transaksis', 'totalPendapatan'));
     }
@@ -49,7 +47,7 @@ class TransaksiController extends Controller
         if ($request->filled('status') && $request->status !== 'semua') {
             $query->where('status', $request->status);
         } else {
-            $query->whereIn('status', ['selesai', 'arsip']);
+            $query->whereIn('status', ['antrian', 'selesai', 'arsip']);
         }
 
         $transaksis = $query->get();
@@ -73,9 +71,8 @@ class TransaksiController extends Controller
                     $trx->tipe === 'dine_in' ? 'Dine In' : 'Take Away',
                     'Rp ' . number_format($trx->total, 0, ',', '.'),
                     ucfirst($trx->metode),
-                    'Rp ' . number_format($trx->uang, 0, ',', '.'),
-                    'Rp ' . number_format($trx->kembalian, 0, ',', '.'),
-                    // ✅ Tampilkan 'Selesai' untuk status arsip juga
+                    'Rp ' . number_format($trx->uang      ?? 0, 0, ',', '.'),
+                    'Rp ' . number_format($trx->kembalian ?? 0, 0, ',', '.'),
                     $trx->status === 'arsip' ? 'Selesai' : ucfirst($trx->status),
                 ]);
             }

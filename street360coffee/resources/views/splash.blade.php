@@ -4,251 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Street 360.coffee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --navy: #1e2d6b;
-            --gold: #d4a843;
+            --navy2: #0f1f55;
+            --gold:  #d4a843;
+            --gold2: #f0c96a;
+            --gold3: #a87c28;
             --white: #ffffff;
-            --font: 'Poppins', sans-serif;
+            --font:  'Poppins', sans-serif;
+        }
+        html, body { height: 100%; font-family: var(--font); overflow: hidden; }
+        body {
+            background:
+                radial-gradient(ellipse 100% 55% at 50% 0%,   #253a9a 0%, transparent 65%),
+                radial-gradient(ellipse 55%  45% at 5%  100%, #1a2d6b 0%, transparent 60%),
+                radial-gradient(ellipse 55%  45% at 95% 80%,  #0f1f55 0%, transparent 60%),
+                linear-gradient(170deg, #1e3080 0%, #162360 35%, #0e1a50 70%, #090f35 100%);
+            color: var(--white); position: relative;
         }
 
-        html, body {
-            height: 100%;
-            font-family: var(--font);
-            background: var(--navy);
-            color: var(--white);
-            overflow: auto; /* FIXED: dari hidden ke auto */
+        .stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
+        .star  { position:absolute; border-radius:50%; background:rgba(255,255,255,0.8); animation:twinkle ease-in-out infinite; }
+        @keyframes twinkle { 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:1;transform:scale(1.5)} }
+
+        .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+        .p { position:absolute; border-radius:50%; background:rgba(212,168,67,0.13); animation:pF linear infinite; }
+        @keyframes pF { 0%{transform:translateY(110vh);opacity:0} 10%{opacity:.5} 90%{opacity:.2} 100%{transform:translateY(-10vh);opacity:0} }
+
+        .ambient {
+            position:fixed; top:-80px; left:50%; transform:translateX(-50%);
+            width:700px; height:340px;
+            background:radial-gradient(ellipse,rgba(80,120,255,.18) 0%,transparent 70%);
+            pointer-events:none; z-index:0; animation:ambP 5s ease-in-out infinite;
         }
+        @keyframes ambP { 0%,100%{opacity:.5} 50%{opacity:1} }
 
         .splash {
-            min-height: 100vh;
-            min-height: 100dvh; /* FIXED: support mobile browser bar */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: clamp(20px, 4vh, 40px) 32px; /* FIXED: responsif */
-            text-align: center;
-            gap: 0;
+            min-height:100dvh; display:flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            padding:clamp(20px,4vh,44px) 32px; text-align:center; gap:0;
+            position:relative; z-index:1;
         }
 
-        /* ===== LOGO ===== */
+        /* ── LOGO ── */
         .logo-wrap {
-            width: clamp(120px, 20vh, 180px);   /* FIXED: responsif terhadap tinggi layar */
-            height: clamp(120px, 20vh, 180px);
-            margin-bottom: clamp(20px, 4vh, 50px); /* FIXED: margin responsif */
-            animation: fadeDown 0.8s ease both;
+            width:clamp(150px,26vh,210px);
+            height:clamp(150px,26vh,210px);
+            margin-bottom:clamp(20px,3vh,36px);
+            animation:fadeDown .9s cubic-bezier(.22,1,.36,1) both;
+            position:relative;
         }
-
-        .logo-wrap svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.35));
+        .logo-wrap::before {
+            content:''; position:absolute; inset:-18px; border-radius:50%;
+            background:radial-gradient(circle,rgba(140,170,255,.22) 0%,transparent 68%);
+            animation:glowP 3.5s ease-in-out infinite;
         }
+        @keyframes glowP { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.18);opacity:1} }
+        .logo-wrap svg { width:100%; height:100%; }
 
-        /* ===== SELAMAT DATANG ===== */
+        /* PANAH BERPUTAR — transform-origin di tengah viewBox 160,160 */
+        .spin-me { animation:rot 6s linear infinite; transform-origin:160px 160px; }
+        @keyframes rot { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+        /* ── WELCOME ── */
         .welcome-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: clamp(10px, 2vh, 16px); /* FIXED */
-            animation: fadeUp 0.8s 0.2s ease both;
+            display:flex; align-items:center; gap:14px;
+            margin-bottom:clamp(8px,1.5vh,14px);
+            animation:fadeUp .8s .2s cubic-bezier(.22,1,.36,1) both;
         }
-        .welcome-line { flex: 1; height: 1.5px; background: var(--gold); max-width: 70px; }
-        .welcome-text { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+        .welcome-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold2),transparent); max-width:70px; }
+        .welcome-text { font-size:11px; font-weight:700; color:var(--gold2); letter-spacing:4px; text-transform:uppercase; }
 
-        /* ===== BRAND ===== */
+        /* ── BRAND ── */
         .brand {
-            animation: fadeUp 0.8s 0.35s ease both;
-            margin-bottom: clamp(10px, 2vh, 18px); /* FIXED */
-            line-height: 1;
+            margin-bottom:clamp(8px,1.5vh,14px); line-height:1;
+            animation:fadeUp .8s .35s cubic-bezier(.22,1,.36,1) both;
         }
         .brand-street {
-            display: block;
-            font-size: clamp(36px, 8vw, 56px);
-            font-weight: 900;
-            color: var(--white);
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            display:block; font-size:clamp(36px,8vw,58px); font-weight:900;
+            color:var(--white); letter-spacing:5px; text-transform:uppercase;
+            text-shadow:0 2px 20px rgba(255,255,255,.15);
         }
         .brand-360 {
-            display: block;
-            font-size: clamp(40px, 9vw, 62px);
-            font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            display:block; font-size:clamp(40px,9vw,64px); font-weight:900;
+            background:linear-gradient(135deg,var(--gold2) 0%,var(--gold) 50%,var(--gold3) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            letter-spacing:5px; text-transform:uppercase;
+            filter:drop-shadow(0 2px 14px rgba(212,168,67,.5));
         }
 
-        /* ===== TAGLINE ===== */
+        /* ── TAGLINE ── */
         .tagline {
-            font-size: clamp(13px, 3.5vw, 16px);
-            font-weight: 500;
-            color: rgba(255,255,255,0.85);
-            line-height: 1.6;
-            max-width: 320px;
-            margin-bottom: clamp(16px, 3vh, 36px); /* FIXED */
-            animation: fadeUp 0.8s 0.5s ease both;
+            font-size:clamp(13px,3vw,15px); font-weight:500;
+            color:rgba(255,255,255,.6); line-height:1.75; max-width:300px;
+            margin-bottom:clamp(16px,2.5vh,28px);
+            animation:fadeUp .8s .5s cubic-bezier(.22,1,.36,1) both;
         }
 
-        /* ===== DIVIDER ===== */
+        /* ── DIVIDER ── */
         .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: clamp(20px, 4vh, 44px); /* FIXED */
-            width: 100%;
-            max-width: 320px;
-            animation: fadeUp 0.8s 0.6s ease both;
+            display:flex; align-items:center; gap:12px;
+            margin-bottom:clamp(20px,3.5vh,36px); width:100%; max-width:300px;
+            animation:fadeUp .8s .6s cubic-bezier(.22,1,.36,1) both;
         }
-        .divider-line { flex: 1; height: 1.5px; background: var(--gold); }
+        .divider-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(212,168,67,.55),transparent); }
         .divider-dot {
-            width: 10px; height: 10px;
-            background: var(--gold);
-            border-radius: 50%;
-            flex-shrink: 0;
+            width:8px; height:8px; background:var(--gold2); border-radius:50%;
+            animation:dotP 2s ease-in-out infinite;
         }
+        @keyframes dotP { 0%,100%{box-shadow:0 0 8px rgba(240,201,106,.5)} 50%{box-shadow:0 0 22px rgba(240,201,106,1)} }
 
-        /* ===== BUTTON ===== */
-        .btn-wrap {
-            width: 100%;
-            max-width: 380px;
-            animation: fadeUp 0.8s 0.75s ease both;
-        }
-
+        /* ── BUTTON ── */
+        .btn-wrap { width:100%; max-width:360px; animation:fadeUp .8s .75s cubic-bezier(.22,1,.36,1) both; }
         .btn-start {
-            display: block;
-            width: 100%;
-            padding: 22px;
-            background: var(--gold);
-            color: var(--navy);
-            font-family: var(--font);
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            transition: transform .2s, box-shadow .2s, opacity .2s;
-            box-shadow: 0 6px 24px rgba(212,168,67,0.35);
+            display:block; width:100%; padding:20px;
+            background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);
+            color:var(--navy2); font-family:var(--font);
+            font-size:17px; font-weight:900; letter-spacing:3px; text-transform:uppercase;
+            text-decoration:none; border-radius:14px; margin-bottom:16px;
+            box-shadow:0 6px 30px rgba(212,168,67,.5),0 1px 0 rgba(255,255,255,.2) inset;
+            transition:transform .2s,box-shadow .2s; position:relative; overflow:hidden;
         }
-        .btn-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 32px rgba(212,168,67,0.5);
-            opacity: 0.92;
+        .btn-start::before {
+            content:''; position:absolute; top:0; left:-120%; width:60%; height:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+            animation:shimmer 2.8s ease-in-out infinite;
         }
-        .btn-start:active { transform: scale(0.98); }
+        @keyframes shimmer { 0%{left:-120%} 55%,100%{left:160%} }
+        .btn-start:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(212,168,67,.65); }
+        .btn-start:active { transform:scale(.97); }
 
         .tap-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.55);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-size:13px; font-weight:500; color:rgba(255,255,255,.4);
+            display:flex; align-items:center; justify-content:center; gap:8px;
         }
-        .tap-arrow {
-            display: inline-block;
-            animation: slideRight 1.2s ease-in-out infinite;
-        }
+        .tap-arrow { display:inline-block; animation:slideR 1.4s ease-in-out infinite; }
+        @keyframes slideR   { 0%,100%{transform:translateX(0)} 50%{transform:translateX(7px)} }
+        @keyframes fadeDown { from{opacity:0;transform:translateY(-30px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)}  to{opacity:1;transform:translateY(0)} }
 
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideRight {
-            0%, 100% { transform: translateX(0); }
-            50%       { transform: translateX(6px); }
-        }
-
-        /* Desktop */
-        @media (min-width: 768px) {
-            .logo-wrap { 
-                width: clamp(160px, 22vh, 220px); 
-                height: clamp(160px, 22vh, 220px); 
-            }
+        @media(min-width:768px){
+            .logo-wrap{width:clamp(180px,24vh,220px);height:clamp(180px,24vh,220px);}
         }
     </style>
 </head>
 <body>
 
+<div class="ambient"></div>
+<div class="stars"     id="stars"></div>
+<div class="particles" id="particles"></div>
+
 <div class="splash">
 
-    {{-- LOGO SVG --}}
+    <!-- LOGO PERSIS SAMA DENGAN FOTO -->
     <div class="logo-wrap">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <!-- Lingkaran luar -->
-            <circle cx="100" cy="100" r="95" fill="#e8e8e8" opacity="0.15"/>
-            <circle cx="100" cy="100" r="90" fill="#d0d0d0" opacity="0.2"/>
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="bgC" cx="40%" cy="35%" r="65%">
+                    <stop offset="0%"   stop-color="#2a3fa8"/>
+                    <stop offset="100%" stop-color="#141e6e"/>
+                </radialGradient>
+                <filter id="dropSh">
+                    <feDropShadow dx="6" dy="9" stdDeviation="12" flood-color="rgba(0,0,0,0.65)"/>
+                </filter>
+            </defs>
 
-            <!-- Background lingkaran putih -->
-            <circle cx="100" cy="100" r="85" fill="rgba(220,222,230,0.95)"/>
+            <!-- Bayangan -->
+            <circle cx="164" cy="168" r="146" fill="rgba(0,0,0,0.45)" filter="url(#dropSh)"/>
 
-            <!-- Panah kiri (melengkung) -->
-            <path d="M 38 75 Q 25 100 38 125" stroke="#1e2d6b" stroke-width="9" fill="none" stroke-linecap="round"/>
-            <polygon points="38,72 30,82 46,82" fill="#1e2d6b"/>
+            <!-- Rim abu-abu luar tebal — persis seperti foto -->
+            <circle cx="160" cy="160" r="148" fill="#c2c8d8"/>
 
-            <!-- Panah kanan (melengkung) -->
-            <path d="M 162 75 Q 175 100 162 125" stroke="#1e2d6b" stroke-width="9" fill="none" stroke-linecap="round"/>
-            <polygon points="162,128 154,118 170,118" fill="#1e2d6b"/>
+            <!-- Background lingkaran biru -->
+            <circle cx="160" cy="160" r="134" fill="url(#bgC)"/>
+
+            <!-- Ring dalam abu tipis -->
+            <circle cx="160" cy="160" r="134" fill="none"
+                    stroke="#a8b0c4" stroke-width="2.5" opacity="0.4"/>
+
+            <!-- PANAH BERPUTAR PERSIS SEPERTI FOTO -->
+            <g class="spin-me">
+
+                <!-- Lengkungan BESAR utama ~300°
+                     dari kiri atas melingkar searah jam, kepala panah kanan atas -->
+                <path d="M 68 58
+                         A 130 130 0 1 1 252 100"
+                      stroke="#c2c8d8" stroke-width="18"
+                      fill="none" stroke-linecap="round"/>
+                <!-- Kepala panah — mengarah ke bawah kanan seperti foto -->
+                <polygon points="252,100  232,70  268,66"
+                         fill="#c2c8d8"/>
+
+                <!-- Lengkungan KECIL aksen kiri bawah — seperti foto -->
+                <path d="M 44 205
+                         A 75 75 0 0 0 132 274"
+                      stroke="#c2c8d8" stroke-width="13"
+                      fill="none" stroke-linecap="round" opacity="0.65"/>
+
+            </g>
 
             <!-- Teks 360 -->
-            <text x="100" y="108" text-anchor="middle" font-family="Poppins, sans-serif" font-size="38" font-weight="900" fill="#1e2d6b">360</text>
-            <!-- Superscript o -->
-            <text x="148" y="86" text-anchor="middle" font-family="Poppins, sans-serif" font-size="16" font-weight="700" fill="#1e2d6b">°</text>
-            <!-- Teks Coffee -->
-            <text x="100" y="138" text-anchor="middle" font-family="Poppins, sans-serif" font-size="20" font-weight="700" fill="#1e2d6b">Coffee</text>
+            <text x="150" y="182"
+                  text-anchor="middle"
+                  font-family="Poppins, sans-serif"
+                  font-size="74" font-weight="900"
+                  fill="white">360</text>
 
-            <!-- Lingkaran dekoratif dalam -->
-            <circle cx="100" cy="100" r="85" fill="none" stroke="#1e2d6b" stroke-width="3" opacity="0.15"/>
+            <!-- Superscript ° -->
+            <text x="220" y="142"
+                  text-anchor="middle"
+                  font-family="Poppins, sans-serif"
+                  font-size="34" font-weight="700"
+                  fill="white">°</text>
+
+            <!-- Coffee -->
+            <text x="160" y="228"
+                  text-anchor="middle"
+                  font-family="Poppins, sans-serif"
+                  font-size="33" font-weight="700"
+                  fill="white" letter-spacing="2">Coffee</text>
         </svg>
     </div>
 
-    {{-- SELAMAT DATANG --}}
     <div class="welcome-row">
         <span class="welcome-line"></span>
         <span class="welcome-text">Selamat Datang</span>
         <span class="welcome-line"></span>
     </div>
 
-    {{-- BRAND --}}
     <div class="brand">
         <span class="brand-street">STREET</span>
         <span class="brand-360">360.COFFEE</span>
     </div>
 
-    {{-- TAGLINE --}}
     <p class="tagline">Menyajikan kopi lokal dengan rasa yang nikmat sejak 2025</p>
 
-    {{-- DIVIDER --}}
     <div class="divider">
         <span class="divider-line"></span>
         <span class="divider-dot"></span>
         <span class="divider-line"></span>
     </div>
 
-    {{-- TOMBOL --}}
     <div class="btn-wrap">
         <a href="{{ route('home') }}" class="btn-start">GET STARTED</a>
-        <p class="tap-text">
-            Tap Untuk Masuk
-            <span class="tap-arrow">→</span>
-        </p>
+        <p class="tap-text">Tap Untuk Masuk <span class="tap-arrow">→</span></p>
     </div>
 
 </div>
 
+<script>
+(function(){
+    var w=document.getElementById('stars');
+    [[3,8,12,2.5],[2,18,7,3],[4,28,15,1.8],[2,38,5,3.5],[3,48,18,2],
+     [2,55,9,4],[3,65,14,2.2],[2,75,6,3.8],[4,85,11,1.5],[2,92,16,3],
+     [3,15,85,2.8],[2,25,78,4],[4,42,90,1.9],[2,58,82,3.2],[3,72,88,2.5],
+     [2,82,75,3.7],[3,5,55,2],[2,95,60,4.2],[3,35,42,2.6],[2,88,35,3.4],
+     [3,50,70,1.7],[2,20,50,4.5],[2,70,30,2.3],[2,10,30,3.6]
+    ].forEach(function(d){
+        var s=document.createElement('div'); s.className='star';
+        s.style.cssText='width:'+d[0]+'px;height:'+d[0]+'px;left:'+d[1]+'%;top:'+d[2]+'%;'
+            +'animation-duration:'+d[3]+'s;animation-delay:'+(Math.random()*3)+'s';
+        w.appendChild(s);
+    });
+})();
+(function(){
+    var w=document.getElementById('particles');
+    [6,10,8,14,5,11,7,15,9,10,6,8,12].forEach(function(s,i){
+        var d=document.createElement('div'); d.className='p';
+        d.style.cssText='width:'+s+'px;height:'+s+'px;'
+            +'left:'+[5,12,20,30,40,50,60,70,78,86,22,45,65][i]+'%;'
+            +'animation-duration:'+[7,10,9,12,8,11,13,9,8,10,14,7,11][i]+'s;'
+            +'animation-delay:'+[0,1.5,3,0.5,2,4,1,3.5,2.5,0.8,1.8,4.5,2.2][i]+'s';
+        w.appendChild(d);
+    });
+})();
+</script>
 </body>
 </html>

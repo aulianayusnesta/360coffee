@@ -38,9 +38,11 @@ class PasswordResetController extends Controller
     {
         $request->validate([
             'email'     => 'required|email',
-            'name'      => 'required|string|max:100',
+            'name'      => ['required', 'string', 'max:100', 'not_regex:/@/', 'not_regex:/\s*@\s*/'],
             'new_email' => 'required|email',
             'password'  => 'required|min:6|confirmed',
+        ], [
+            'name.not_regex' => 'Nama tidak boleh mengandung karakter email (@). Isi dengan nama biasa, contoh: admin atau John.',
         ]);
 
         $user = User::where('email', $request->email)
@@ -59,6 +61,7 @@ class PasswordResetController extends Controller
             return back()->withErrors(['new_email' => 'Email sudah digunakan akun lain.']);
         }
 
+        // ✅ Generate username dari Nama (bukan dari email)
         $newUsername = strtolower(str_replace(' ', '', $request->name));
 
         $usernameTaken = User::where('username', $newUsername)

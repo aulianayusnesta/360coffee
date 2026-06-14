@@ -6,29 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class StokBahan extends Model
 {
-    protected $table    = 'stok_bahan';
-    protected $fillable = ['nama', 'stok_saat_ini', 'stok_maks', 'satuan'];
-    protected $casts    = ['stok_saat_ini' => 'float', 'stok_maks' => 'float'];
+    protected $table = 'stok_bahan';
 
+    protected $fillable = [
+        'nama',
+        'stok_saat_ini',
+        'stok_maks',
+        'satuan',
+    ];
+
+    // Relasi ke Menu
+    public function menus()
+    {
+        return $this->hasMany(Menu::class, 'stok_bahan_id');
+    }
+
+    // Hitung persentase stok
     public function getPersen(): float
     {
-        if ($this->stok_maks <= 0) return 0;
-        return min(100, max(0, ($this->stok_saat_ini / $this->stok_maks) * 100));
+        if ($this->stok_maks == 0) return 0;
+        return ($this->stok_saat_ini / $this->stok_maks) * 100;
     }
 
+    // Klasifikasi status
     public function getStatus(): string
     {
-        $p = $this->getPersen();
-        if ($p >= 50) return 'aman';
-        if ($p >= 20) return 'hampir_habis';
-        return 'kritis';
+        $persen = $this->getPersen();
+        if ($persen <= 20) return 'kritis';
+        if ($persen <= 50) return 'hampir_habis';
+        return 'aman';
     }
 
+    // CSS class untuk progress bar
     public function getBarClass(): string
     {
-        $p = $this->getPersen();
-        if ($p >= 50) return 'bar-aman';
-        if ($p >= 20) return 'bar-hampir';
-        return 'bar-kritis';
+        return match($this->getStatus()) {
+            'kritis'       => 'bar-kritis',
+            'hampir_habis' => 'bar-hampir',
+            default        => 'bar-aman',
+        };
     }
 }

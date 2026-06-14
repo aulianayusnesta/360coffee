@@ -1,328 +1,325 @@
+{{-- resources/views/home.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street 360.coffee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --navy: #1a2340;
-            --gold: #d4a843;
-            --white: #ffffff;
-            --light: #f5f5f0;
-            --text: #1a1a1a;
-            --font: 'Poppins', sans-serif;
-        }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font); color: var(--text); background: var(--white); overflow-x: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Street 360.coffee</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#1a2340;--navy2:#0d1526;--navy3:#111b33;
+  --gold:#d4a843;--gold2:#f0c96a;--gold3:#a87c28;
+  --white:#ffffff;--light:#f5f5f0;--text:#1a1a1a;
+  --font:'Poppins',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--white);overflow-x:hidden}
 
-        /* ══ NAVBAR ══ */
-        .navbar {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 32px; background: var(--navy);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .navbar-brand { text-decoration: none; display: flex; align-items: center; gap: 6px; }
-        .brand-top    { font-size: 16px; font-weight: 800; color: var(--white); }
-        .brand-dot    { font-size: 16px; font-weight: 800; color: var(--white); }
-        .brand-accent { font-size: 16px; font-weight: 800; color: var(--gold); }
-        .navbar-menu  { display: flex; list-style: none; gap: 40px; }
-        .navbar-menu a { color: var(--white); text-decoration: none; font-size: 15px; font-weight: 600; transition: color .2s; }
-        .navbar-menu a:hover, .navbar-menu a.active { color: var(--gold); }
-        .btn-login {
-            background: var(--gold); color: var(--navy); font-size: 14px; font-weight: 700;
-            padding: 10px 28px; border-radius: 30px; text-decoration: none; transition: opacity .2s;
-        }
-        .btn-login:hover { opacity: 0.85; }
+.navbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:62px;
+  background:linear-gradient(105deg,#060d1c 0%,#111b33 30%,#1a2340 55%,#0e1828 80%,#060d1c 100%);
+  position:sticky;top:0;z-index:100;
+  border-bottom:1.5px solid rgba(212,168,67,0.35);
+  box-shadow:0 4px 32px rgba(0,0,0,0.55);
+}
+.navbar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(240,201,106,1) 50%,transparent);
+  pointer-events:none;
+}
+.brand{text-decoration:none;display:flex;align-items:center;gap:1px}
+.b1{font-size:18px;font-weight:900;background:linear-gradient(135deg,#fff,#e8dfc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.b2{font-size:18px;font-weight:900;color:#fff}
+.b3{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--gold2),var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-menu{display:flex;list-style:none;gap:38px}
+.nav-menu a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:14px;font-weight:600;position:relative;transition:color .2s;letter-spacing:0.3px}
+.nav-menu a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .25s;border-radius:2px}
+.nav-menu a:hover::after,.nav-menu a.active::after{width:100%}
+.nav-menu a:hover,.nav-menu a.active{color:var(--gold2)}
+.btn-login{
+  background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);
+  color:#0d1526;font-size:13px;font-weight:800;
+  padding:9px 26px;border-radius:30px;text-decoration:none;letter-spacing:0.5px;
+  box-shadow:0 2px 12px rgba(212,168,67,0.45);
+  transition:box-shadow .2s,transform .15s;border:none;
+}
+.btn-login:hover{box-shadow:0 4px 22px rgba(212,168,67,0.65);transform:translateY(-1px)}
 
-        /* ══ HERO ══ */
-        .hero {
-            position: relative;
-            min-height: 520px;
-            background: #b5b8b4;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            padding: 60px 6% 0;
-        }
-        .hero-beans {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            mix-blend-mode: screen;
-            opacity: 0.85;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .hero-content {
-            flex: 1;
-            max-width: 50%;
-            z-index: 3;
-            position: relative;
-            padding-top: 10px;
-        }
-        .hero-label {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 15px; font-weight: 600; color: #333;
-            letter-spacing: 0.5px; margin-bottom: 16px;
-        }
-        .label-line { display: inline-block; width: 36px; height: 2px; background: var(--gold); flex-shrink: 0; }
-        .hero-title { font-size: clamp(36px, 5vw, 64px); font-weight: 900; line-height: 1.1; color: var(--text); margin-bottom: 6px; }
-        .hero-accent { color: var(--gold); }
-        .hero-desc { font-size: clamp(14px, 1.3vw, 17px); color: #333; line-height: 1.7; margin-top: 16px; max-width: 460px; }
-        .hero-right {
-            position: absolute;
-            right: 4%;
-            bottom: 0;
-            width: clamp(220px, 32%, 430px);
-            height: 100%;
-            z-index: 2;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        .hero-cup {
-            width: 100%;
-            max-height: 110%;
-            object-fit: contain;
-            object-position: bottom center;
-            mix-blend-mode: screen;
-            display: block;
-        }
+.hero{
+  position:relative;min-height:480px;overflow:hidden;
+  display:flex;align-items:center;padding:56px 6% 80px;
+  background:linear-gradient(135deg,#b8bab5 0%,#c8cac4 40%,#b8bab5 100%);
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(90deg,rgba(170,165,150,0.55) 0%,rgba(140,135,122,0.15) 55%,transparent 75%);
+  pointer-events:none;
+}
+.hero-beans{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.82;pointer-events:none;z-index:1}
+.hero-content{flex:1;max-width:50%;z-index:3;position:relative;animation:hIn .9s cubic-bezier(.22,1,.36,1) both}
+@keyframes hIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
+.hero-label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#2a2620;margin-bottom:16px}
+.lline{display:inline-block;width:36px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;flex-shrink:0}
+.hero-title{font-size:clamp(30px,4.5vw,58px);font-weight:900;line-height:1.1;color:#1a1a1a;margin-bottom:6px}
+.hero-acc{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:clamp(13px,1.2vw,15px);color:#333;line-height:1.8;margin-top:16px;max-width:420px}
+.hero-right{position:absolute;right:4%;bottom:0;width:clamp(200px,30%,400px);height:100%;z-index:3;display:flex;align-items:flex-end;justify-content:center;animation:hInR 1s cubic-bezier(.22,1,.36,1) .2s both}
+@keyframes hInR{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-cup{width:100%;max-height:110%;object-fit:contain;object-position:bottom center;display:block}
 
-        /* ══ INFO BAR ══ */
-        .info-bar { background: var(--navy); display: flex; align-items: stretch; }
-        .info-item { text-align: center; flex: 1; padding: 36px 20px; }
-        .info-label { font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-        .info-value { font-size: 20px; font-weight: 700; color: var(--white); line-height: 1.4; }
-        .info-divider { width: 1px; background: rgba(255,255,255,0.15); }
+.bubbles{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.bubble{position:absolute;bottom:-80px;border-radius:50%;background:rgba(212,168,67,0.13);border:1px solid rgba(212,168,67,0.28);animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(0);opacity:0}10%{opacity:0.7}90%{opacity:0.3}100%{transform:translateY(-550px);opacity:0}}
+.steam-wrap{position:absolute;bottom:51%;right:calc(4% + clamp(200px,30%,400px)*0.4);z-index:4;pointer-events:none;display:flex;gap:8px}
+.steam{width:5px;height:36px;background:linear-gradient(to top,rgba(255,255,255,0.55),transparent);border-radius:50px;animation:steamUp 2.4s ease-in-out infinite;filter:blur(2.5px)}
+.steam:nth-child(2){animation-delay:.5s;height:26px}
+.steam:nth-child(3){animation-delay:1s;height:46px}
+@keyframes steamUp{0%{transform:translateY(0) scaleX(1);opacity:0}20%{opacity:0.7}80%{opacity:0.2}100%{transform:translateY(-56px) scaleX(1.7);opacity:0}}
 
-        /* ══ MENU SECTION ══ */
-        .menu-section { background: var(--light); padding: 80px 6%; }
-        .section-label {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 13px; font-weight: 700; color: #888;
-            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;
-        }
-        .section-title { font-size: clamp(28px, 3vw, 44px); font-weight: 800; color: var(--text); margin-bottom: 8px; }
-        .accent { color: var(--gold); }
-        .section-desc { font-size: 16px; color: #777; margin-bottom: 36px; }
+.info-wrap{
+  background:linear-gradient(180deg,#b8bab5 0%,#c8cac4 25%,#eeede7 100%);
+  padding:0 6% 50px;display:flex;justify-content:center;
+}
+.info-bar{
+  width:100%;max-width:860px;
+  display:flex;align-items:stretch;
+  background:linear-gradient(135deg,#070e1e 0%,#101828 25%,#1a2340 55%,#111b33 80%,#070e1e 100%);
+  border-radius:20px;
+  border:1px solid rgba(212,168,67,0.4);
+  box-shadow:0 12px 48px rgba(0,0,0,0.5),0 0 0 1px rgba(212,168,67,0.08) inset,0 1.5px 0 rgba(240,201,106,0.55) inset;
+  margin-top:-38px;z-index:10;position:relative;overflow:hidden;
+}
+.info-bar::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 38% 110% at 17% 50%,rgba(212,168,67,0.1) 0%,transparent 70%),radial-gradient(ellipse 28% 90% at 50% 50%,rgba(212,168,67,0.07) 0%,transparent 70%),radial-gradient(ellipse 38% 110% at 83% 50%,rgba(212,168,67,0.1) 0%,transparent 70%);pointer-events:none}
+.info-bar::after{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(240,201,106,0.9),transparent);pointer-events:none}
+.info-item{text-align:center;flex:1;padding:36px 20px;position:relative;transition:background .3s;cursor:default}
+.info-item:hover{background:rgba(212,168,67,0.08)}
+.info-label{font-size:11px;font-weight:700;color:var(--gold2);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;text-shadow:0 0 14px rgba(212,168,67,0.55)}
+.info-value{font-size:18px;font-weight:800;color:#fff;line-height:1.4;letter-spacing:0.5px}
+.info-div{width:1px;background:linear-gradient(to bottom,transparent,rgba(212,168,67,0.5) 25%,rgba(212,168,67,0.5) 75%,transparent);margin:14px 0}
 
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 30px; }
-        @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(4, 1fr); } }
+.menu-section{padding:72px 6%;background:linear-gradient(180deg,#eeede7 0%,#f5f5f0 50%,#eceae4 100%)}
+.sec-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;color:#aaa;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
+.sec-title{font-size:clamp(24px,3vw,40px);font-weight:800;color:var(--text);margin-bottom:8px}
+.acc{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-desc{font-size:14px;color:#999;margin-bottom:32px}
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+@media(min-width:768px){.menu-grid{grid-template-columns:repeat(4,1fr)}}
+.menu-card{background:#fff;border-radius:14px;overflow:hidden;position:relative;box-shadow:0 2px 14px rgba(0,0,0,0.09);border:1px solid rgba(0,0,0,0.06);transition:transform .25s,box-shadow .25s;will-change:transform}
+.menu-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,0.14)}
+.badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;z-index:2}
+.badge-best{background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--navy2)}
+.badge-new{background:linear-gradient(135deg,#4dbf6e,#2e9e50);color:#fff}
+.menu-img{width:100%;aspect-ratio:1/1;background:#f0f0ec;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.menu-img img{width:100%;height:100%;object-fit:cover;display:block}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#ebebeb}
+.menu-info{padding:12px 14px 15px;background:linear-gradient(160deg,#1e2a4a 0%,#1a2340 55%,#101828 100%)}
+.menu-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+.menu-desc{font-size:11px;color:rgba(255,255,255,0.48);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.menu-foot{display:flex;align-items:center;justify-content:space-between}
+.menu-price{font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.menu-tag{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.72);font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.12)}
+.btn-all{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px;background:transparent;border:2px solid var(--navy);color:var(--navy);font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:1.5px;border-radius:10px;text-decoration:none;transition:background .2s,color .2s,border-color .2s;overflow:hidden;position:relative}
+.btn-all:hover{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;border-color:transparent}
 
-        /* ✅ Card putih */
-        .menu-card {
-            background: var(--white);
-            border-radius: 14px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 2px 14px rgba(0,0,0,0.10);
-            transition: transform .25s, box-shadow .25s;
-            border: 1px solid rgba(0,0,0,0.07);
-        }
-        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+.about{padding:72px 6%;position:relative;background:linear-gradient(160deg,#080f1f 0%,#101828 20%,#1a2340 50%,#141f38 80%,#080f1f 100%)}
+.about::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 45% at 78% 18%,rgba(212,168,67,0.07) 0%,transparent 60%),radial-gradient(ellipse 35% 55% at 8% 82%,rgba(212,168,67,0.05) 0%,transparent 60%);pointer-events:none}
+.about::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,201,106,0.85) 50%,transparent);pointer-events:none}
+.about-label{font-size:11px;font-weight:700;color:var(--gold2);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;position:relative}
+.about-title{font-size:clamp(30px,3.8vw,54px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:28px;position:relative}
+.about-text p{font-size:14px;color:rgba(255,255,255,0.68);line-height:1.9;margin-bottom:14px;position:relative}
+.about-stats{display:flex;gap:52px;margin:36px 0;position:relative}
+.stat-num{font-size:clamp(24px,3vw,40px);font-weight:900;margin-bottom:4px;background:linear-gradient(135deg,#fff,rgba(255,255,255,0.85));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;position:relative}
+@media(min-width:768px){.features{grid-template-columns:repeat(4,1fr)}}
+.feat{background:rgba(255,255,255,0.055);border:1px solid rgba(212,168,67,0.14);border-radius:12px;padding:20px 16px;transition:background .25s,border-color .25s,transform .25s}
+.feat:hover{background:rgba(212,168,67,0.09);border-color:rgba(212,168,67,0.42);transform:translateY(-3px)}
+.feat-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+.feat-desc{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.65}
 
-        .menu-badge {
-            position: absolute; top: 10px; left: 10px;
-            font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; z-index: 2;
-        }
-        .badge-best { background: var(--gold); color: var(--navy); }
-        .badge-new  { background: #3daa5c; color: var(--white); }
+.footer{background:linear-gradient(135deg,var(--navy2),var(--navy),var(--navy3));text-align:center;padding:32px 6%;border-top:1px solid rgba(212,168,67,0.2)}
+.footer p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.9}
 
-        /* ✅ Area foto putih/terang */
-        .menu-img-wrap {
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: #f0f0ec;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .menu-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #ebebeb; }
-
-        /* Info card — background navy, teks putih/gold */
-        .menu-info { padding: 12px 14px 16px; background: var(--navy); }
-        .menu-name { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
-        .menu-footer { display: flex; align-items: center; justify-content: space-between; }
-        .menu-price { font-size: 14px; font-weight: 700; color: var(--gold); }
-        .menu-tag {
-            background: rgba(255,255,255,0.12); color: var(--white);
-            font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
-        }
-
-        .btn-all-menu {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 20px;
-            background: transparent; border: 2.5px solid var(--navy);
-            color: var(--navy); font-family: var(--font); font-size: 16px; font-weight: 700;
-            letter-spacing: 1.5px; border-radius: 10px; text-decoration: none;
-            transition: background .2s, color .2s;
-        }
-        .btn-all-menu:hover { background: var(--navy); color: var(--white); }
-
-        /* ══ ABOUT SECTION ══ */
-        .about-section { background: var(--navy); padding: 80px 6%; }
-        .about-label { font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 12px; }
-        .about-title { font-size: clamp(36px, 4vw, 60px); font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 28px; }
-        .about-title .accent { color: var(--gold); }
-        .about-text p { font-size: 16px; color: rgba(255,255,255,0.75); line-height: 1.8; margin-bottom: 14px; }
-        .about-stats { display: flex; justify-content: flex-start; gap: 60px; margin: 40px 0; }
-        .stat { text-align: left; }
-        .stat-number { font-size: clamp(28px, 3vw, 44px); font-weight: 900; color: var(--white); margin-bottom: 4px; }
-        .stat-label { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
-        .about-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        @media (min-width: 768px) { .about-features { grid-template-columns: repeat(4, 1fr); } }
-        .feature-item { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 22px 18px; }
-        .feature-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
-        .feature-desc  { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; }
-
-        /* ══ FOOTER ══ */
-        .footer { background: var(--light); text-align: center; padding: 28px 6%; border-top: 1px solid #ddd; }
-        .footer p { font-size: 14px; color: #999; line-height: 1.8; }
-
-        @media (max-width: 480px) { .navbar-menu { display: none; } }
-    </style>
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,0.28);animation:rip .55s linear;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.cdots{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.dot{position:absolute;border-radius:50%;background:rgba(212,168,67,0.09);animation:dotF linear infinite}
+@keyframes dotF{0%{transform:translateY(0);opacity:0.4}50%{opacity:0.7}100%{transform:translateY(-38px);opacity:0}}
+</style>
 </head>
 <body>
 
 <nav class="navbar">
-    <a href="{{ route('home') }}" class="navbar-brand">
-        <span class="brand-top">Street</span>
-        <span class="brand-dot">360.</span><span class="brand-accent">coffee</span>
-    </a>
-    <ul class="navbar-menu">
-        <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
-        <li><a href="{{ route('menu.index') }}">Menu</a></li>
-        <li><a href="{{ route('tentang') }}">Tentang</a></li>
-        <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
-    </ul>
-    <a href="{{ route('login') }}" class="btn-login">LOGIN</a>
+  <a href="{{ route('home') }}" class="brand">
+    <span class="b1">Street</span>
+    <span class="b2">360.</span>
+    <span class="b3">coffee</span>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
+    <li><a href="{{ route('menu.index') }}">Menu</a></li>
+    <li><a href="{{ route('tentang') }}">Tentang</a></li>
+    <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
+  </ul>
+  <a href="{{ route('login') }}" class="btn-login">LOGIN</a>
 </nav>
 
-{{-- ══ HERO SECTION ══ --}}
 <section class="hero" id="home">
-
-    <img
-        class="hero-beans"
-        src="{{ asset('images/hero-beans.png') }}"
-        alt=""
-        aria-hidden="true"
-    >
-
-    <div class="hero-content">
-        <p class="hero-label"><span class="label-line"></span> Kopi Lokal · Est. 2025</p>
-        <h1 class="hero-title">Dari biji terbaik<br><span class="hero-accent">Pilihan.</span></h1>
-        <p class="hero-desc">Pengalaman ngopi yang jujur dan autentik — diseduh dengan teliti, disajikan dengan hangat. Cek menu kami dan temukan favoritmu.</p>
-    </div>
-
-    <div class="hero-right">
-        <img
-            class="hero-cup"
-            src="{{ asset('images/hero-cup.png') }}"
-            alt="Street 360 Coffee Cup"
-        >
-    </div>
-
+  <div class="bubbles" id="bubblesWrap"></div>
+  <div class="steam-wrap">
+    <div class="steam"></div>
+    <div class="steam"></div>
+    <div class="steam"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <img class="hero-beans" src="{{ asset('hero-beans.png') }}" alt="" aria-hidden="true">
+  <div class="hero-content">
+    <p class="hero-label"><span class="lline"></span>Kopi Lokal · Est. 2025</p>
+    <h1 class="hero-title">Dari biji terbaik<br><span class="hero-acc">Pilihan.</span></h1>
+    <p class="hero-desc">Pengalaman ngopi yang jujur dan autentik — diseduh dengan teliti, disajikan dengan hangat. Cek menu kami dan temukan favoritmu.</p>
+  </div>
+  <div class="hero-right">
+    <img class="hero-cup" src="{{ asset('hero-cup.png') }}" alt="Street 360 Coffee Cup">
+  </div>
 </section>
 
-{{-- ══ INFO BAR ══ --}}
-<div class="info-bar">
+<div class="info-wrap">
+  <div class="info-bar rv">
     <div class="info-item">
-        <p class="info-label">JAM BUKA</p>
-        <p class="info-value">17.30 – CLOSE</p>
+      <p class="info-label">JAM BUKA</p>
+      <p class="info-value">17.30 – CLOSE</p>
     </div>
-    <div class="info-divider"></div>
+    <div class="info-div"></div>
     <div class="info-item">
-        <p class="info-label">PEMBAYARAN</p>
-        <p class="info-value">TUNAI &amp; QRIS</p>
+      <p class="info-label">PEMBAYARAN</p>
+      <p class="info-value">TUNAI &amp; QRIS</p>
     </div>
-    <div class="info-divider"></div>
+    <div class="info-div"></div>
     <div class="info-item">
-        <p class="info-label">MENU</p>
-        <p class="info-value">{{ \App\Models\Menu::where('tersedia', true)->count() }}+<br>VARIAN MENU</p>
+      <p class="info-label">MENU</p>
+      <p class="info-value">{{ \App\Models\Menu::where('tersedia', true)->count() }}+ VARIAN</p>
     </div>
+  </div>
 </div>
 
-{{-- ══ MENU SECTION ══ --}}
 <section class="menu-section" id="menu">
-    <p class="section-label"><span class="label-line"></span> PILIHAN KAMI</p>
-    <h2 class="section-title">Menu <span class="accent">Unggulan</span></h2>
-    <p class="section-desc">Yang paling banyak dipesan pelanggan kami setiap malam.</p>
+  <p class="sec-label rv"><span class="lline" style="background:linear-gradient(90deg,#bbb,#ddd)"></span>PILIHAN KAMI</p>
+  <h2 class="sec-title rv">Menu <span class="acc">Unggulan</span></h2>
+  <p class="sec-desc rv">Yang paling banyak dipesan pelanggan kami setiap malam.</p>
 
-    <div class="menu-grid">
-        @forelse($unggulan as $item)
-        <div class="menu-card">
-            @if($item->badge)
-                <span class="menu-badge {{ $item->badge === 'New' ? 'badge-new' : 'badge-best' }}">
-                    {{ $item->badge }}
-                </span>
-            @endif
-            <div class="menu-img-wrap">
-                @if($item->gambar)
-                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->nama }}">
-                @else
-                    <div class="no-img">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.2">
-                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                            <circle cx="8.5" cy="8.5" r="1.5"/>
-                            <polyline points="21 15 16 10 5 21"/>
-                        </svg>
-                    </div>
-                @endif
-            </div>
-            <div class="menu-info">
-                <p class="menu-name">{{ $item->nama }}</p>
-                <div class="menu-footer">
-                    <span class="menu-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
-                    <span class="menu-tag">{{ $item->kategori }}</span>
-                </div>
-            </div>
+  <div class="menu-grid">
+    @forelse($unggulan as $item)
+    <div class="menu-card rv">
+      @if($item->badge)
+        <span class="badge {{ $item->badge === 'New' ? 'badge-new' : 'badge-best' }}">{{ $item->badge }}</span>
+      @endif
+      <div class="menu-img">
+        @if($item->gambar)
+          <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->nama }}" loading="lazy">
+        @else
+          <div class="no-img">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+        @endif
+      </div>
+      <div class="menu-info">
+        <p class="menu-name">{{ $item->nama }}</p>
+        @if($item->deskripsi)
+          <p class="menu-desc">{{ $item->deskripsi }}</p>
+        @endif
+        <div class="menu-foot">
+          <span class="menu-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+          <span class="menu-tag">{{ $item->kategori }}</span>
         </div>
-        @empty
-        <div style="grid-column:span 4;text-align:center;color:#aaa;padding:40px 0;">
-            Belum ada menu tersedia.
-        </div>
-        @endforelse
+      </div>
     </div>
+    @empty
+    <div style="grid-column:span 4;text-align:center;color:#aaa;padding:40px 0">
+      Belum ada menu tersedia.
+    </div>
+    @endforelse
+  </div>
 
-    <a href="{{ route('menu.index') }}" class="btn-all-menu">LIHAT SEMUA MENU →</a>
+  <a href="{{ route('menu.index') }}" class="btn-all rv">LIHAT SEMUA MENU →</a>
 </section>
 
-{{-- ══ ABOUT SECTION ══ --}}
-<section class="about-section" id="about">
-    <p class="about-label">SIAPA KAMI</p>
-    <h2 class="about-title">Pelopor<br>digital di <span class="accent">Waru.</span></h2>
-    <div class="about-text">
-        <p>Street 360Coffee berdiri tahun 2025 di Waru, Kalimantan Timur. Kami hadir sebagai coffeeShop yang fokus menjadikan kopi berkualitas, tapi juga menjadi pelopor digitalisasi UMKM kuliner di kawasan ini.</p>
-        <p>Semua kopi kami bersumber dari petani lokal pilihan — diolah dengan standar tinggi untuk menghadirkan cita rasa yang konsisten di setiap cangkir.</p>
-    </div>
-    <div class="about-stats">
-        <div class="stat"><p class="stat-number">15 +</p><p class="stat-label">MENU PILIHAN</p></div>
-        <div class="stat"><p class="stat-number">2025</p><p class="stat-label">BERDIRI SEJAK</p></div>
-        <div class="stat"><p class="stat-number">100%</p><p class="stat-label">KOPI LOKAL</p></div>
-    </div>
-    <div class="about-features">
-        <div class="feature-item"><p class="feature-title">Menu Digital</p><p class="feature-desc">Informasi menu tersedia online, mudah diakses kapan saja.</p></div>
-        <div class="feature-item"><p class="feature-title">Stok Real-time</p><p class="feature-desc">Menu yang habis langsung diperbarui otomatis.</p></div>
-        <div class="feature-item"><p class="feature-title">Tunai &amp; QRIS</p><p class="feature-desc">Bayar mudah dengan berbagai metode pembayaran pilihan kamu.</p></div>
-        <div class="feature-item"><p class="feature-title">Kopi Lokal</p><p class="feature-desc">Biji kopi pilihan dari petani  terbaik.</p></div>
-    </div>
+<section class="about" id="about">
+  <div class="cdots" id="coffeeDots"></div>
+  <p class="about-label rv">SIAPA KAMI</p>
+  <h2 class="about-title rv">Pelopor<br>digital di <span class="acc">Waru.</span></h2>
+  <div class="about-text rv">
+    <p>Street 360Coffee berdiri tahun 2025 di Waru, Kalimantan Timur. Kami hadir sebagai coffee shop yang fokus menghadirkan kopi berkualitas, sekaligus menjadi pelopor digitalisasi UMKM kuliner di kawasan ini.</p>
+    <p>Semua kopi kami bersumber dari petani lokal pilihan — diolah dengan standar tinggi untuk menghadirkan cita rasa yang konsisten di setiap cangkir.</p>
+  </div>
+  <div class="about-stats">
+    <div class="rv"><p class="stat-num">15+</p><p class="stat-lbl">MENU PILIHAN</p></div>
+    <div class="rv"><p class="stat-num">2025</p><p class="stat-lbl">BERDIRI SEJAK</p></div>
+    <div class="rv"><p class="stat-num">100%</p><p class="stat-lbl">KOPI LOKAL</p></div>
+  </div>
+  <div class="features">
+    <div class="feat rv"><p class="feat-title">Menu Digital</p><p class="feat-desc">Informasi menu tersedia online, mudah diakses kapan saja.</p></div>
+    <div class="feat rv"><p class="feat-title">Stok Real-time</p><p class="feat-desc">Menu yang habis langsung diperbarui otomatis dari admin.</p></div>
+    <div class="feat rv"><p class="feat-title">Tunai &amp; QRIS</p><p class="feat-desc">Bayar mudah dengan berbagai metode pembayaran pilihanmu.</p></div>
+    <div class="feat rv"><p class="feat-title">Kopi Lokal</p><p class="feat-desc">Biji kopi pilihan dari petani terbaik Kaltim.</p></div>
+  </div>
 </section>
 
-<footer class="footer">
-    <p>Waru, Penajam Paser Utara - Kalimantan Timur</p>
-    <p>© 2025 Street 360 Coffee. All rights reserved.</p>
+<footer class="footer" id="lokasi">
+  <p>Waru, Penajam Paser Utara — Kalimantan Timur</p>
+  <p>© 2025 Street 360 Coffee. All rights reserved.</p>
 </footer>
 
+<script>
+(function(){
+  const w=document.getElementById('bubblesWrap');
+  [18,26,14,34,20,12,28,16,22,10].forEach((s,i)=>{
+    const b=document.createElement('div');b.className='bubble';
+    b.style.cssText=`width:${s}px;height:${s}px;left:${[5,12,22,32,42,52,62,70,80,90][i]}%;animation-duration:${4+(i%4)}s;animation-delay:${i*0.6}s`;
+    w.appendChild(b);
+  });
+})();
+(function(){
+  const w=document.getElementById('coffeeDots');
+  for(let i=0;i<14;i++){
+    const d=document.createElement('div');d.className='dot';
+    const s=4+Math.random()*10;
+    d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${20+Math.random()*70}%;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*3}s`;
+    w.appendChild(d);
+  }
+})();
+(function(){
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*70);io.unobserve(e.target);}
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+})();
+document.querySelectorAll('.btn-login,.btn-all').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    const r=document.createElement('span');r.className='ripple';
+    const rect=btn.getBoundingClientRect(),s=Math.max(rect.width,rect.height);
+    r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
+    btn.appendChild(r);setTimeout(()=>r.remove(),600);
+  });
+});
+document.querySelectorAll('.menu-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const rect=card.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width-.5,y=(e.clientY-rect.top)/rect.height-.5;
+    card.style.transform=`translateY(-5px) rotateX(${-y*5}deg) rotateY(${x*5}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+</script>
 </body>
 </html>

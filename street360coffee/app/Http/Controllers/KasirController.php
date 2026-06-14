@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\TransaksiItem;
 use App\Models\Menu;
+use App\Models\StokBahan;
 
 class KasirController extends Controller
 {
@@ -30,7 +31,6 @@ class KasirController extends Controller
         $uang      = (int)($request->uang ?? $total);
         $kembalian = $request->metode === 'tunai' ? ($uang - $total) : 0;
 
-        // ✅ FIX: nomor global — tidak pernah reset, hitung semua transaksi di DB
         $nomorGlobal = Transaksi::count() + 1;
         $nomor       = str_pad($nomorGlobal, 3, '0', STR_PAD_LEFT);
 
@@ -47,6 +47,7 @@ class KasirController extends Controller
             'is_urgent' => false,
         ]);
 
+        // Simpan item transaksi
         foreach ($cart as $item) {
             TransaksiItem::create([
                 'transaksi_id' => $transaksi->id,
@@ -56,6 +57,24 @@ class KasirController extends Controller
                 'qty'          => $item['qty'],
                 'subtotal'     => $item['harga'] * $item['qty'],
             ]);
+        }
+
+        // ✅ Kurangi stok otomatis & nonaktifkan menu jika stok = 0
+        foreach ($cart as $item) {
+            $menu = Menu::find($item['id']);
+
+            if ($menu && $menu->stokBahan) {
+                $stok = $menu->stokBahan;
+
+                // Kurangi stok sejumlah qty dipesan, tidak boleh di bawah 0
+                $stok->stok_saat_ini = max(0, $stok->stok_saat_ini - $item['qty']);
+                $stok->save();
+
+                // Jika stok = 0, otomatis nonaktifkan menu
+                if ($stok->stok_saat_ini == 0) {
+                    $menu->update(['tersedia' => false]);
+                }
+            }
         }
 
         return redirect()->route('kasir.pos')->with('struk', [

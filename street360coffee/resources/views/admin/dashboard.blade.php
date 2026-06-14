@@ -75,40 +75,22 @@
 
         /* ── Stat Cards ── */
         .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
-
-        .stat-card {
-            background:var(--navy-3); border:1px solid var(--border); border-radius:16px;
-            padding:20px 22px; cursor:pointer; position:relative; overflow:hidden;
-            transition:all .25s cubic-bezier(.34,1.2,.64,1);
-            text-decoration:none; display:block;
-        }
-        .stat-card::before {
-            content:''; position:absolute; top:0; left:0; right:0; height:2px;
-            background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent);
-            border-radius:16px 16px 0 0; transform:scaleX(0); transform-origin:left;
-            transition:transform .3s cubic-bezier(.34,1.2,.64,1);
-        }
-        .stat-card::after {
-            content:''; position:absolute; inset:0; border-radius:16px;
-            background:radial-gradient(ellipse at 30% 0%,rgba(232,176,75,.09) 0%,transparent 65%);
-            opacity:0; transition:opacity .25s;
-        }
+        .stat-card { background:var(--navy-3); border:1px solid var(--border); border-radius:16px; padding:20px 22px; cursor:pointer; position:relative; overflow:hidden; transition:all .25s cubic-bezier(.34,1.2,.64,1); text-decoration:none; display:block; }
+        .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent); border-radius:16px 16px 0 0; transform:scaleX(0); transform-origin:left; transition:transform .3s cubic-bezier(.34,1.2,.64,1); }
+        .stat-card::after { content:''; position:absolute; inset:0; border-radius:16px; background:radial-gradient(ellipse at 30% 0%,rgba(232,176,75,.09) 0%,transparent 65%); opacity:0; transition:opacity .25s; }
         .stat-card:hover { border-color:rgba(232,176,75,.3); transform:translateY(-3px); box-shadow:0 12px 36px rgba(0,0,0,.3),0 0 0 1px rgba(232,176,75,.12); }
         .stat-card:hover::before { transform:scaleX(1); }
         .stat-card:hover::after  { opacity:1; }
-
         .stat-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; position:relative; z-index:1; }
         .stat-icon { width:38px; height:38px; border-radius:10px; background:var(--gold-dim); border:1px solid rgba(232,176,75,.18); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
         .stat-icon svg { color:var(--gold); }
         .stat-icon.red-icon   { background:var(--red-dim);   border-color:rgba(248,113,113,.18); } .stat-icon.red-icon svg   { color:var(--red); }
         .stat-icon.green-icon { background:var(--green-dim); border-color:rgba(74,222,128,.18);  } .stat-icon.green-icon svg { color:var(--green); }
         .stat-icon.blue-icon  { background:var(--blue-dim);  border-color:rgba(96,165,250,.18);  } .stat-icon.blue-icon svg  { color:var(--blue); }
-
         .stat-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; }
         .stat-badge.green { background:var(--green-dim); color:var(--green); }
         .stat-badge.red   { background:var(--red-dim);   color:var(--red); }
         .stat-badge.yellow{ background:var(--yellow-dim);color:var(--yellow); }
-
         .stat-label { font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-bottom:6px; text-transform:uppercase; position:relative; z-index:1; }
         .stat-value { font-family:'Plus Jakarta Sans',sans-serif; font-size:28px; font-weight:800; color:#fff; line-height:1; position:relative; z-index:1; }
         .stat-value.rp { font-size:20px; color:var(--gold); }
@@ -166,65 +148,150 @@
         .empty-state { color:var(--muted); font-size:13px; padding:20px 0; text-align:center; }
 
         /* ── Modal ── */
-        .modal-overlay { position:fixed; inset:0; background:rgba(8,15,30,.88); z-index:9999; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .22s; backdrop-filter:blur(6px); }
-        .modal-overlay.open { opacity:1; pointer-events:all; }
-        .modal-box { background:var(--navy-3); border:1px solid var(--border-2); border-radius:20px; padding:0; width:500px; max-width:95vw; max-height:85vh; overflow-y:auto; transform:translateY(16px) scale(.96); transition:transform .22s; box-shadow:0 32px 80px rgba(0,0,0,.5); }
-        .modal-overlay.open .modal-box { transform:translateY(0) scale(1); }
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(8,15,30,.82);
+            z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity .2s;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
 
-        .modal-head { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--navy-3); z-index:1; border-radius:20px 20px 0 0; }
-        .modal-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:800; color:#fff; }
-        .modal-close { background:rgba(255,255,255,.07); border:1px solid var(--border); color:var(--muted-2); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:all .18s; }
-        .modal-close:hover { background:rgba(248,113,113,.15); border-color:var(--red); color:var(--red); }
+        .modal-box {
+            background: var(--navy-3);
+            border: 1px solid var(--border-2);
+            border-radius: 18px;
+            width: 400px; max-width: 94vw;
+            max-height: 80vh; overflow-y: auto;
+            transform: translateY(14px) scale(.96);
+            transition: transform .22s cubic-bezier(.34,1.2,.64,1);
+            box-shadow: 0 28px 70px rgba(0,0,0,.5);
+        }
+        .modal-overlay.open .modal-box { transform: none; }
 
-        .modal-body { padding:20px 24px 26px; }
-        .m-section { font-size:10px; font-weight:700; letter-spacing:.13em; color:var(--muted); text-transform:uppercase; display:flex; align-items:center; gap:8px; margin:18px 0 10px; }
-        .m-section:first-child { margin-top:0; }
-        .m-section::after { content:''; flex:1; height:1px; background:var(--border); }
+        /* Header modal */
+        .modal-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0;
+            background: var(--navy-3);
+            border-radius: 18px 18px 0 0;
+            z-index: 1;
+        }
+        .modal-head-left { display: flex; align-items: center; gap: 10px; }
+        .modal-head-icon {
+            width: 30px; height: 30px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .modal-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; font-weight: 800; color: #fff;
+        }
+        .modal-close {
+            width: 28px; height: 28px; border-radius: 8px;
+            border: 1px solid var(--border-2);
+            background: transparent; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--muted); font-size: 16px; line-height: 1;
+            transition: all .15s;
+        }
+        .modal-close:hover { background: var(--red-dim); border-color: var(--red); color: var(--red); }
 
-        .m-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-        .m-chip { background:var(--navy-4); border:1px solid var(--border); border-radius:11px; padding:11px 14px; }
-        .m-chip-label { font-size:10px; font-weight:700; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; margin-bottom:5px; }
-        .m-chip-value { font-size:15px; font-weight:800; color:var(--text); }
-        .m-chip-value.gold   { color:var(--gold); }
-        .m-chip-value.green  { color:var(--green); }
-        .m-chip-value.red    { color:var(--red); }
-        .m-chip-value.yellow { color:var(--yellow); }
+        /* Body */
+        .modal-body { padding: 18px 20px 22px; }
 
-        .m-row { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-radius:9px; margin-bottom:5px; background:var(--navy-4); border:1px solid var(--border); font-size:13px; }
-        .m-lbl { color:var(--muted); font-weight:600; }
-        .m-val { font-weight:700; color:var(--text); }
-        .m-val.gold   { color:var(--gold); }
-        .m-val.green  { color:var(--green); }
-        .m-val.red    { color:var(--red); }
-        .m-val.yellow { color:var(--yellow); }
+        /* Chips ringkasan */
+        .m-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+        .m-chip { background: var(--navy-4); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; }
+        .m-chip-lbl { font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; }
+        .m-chip-val { font-size: 18px; font-weight: 800; color: var(--text); }
+        .m-chip-val.gold   { color: var(--gold); }
+        .m-chip-val.green  { color: var(--green); }
+        .m-chip-val.red    { color: var(--red); }
+        .m-chip-val.yellow { color: var(--yellow); }
 
-        .ms-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:9px; margin-bottom:5px; background:var(--navy-4); border:1px solid var(--border); }
-        .ms-name { font-size:13px; font-weight:600; color:var(--text); }
-        .ms-qty  { font-size:11px; color:var(--muted); margin-top:2px; }
-        .ms-badge { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
-        .ms-badge.kritis       { background:var(--red-dim);    color:var(--red); }
-        .ms-badge.hampir_habis { background:var(--yellow-dim); color:var(--yellow); }
-        .ms-badge.aman         { background:var(--green-dim);  color:var(--green); }
+        /* Label seksi */
+        .m-sec {
+            font-size: 10px; font-weight: 700; letter-spacing: .1em;
+            color: var(--muted); text-transform: uppercase;
+            margin: 16px 0 8px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .m-sec::after { content:''; flex:1; height:1px; background: var(--border); }
 
-        .mt-row { display:flex; align-items:flex-start; justify-content:space-between; padding:10px 12px; border-radius:9px; margin-bottom:5px; background:var(--navy-4); border:1px solid var(--border); }
-        .mt-nomor { font-size:13px; font-weight:700; color:var(--text); }
-        .mt-waktu { font-size:11px; color:var(--muted); margin-top:2px; }
-        .mt-items { font-size:11px; color:var(--muted); margin-top:3px; }
-        .mt-total { font-size:13px; font-weight:700; color:var(--gold); text-align:right; }
-        .mt-metode { margin-top:5px; text-align:right; }
+        /* Baris flat (pendapatan harian, menu) */
+        .m-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+        .m-row:last-child { border-bottom: none; }
+        .m-lbl { font-size: 13px; color: var(--muted-2); }
+        .m-val { font-size: 13px; font-weight: 700; color: var(--text); }
+        .m-val.gold   { color: var(--gold); }
+        .m-val.green  { color: var(--green); }
+        .m-val.red    { color: var(--red); }
+        .m-val.yellow { color: var(--yellow); }
 
-        .mm-row { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:9px; margin-bottom:5px; background:var(--navy-4); border:1px solid var(--border); }
-        .mm-rank { width:26px; height:26px; background:linear-gradient(135deg,var(--gold),var(--gold-l)); color:var(--navy); border-radius:8px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .mm-rank.r2 { background:var(--navy-5); color:var(--muted-2); }
-        .mm-rank.r3 { background:var(--navy-4); color:var(--muted);   border:1px solid var(--border); }
-        .mm-info { flex:1; }
-        .mm-nm { font-size:13px; font-weight:600; color:var(--text); }
-        .mm-pr { font-size:11px; color:var(--muted); margin-top:2px; }
-        .mm-qty { font-size:13px; font-weight:700; color:var(--gold); white-space:nowrap; }
+        /* Baris transaksi */
+        .mt-row {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+        .mt-row:last-child { border-bottom: none; }
+        .mt-nomor { font-size: 13px; font-weight: 700; color: var(--text); }
+        .mt-waktu { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .mt-menu  { font-size: 11px; color: var(--muted-2); margin-top: 3px; max-width: 200px; }
+        .mt-total { font-size: 13px; font-weight: 700; color: var(--gold); text-align: right; }
 
-        .m-total-row { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-radius:12px; background:linear-gradient(135deg,rgba(232,176,75,.12),rgba(245,204,122,.05)); border:1px solid rgba(232,176,75,.25); margin-top:8px; }
-        .m-total-lbl { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
-        .m-total-val { font-family:'Plus Jakarta Sans',sans-serif; font-size:20px; font-weight:800; color:var(--gold); }
+        /* Baris stok */
+        .ms-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+        .ms-row:last-child { border-bottom: none; }
+        .ms-nm  { font-size: 13px; font-weight: 600; color: var(--text); }
+        .ms-qty { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+        /* Rank badge menu */
+        .mm-rank {
+            width: 24px; height: 24px; border-radius: 7px;
+            background: linear-gradient(135deg,var(--gold),var(--gold-l));
+            color: var(--navy); font-size: 11px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-right: 10px;
+        }
+        .mm-rank.r2 { background: var(--navy-5); color: var(--muted-2); }
+        .mm-rank.r3 { background: var(--navy-4); color: var(--muted); }
+
+        /* Pill/badge status */
+        .m-pill {
+            display: inline-block; font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+        }
+        .pill-green  { background: var(--green-dim);  color: var(--green); }
+        .pill-amber  { background: var(--gold-dim);   color: var(--gold); }
+        .pill-red    { background: var(--red-dim);    color: var(--red); }
+        .pill-yellow { background: var(--yellow-dim); color: var(--yellow); }
+
+        /* Total baris bawah */
+        .m-total-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 14px; margin-top: 12px;
+            background: linear-gradient(135deg,rgba(232,176,75,.1),rgba(245,204,122,.04));
+            border: 1px solid rgba(232,176,75,.22);
+            border-radius: 11px;
+        }
+        .m-total-lbl { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+        .m-total-val { font-family:'Plus Jakarta Sans',sans-serif; font-size: 18px; font-weight: 800; color: var(--gold); }
+
+        .m-empty { font-size: 13px; color: var(--muted); padding: 18px 0; text-align: center; }
     </style>
 </head>
 <body>
@@ -401,152 +468,224 @@
     </main>
 </div>
 
-{{-- Modal Pendapatan --}}
+{{-- ===== MODAL PENDAPATAN ===== --}}
 <div class="modal-overlay" id="modalPendapatan" onclick="tutupModalKlik(event,'modalPendapatan')">
     <div class="modal-box">
         <div class="modal-head">
-            <div class="modal-title">💰 Pendapatan Hari Ini</div>
+            <div class="modal-head-left">
+                <div class="modal-head-icon" style="background:#FAEEDA;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                </div>
+                <span class="modal-title">Pendapatan</span>
+            </div>
             <button class="modal-close" onclick="tutupModal('modalPendapatan')">×</button>
         </div>
         <div class="modal-body">
-            <div class="m-section">Ringkasan</div>
-            <div class="m-grid">
-                <div class="m-chip"><div class="m-chip-label">Total</div><div class="m-chip-value gold">Rp {{ number_format($pendapatanHariIni,0,',','.') }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">Transaksi</div><div class="m-chip-value">{{ $transaksiHariIni }}</div></div>
+
+            <div class="m-chips">
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Total hari ini</div>
+                    <div class="m-chip-val gold">Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}</div>
+                </div>
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Rata-rata / transaksi</div>
+                    <div class="m-chip-val">
+                        Rp {{ $transaksiHariIni > 0 ? number_format($pendapatanHariIni / $transaksiHariIni, 0, ',', '.') : '0' }}
+                    </div>
+                </div>
             </div>
-            <div class="m-row" style="margin-top:8px">
-                <span class="m-lbl">Rata-rata per Transaksi</span>
-                <span class="m-val gold">Rp {{ $transaksiHariIni > 0 ? number_format($pendapatanHariIni/$transaksiHariIni,0,',','.') : '0' }}</span>
-            </div>
-            <div class="m-section">7 Hari Terakhir</div>
-            @php $totalMinggu = array_sum(array_column($harian,'total')); @endphp
+
+            <div class="m-sec">7 Hari Terakhir</div>
+            @php $totalMinggu = array_sum(array_column($harian, 'total')); @endphp
             @foreach($harian as $h)
             <div class="m-row">
                 <span class="m-lbl">{{ $h['label'] }}</span>
-                <span class="m-val">Rp {{ number_format($h['total'],0,',','.') }}</span>
+                <span class="m-val">Rp {{ number_format($h['total'], 0, ',', '.') }}</span>
             </div>
             @endforeach
+
             <div class="m-total-row">
-                <span class="m-total-lbl">Total 7 Hari</span>
-                <span class="m-total-val">Rp {{ number_format($totalMinggu,0,',','.') }}</span>
+                <span class="m-total-lbl">Total 7 hari</span>
+                <span class="m-total-val">Rp {{ number_format($totalMinggu, 0, ',', '.') }}</span>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Modal Transaksi --}}
+{{-- ===== MODAL TRANSAKSI ===== --}}
 <div class="modal-overlay" id="modalTransaksi" onclick="tutupModalKlik(event,'modalTransaksi')">
     <div class="modal-box">
         <div class="modal-head">
-            <div class="modal-title">🧾 Transaksi Hari Ini</div>
+            <div class="modal-head-left">
+                <div class="modal-head-icon" style="background:#E6F1FB;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                </div>
+                <span class="modal-title">Transaksi Hari Ini</span>
+            </div>
             <button class="modal-close" onclick="tutupModal('modalTransaksi')">×</button>
         </div>
         <div class="modal-body">
+
             @php
-                $tunaiCount = $transaksiTerbaru->where('metode','tunai')->count();
-                $qrisCount  = $transaksiTerbaru->where('metode','!=','tunai')->count();
+                $tunaiCount = $transaksiTerbaru->where('metode', 'tunai')->count();
+                $qrisCount  = $transaksiTerbaru->where('metode', '!=', 'tunai')->count();
             @endphp
-            <div class="m-section">Ringkasan</div>
-            <div class="m-grid">
-                <div class="m-chip"><div class="m-chip-label">Total</div><div class="m-chip-value">{{ $transaksiHariIni }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">Tunai</div><div class="m-chip-value green">{{ $tunaiCount }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">QRIS</div><div class="m-chip-value gold">{{ $qrisCount }}</div></div>
+
+            <div class="m-chips">
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Total transaksi</div>
+                    <div class="m-chip-val">{{ $transaksiHariIni }}</div>
+                </div>
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Bayar tunai / QRIS</div>
+                    <div class="m-chip-val">{{ $tunaiCount }} / {{ $qrisCount }}</div>
+                </div>
             </div>
-            <div class="m-section">5 Transaksi Terbaru</div>
+
+            <div class="m-sec">5 Transaksi Terbaru</div>
             @forelse($transaksiTerbaru as $trx)
             <div class="mt-row">
                 <div>
                     <div class="mt-nomor">{{ $trx->nomor }}</div>
                     <div class="mt-waktu">{{ $trx->created_at->format('H:i') }} WIB</div>
-                    <div class="mt-items">
+                    <div class="mt-menu">
                         @if(is_array($trx->items) && count($trx->items) > 0)
                             {{ collect($trx->items)->pluck('nama')->join(', ') }}
                         @else —
                         @endif
                     </div>
                 </div>
-                <div>
-                    <div class="mt-total">Rp {{ number_format($trx->total,0,',','.') }}</div>
-                    <div class="mt-metode"><span class="badge badge-{{ $trx->metode === 'tunai' ? 'tunai' : 'qris' }}">{{ ucfirst($trx->metode) }}</span></div>
+                <div style="text-align:right">
+                    <div class="mt-total">Rp {{ number_format($trx->total, 0, ',', '.') }}</div>
+                    <div style="margin-top:5px">
+                        <span class="badge badge-{{ $trx->metode === 'tunai' ? 'tunai' : 'qris' }}">
+                            {{ $trx->metode === 'tunai' ? 'Tunai' : 'QRIS' }}
+                        </span>
+                    </div>
                 </div>
             </div>
             @empty
-            <div class="empty-state">Belum ada transaksi hari ini.</div>
+            <div class="m-empty">Belum ada transaksi hari ini.</div>
             @endforelse
         </div>
     </div>
 </div>
 
-{{-- Modal Item --}}
+{{-- ===== MODAL ITEM TERJUAL ===== --}}
 <div class="modal-overlay" id="modalItem" onclick="tutupModalKlik(event,'modalItem')">
     <div class="modal-box">
         <div class="modal-head">
-            <div class="modal-title">🛒 Item Terjual Hari Ini</div>
+            <div class="modal-head-left">
+                <div class="modal-head-icon" style="background:#EAF3DE;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                </div>
+                <span class="modal-title">Item Terjual Hari Ini</span>
+            </div>
             <button class="modal-close" onclick="tutupModal('modalItem')">×</button>
         </div>
         <div class="modal-body">
-            <div class="m-section">Ringkasan</div>
-            <div class="m-grid">
-                <div class="m-chip"><div class="m-chip-label">Total Item</div><div class="m-chip-value gold">{{ $itemTerjual }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">Rata-rata</div><div class="m-chip-value">{{ $transaksiHariIni > 0 ? number_format($itemTerjual/$transaksiHariIni,1) : '0' }}/trx</div></div>
-            </div>
-            <div class="m-section">Menu Terlaris</div>
-            @forelse($menuTerlaris as $i => $item)
-            <div class="mm-row">
-                <div class="mm-rank {{ $i===1?'r2':($i===2?'r3':'') }}">{{ $i+1 }}</div>
-                <div class="mm-info">
-                    <div class="mm-nm">{{ $item->nama_menu }}</div>
-                    <div class="mm-pr">Rp {{ number_format($item->menu->harga??0,0,',','.') }}</div>
+
+            <div class="m-chips">
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Total item terjual</div>
+                    <div class="m-chip-val green">{{ $itemTerjual }} item</div>
                 </div>
-                <div class="mm-qty">{{ $item->total_terjual }} terjual</div>
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Rata-rata / transaksi</div>
+                    <div class="m-chip-val">
+                        {{ $transaksiHariIni > 0 ? number_format($itemTerjual / $transaksiHariIni, 1) : '0' }} item
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-sec">Semua Menu Hari Ini</div>
+            @forelse($menuTerlaris as $i => $item)
+            <div class="m-row">
+                <span class="m-lbl" style="display:flex;align-items:center;gap:8px">
+                    <span class="mm-rank {{ $i===1?'r2':($i===2?'r3':'') }}">{{ $i+1 }}</span>
+                    {{ $item->nama_menu }}
+                </span>
+                <span class="m-val">{{ $item->total_terjual }} item</span>
             </div>
             @empty
-            <div class="empty-state">Belum ada item terjual hari ini.</div>
+            <div class="m-empty">Belum ada item terjual hari ini.</div>
             @endforelse
         </div>
     </div>
 </div>
 
-{{-- Modal Stok --}}
+{{-- ===== MODAL STOK BAHAN ===== --}}
 <div class="modal-overlay" id="modalStok" onclick="tutupModalKlik(event,'modalStok')">
     <div class="modal-box">
         <div class="modal-head">
-            <div class="modal-title">📦 Detail Stok Bahan</div>
+            <div class="modal-head-left">
+                <div class="modal-head-icon" style="background:#FCEBEB;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+                </div>
+                <span class="modal-title">Stok Bahan</span>
+            </div>
             <button class="modal-close" onclick="tutupModal('modalStok')">×</button>
         </div>
         <div class="modal-body">
+
             @php
                 $kritisModal      = $bahans->filter(fn($b) => $b->getStatus() === 'kritis');
                 $hampirHabisModal = $bahans->filter(fn($b) => $b->getStatus() === 'hampir_habis');
                 $amanModal        = $bahans->filter(fn($b) => $b->getStatus() === 'aman');
             @endphp
-            <div class="m-section">Ringkasan</div>
-            <div class="m-grid">
-                <div class="m-chip"><div class="m-chip-label">Total Bahan</div><div class="m-chip-value">{{ $bahans->count() }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">🔴 Kritis</div><div class="m-chip-value red">{{ $kritisModal->count() }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">🟡 Hampir Habis</div><div class="m-chip-value yellow">{{ $hampirHabisModal->count() }}</div></div>
-                <div class="m-chip"><div class="m-chip-label">🟢 Aman</div><div class="m-chip-value green">{{ $amanModal->count() }}</div></div>
+
+            <div class="m-chips">
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Total bahan</div>
+                    <div class="m-chip-val">{{ $bahans->count() }} bahan</div>
+                </div>
+                <div class="m-chip">
+                    <div class="m-chip-lbl">Perlu diisi ulang</div>
+                    <div class="m-chip-val red">{{ $kritisModal->count() + $hampirHabisModal->count() }} bahan</div>
+                </div>
             </div>
+
             @if($kritisModal->count())
-            <div class="m-section">🔴 Kritis</div>
+            <div class="m-sec">Perlu Diisi Ulang Sekarang</div>
             @foreach($kritisModal as $b)
-            <div class="ms-row"><div><div class="ms-name">{{ $b->nama }}</div><div class="ms-qty">{{ $b->stok_saat_ini }}/{{ $b->stok_maks }} {{ $b->satuan }} ({{ round($b->getPersen()) }}%)</div></div><span class="ms-badge kritis">Kritis</span></div>
+            <div class="ms-row">
+                <div>
+                    <div class="ms-nm">{{ $b->nama }}</div>
+                    <div class="ms-qty">Sisa {{ $b->stok_saat_ini }} dari {{ $b->stok_maks }} {{ $b->satuan }}</div>
+                </div>
+                <span class="m-pill pill-red">Hampir habis</span>
+            </div>
             @endforeach
             @endif
+
             @if($hampirHabisModal->count())
-            <div class="m-section">🟡 Hampir Habis</div>
+            <div class="m-sec">Perlu Diperhatikan</div>
             @foreach($hampirHabisModal as $b)
-            <div class="ms-row"><div><div class="ms-name">{{ $b->nama }}</div><div class="ms-qty">{{ $b->stok_saat_ini }}/{{ $b->stok_maks }} {{ $b->satuan }} ({{ round($b->getPersen()) }}%)</div></div><span class="ms-badge hampir_habis">Hampir Habis</span></div>
+            <div class="ms-row">
+                <div>
+                    <div class="ms-nm">{{ $b->nama }}</div>
+                    <div class="ms-qty">Sisa {{ $b->stok_saat_ini }} dari {{ $b->stok_maks }} {{ $b->satuan }}</div>
+                </div>
+                <span class="m-pill pill-yellow">Segera isi</span>
+            </div>
             @endforeach
             @endif
+
             @if($amanModal->count())
-            <div class="m-section">🟢 Aman</div>
+            <div class="m-sec">Stok Aman</div>
             @foreach($amanModal as $b)
-            <div class="ms-row"><div><div class="ms-name">{{ $b->nama }}</div><div class="ms-qty">{{ $b->stok_saat_ini }}/{{ $b->stok_maks }} {{ $b->satuan }} ({{ round($b->getPersen()) }}%)</div></div><span class="ms-badge aman">Aman</span></div>
+            <div class="ms-row">
+                <div>
+                    <div class="ms-nm">{{ $b->nama }}</div>
+                    <div class="ms-qty">Sisa {{ $b->stok_saat_ini }} dari {{ $b->stok_maks }} {{ $b->satuan }}</div>
+                </div>
+                <span class="m-pill pill-green">Aman</span>
+            </div>
             @endforeach
             @endif
+
             @if($bahans->isEmpty())
-            <div class="empty-state">Belum ada data stok bahan.</div>
+            <div class="m-empty">Belum ada data stok bahan.</div>
             @endif
         </div>
     </div>
@@ -587,11 +726,14 @@ function toggleChart(btn, type) {
     chart.update();
 }
 
-function bukaModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
-function tutupModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
-function tutupModalKlik(e,id) { if(e.target===document.getElementById(id)) tutupModal(id); }
+function bukaModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function tutupModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+function tutupModalKlik(e, id) { if (e.target === document.getElementById(id)) tutupModal(id); }
 document.addEventListener('keydown', e => {
-    if(e.key==='Escape') { document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); document.body.style.overflow=''; }
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+        document.body.style.overflow = '';
+    }
 });
 </script>
 </body>

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class StokController extends Controller
 {
+    /* ─────────────────────────────────────────────
+     │  INDEX — tampilkan semua bahan + stat cards
+     ───────────────────────────────────────────── */
     public function index()
     {
         $bahans      = StokBahan::orderBy('nama')->get();
@@ -18,12 +21,16 @@ class StokController extends Controller
         return view('admin.stok', compact('bahans', 'aman', 'hampirHabis', 'kritis'));
     }
 
+    /* ─────────────────────────────────────────────
+     │  STORE — tambah bahan baru
+     │  FIX: tambah rule stok_maks >= stok_saat_ini
+     ───────────────────────────────────────────── */
     public function store(Request $request)
     {
         $request->validate([
             'nama'          => 'required|string|max:100',
             'stok_saat_ini' => 'required|numeric|min:0',
-            'stok_maks'     => 'required|numeric|min:1',
+            'stok_maks'     => 'required|numeric|min:1|gte:stok_saat_ini',
             'satuan'        => 'required|string|max:20',
         ]);
 
@@ -32,11 +39,16 @@ class StokController extends Controller
         return redirect()->route('admin.stok')->with('success', 'Bahan berhasil ditambahkan.');
     }
 
+    /* ─────────────────────────────────────────────
+     │  EDIT STOK — update stok_saat_ini & stok_maks
+     │  FIX: stok_saat_ini tidak boleh > stok_maks
+     │       stok_maks tidak boleh < stok_saat_ini
+     ───────────────────────────────────────────── */
     public function editStok(Request $request, $id)
     {
         $request->validate([
-            'stok_saat_ini' => 'required|numeric|min:0',
-            'stok_maks'     => 'required|numeric|min:1',
+            'stok_saat_ini' => 'required|numeric|min:0|lte:stok_maks',
+            'stok_maks'     => 'required|numeric|min:1|gte:stok_saat_ini',
         ]);
 
         StokBahan::findOrFail($id)->update($request->only('stok_saat_ini', 'stok_maks'));
@@ -44,11 +56,18 @@ class StokController extends Controller
         return redirect()->route('admin.stok')->with('success', 'Stok berhasil diperbarui.');
     }
 
+    /* ─────────────────────────────────────────────
+     │  ADJUST — tambah/kurang stok ±1 via AJAX
+     │  FIX: tambah field 'status' di response JSON
+     │       agar bahansData di JS blade ikut sinkron
+     ───────────────────────────────────────────── */
     public function adjust(Request $request, $id)
     {
         $request->validate(['delta' => 'required|integer|in:-1,1']);
 
         $bahan = StokBahan::findOrFail($id);
+
+        // Clamp: tidak boleh < 0 dan tidak boleh > stok_maks
         $bahan->stok_saat_ini = max(0, min($bahan->stok_maks, $bahan->stok_saat_ini + $request->delta));
         $bahan->save();
 
@@ -59,9 +78,13 @@ class StokController extends Controller
             'satuan'    => $bahan->satuan,
             'persen'    => $bahan->getPersen(),
             'bar_class' => $bahan->getBarClass(),
+            'status'    => $bahan->getStatus(),
         ]);
     }
 
+    /* ─────────────────────────────────────────────
+     │  RESTOK — isi penuh ke stok_maks
+     ───────────────────────────────────────────── */
     public function restok($id)
     {
         $bahan = StokBahan::findOrFail($id);
@@ -70,6 +93,9 @@ class StokController extends Controller
         return redirect()->route('admin.stok')->with('success', "{$bahan->nama} berhasil direstok.");
     }
 
+    /* ─────────────────────────────────────────────
+     │  DESTROY — hapus bahan
+     ───────────────────────────────────────────── */
     public function destroy($id)
     {
         $bahan = StokBahan::findOrFail($id);
