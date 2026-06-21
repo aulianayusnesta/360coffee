@@ -45,8 +45,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ══ ADMIN ════════════════════════════════════════════════
 
-// ✅ Semua halaman admin bisa diakses oleh admin DAN kasir
-Route::middleware(['auth', 'role:admin,kasir'])
+Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

@@ -37,12 +37,14 @@ class PasswordResetController extends Controller
     public function savePassword(Request $request)
     {
         $request->validate([
-            'email'     => 'required|email',
-            'name'      => ['required', 'string', 'max:100', 'not_regex:/@/', 'not_regex:/\s*@\s*/'],
-            'new_email' => 'required|email',
-            'password'  => 'required|min:6|confirmed',
+            'email'      => 'required|email',
+            'name'       => ['required', 'string', 'max:100', 'not_regex:/@/', 'not_regex:/\s*@\s*/'],
+            'akun_email' => 'required|email',   // ← diganti dari new_email
+            'password'   => 'required|min:6|confirmed',
         ], [
-            'name.not_regex' => 'Nama tidak boleh mengandung karakter email (@). Isi dengan nama biasa, contoh: admin atau John.',
+            'name.not_regex'      => 'Nama tidak boleh mengandung karakter email (@). Isi dengan nama biasa, contoh: admin atau John.',
+            'akun_email.required' => 'Email wajib diisi.',
+            'akun_email.email'    => 'Format email tidak valid.',
         ]);
 
         $user = User::where('email', $request->email)
@@ -53,15 +55,14 @@ class PasswordResetController extends Controller
             return back()->withErrors(['email' => 'Akun tidak ditemukan.']);
         }
 
-        $emailTaken = User::where('email', $request->new_email)
+        $emailTaken = User::where('email', $request->akun_email)  // ← diganti
                           ->where('id', '!=', $user->id)
                           ->exists();
 
         if ($emailTaken) {
-            return back()->withErrors(['new_email' => 'Email sudah digunakan akun lain.']);
+            return back()->withErrors(['akun_email' => 'Email sudah digunakan akun lain.']);  // ← diganti
         }
 
-        // ✅ Generate username dari Nama (bukan dari email)
         $newUsername = strtolower(str_replace(' ', '', $request->name));
 
         $usernameTaken = User::where('username', $newUsername)
@@ -75,7 +76,7 @@ class PasswordResetController extends Controller
         $user->update([
             'name'     => $request->name,
             'username' => $newUsername,
-            'email'    => $request->new_email,
+            'email'    => $request->akun_email,   // ← diganti
             'password' => Hash::make($request->password),
         ]);
 
@@ -83,6 +84,6 @@ class PasswordResetController extends Controller
             ->route('password.forgot')
             ->with('password_changed', true)
             ->with('new_username', $newUsername)
-            ->with('new_email', $request->new_email);
+            ->with('new_email', $request->akun_email);  // ← diganti
     }
 }

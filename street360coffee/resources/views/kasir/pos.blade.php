@@ -40,45 +40,82 @@
         /* ══ NAVBAR ══ */
         .navbar {
             height: 52px;
-            background: linear-gradient(90deg, #0f1d3a 0%, #1a2d52 40%, #1e3460 70%, #162848 100%);
+            background: linear-gradient(90deg,
+                #07111f 0%,
+                #0d1e38 18%,
+                #1a2d52 40%,
+                #1e3460 60%,
+                #0d1e38 82%,
+                #07111f 100%
+            );
             display: flex;
             align-items: center;
             padding: 0 20px;
             position: fixed; top: 0; left: 0; right: 0;
             z-index: 100;
-            box-shadow: 0 2px 18px rgba(0,0,0,.4);
+            box-shadow:
+                0 2px 24px rgba(0,0,0,.55),
+                0 1px 0 rgba(255,255,255,.04) inset,
+                0 -1px 0 rgba(0,0,0,.4) inset;
         }
+
+        .navbar::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(224,168,58,.15) 15%,
+                rgba(224,168,58,.55) 35%,
+                rgba(224,168,58,.85) 50%,
+                rgba(224,168,58,.55) 65%,
+                rgba(224,168,58,.15) 85%,
+                transparent 100%
+            );
+        }
+
         .nav-brand { display: flex; align-items: center; gap: 0; }
-        .nav-brand .street { font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: .04em; }
-        .nav-brand .coffee { font-size: 18px; font-weight: 800; color: var(--gold-btn); letter-spacing: .04em; }
-        .nav-divider { width: 2px; height: 28px; background: var(--gold-btn); margin: 0 16px; }
-        .nav-role { font-size: 15px; font-weight: 800; color: var(--gold-btn); letter-spacing: .1em; }
+        .nav-brand .street {
+            font-size: 18px; font-weight: 800; color: var(--white);
+            letter-spacing: .04em;
+            text-shadow: 0 0 18px rgba(255,255,255,.15);
+        }
+        .nav-brand .coffee {
+            font-size: 18px; font-weight: 800; color: var(--gold-btn);
+            letter-spacing: .04em;
+            text-shadow: 0 0 20px rgba(224,168,58,.45);
+        }
+
+        .nav-divider {
+            width: 2px; height: 28px;
+            background: linear-gradient(180deg, transparent, var(--gold-btn), transparent);
+            margin: 0 16px;
+            box-shadow: 0 0 8px rgba(224,168,58,.4);
+        }
+
+        .nav-role {
+            font-size: 15px; font-weight: 800; color: var(--gold-btn);
+            letter-spacing: .1em;
+            text-shadow: 0 0 14px rgba(224,168,58,.4);
+        }
         .nav-spacer { flex: 1; }
 
-        /* ADMIN — kotak border putih/navy seperti gambar 1 */
-        .btn-admin {
-            display: flex; align-items: center; gap: 6px;
-            background: transparent;
-            color: var(--white);
-            border: 1.5px solid rgba(255,255,255,0.35);
-            border-radius: 6px; padding: 7px 14px;
-            font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
-            letter-spacing: .06em; cursor: pointer; text-decoration: none;
-            transition: background .2s, border-color .2s;
-        }
-        .btn-admin:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.6); }
-
-        /* LOGOUT — samakan dengan ADMIN, border putih transparan */
         .btn-logout {
-            background: transparent;
+            background: rgba(255,255,255,.04);
             color: var(--white);
-            border: 1.5px solid rgba(255,255,255,0.35);
+            border: 1.5px solid rgba(255,255,255,0.22);
             border-radius: 6px; padding: 7px 16px;
             font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
             letter-spacing: .06em; cursor: pointer; margin-left: 8px;
-            transition: background .2s, border-color .2s;
+            transition: background .2s, border-color .2s, box-shadow .2s;
+            box-shadow: 0 1px 6px rgba(0,0,0,.25);
         }
-        .btn-logout:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.6); }
+        .btn-logout:hover {
+            background: rgba(255,255,255,.10);
+            border-color: rgba(255,255,255,.5);
+            box-shadow: 0 2px 14px rgba(0,0,0,.35);
+        }
 
         /* ══ LAYOUT ══ */
         .main-layout { display: flex; height: calc(100vh - 52px); margin-top: 52px; }
@@ -87,8 +124,12 @@
         .menu-panel {
             flex: 1;
             background: #f0f2f7;
-            overflow-y: auto; padding: 16px 16px;
+            overflow-y: auto; padding: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,0,0,.15) transparent;
         }
+        .menu-panel::-webkit-scrollbar { width: 5px; }
+        .menu-panel::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 4px; }
 
         .search-box { position: relative; margin-bottom: 14px; }
         .search-box input {
@@ -98,40 +139,37 @@
             font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-dark);
             outline: none; box-shadow: 0 2px 8px rgba(0,0,0,.06); transition: box-shadow .2s;
         }
-        .search-box input:focus { box-shadow: 0 0 0 2px rgba(200,146,42,.3); }
+        .search-box input:focus {
+            box-shadow: 0 0 0 3px rgba(224,168,58,.25);
+            border-color: var(--gold-btn);
+        }
         .search-box input::placeholder { color: #aab0c5; }
         .search-box svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aab0c5; }
 
-        /* KATEGORI — biru samar/ghost */
         .cat-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
         .cat-btn {
             padding: 8px 20px; border-radius: 24px;
             border: 1.5px solid rgba(26,45,82,0.20);
             font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
-            cursor: pointer; transition: background .2s, color .2s, border-color .2s;
-            background: #ffffff;
-            color: var(--navy);
+            cursor: pointer; transition: all .2s;
+            background: #ffffff; color: var(--navy);
         }
-        .cat-btn.active {
-            background: var(--gold-btn);
-            border-color: var(--gold-btn);
-            color: var(--white);
-        }
-        .cat-btn:hover:not(.active) {
-            background: rgba(26,45,82,0.20);
-            border-color: rgba(26,45,82,0.5);
-        }
+        .cat-btn.active { background: var(--gold-btn); border-color: var(--gold-btn); color: var(--white); }
+        .cat-btn:hover:not(.active) { background: rgba(26,45,82,0.08); border-color: rgba(26,45,82,0.4); }
 
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
 
         .menu-card {
-            background: var(--bg-card); border-radius: 10px; overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08); transition: transform .15s, box-shadow .15s;
+            background: var(--bg-card); border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border: 1px solid rgba(0,0,0,.04);
+            transition: transform .15s, box-shadow .15s;
         }
-        .menu-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.13); }
+        .menu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
 
         .menu-card-img { position: relative; width: 100%; height: 120px; background: #dde1ec; overflow: hidden; }
-        .menu-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .menu-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+        .menu-card:hover .menu-card-img img { transform: scale(1.05); }
 
         .badge-pill { position: absolute; top: 8px; left: 8px; padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .badge-bestseller { background: var(--gold-btn); color: #fff; }
@@ -144,25 +182,39 @@
         .habis-overlay .habis-text { font-size: 16px; font-weight: 800; color: #555; }
         .habis-overlay .habis-sub  { font-size: 12px; color: #888; }
 
-        /* CARD BODY — biru navy seperti gambar 3, nama putih */
-        .menu-card-body { background: var(--navy); padding: 8px 11px 6px; }
+        .menu-card-body {
+            background: #1a2d52;
+            padding: 8px 11px 4px;
+        }
         .menu-card-body .item-name  { font-size: 13px; font-weight: 700; color: var(--white); }
         .menu-card-body .item-price { font-size: 12px; color: var(--gold-btn); margin-top: 1px; font-weight: 600; }
 
         .menu-card-footer {
-            background: var(--navy); padding: 0 11px 10px;
+            background: #1a2d52;
+            padding: 6px 11px 10px;
             display: flex; align-items: center; justify-content: space-between; gap: 5px;
+            margin-top: 0;
         }
         .badge-tersedia {
-            background: var(--navy-mid); color: var(--white);
+            background: rgba(255,255,255,.10); color: rgba(255,255,255,.7);
             font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 10px; white-space: nowrap;
         }
         .btn-tambah {
-            background: var(--green); color: #fff; border: none; border-radius: 6px;
+            background: linear-gradient(135deg, #3a8c3f 0%, #2e6e33 100%);
+            color: #fff; border: none; border-radius: 6px;
             padding: 5px 11px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
-            cursor: pointer; white-space: nowrap; transition: background .2s;
+            cursor: pointer; white-space: nowrap;
+            transition: filter .15s, transform .1s;
+            box-shadow: 0 2px 6px rgba(58,140,63,.3);
         }
-        .btn-tambah:hover { background: #2e7233; }
+        .btn-tambah:hover { filter: brightness(1.12); }
+        .btn-tambah:active { transform: scale(.95); }
+        .btn-tambah.pop { animation: pop .3s ease; }
+        @keyframes pop {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
         .btn-stok-habis {
             background: linear-gradient(135deg, #e57373 0%, #c0392b 100%);
             color: #fff; border: none; border-radius: 6px;
@@ -189,10 +241,22 @@
             display: flex; align-items: center; gap: 8px;
             font-size: 18px; font-weight: 800; color: var(--navy); letter-spacing: .05em;
         }
-        .arrow-box {
-            background: #b0b8cc; border-radius: 5px; width: 28px; height: 28px;
-            display: flex; align-items: center; justify-content: center;
+
+        .badge-count {
+            background: var(--gold-btn); color: #fff;
+            font-size: 11px; font-weight: 700;
+            width: 22px; height: 22px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(224,168,58,.4);
         }
+        .badge-count.visible { display: flex; }
+        .badge-count.bump { animation: bump .3s ease; }
+        @keyframes bump {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.45); }
+            100% { transform: scale(1); }
+        }
+
         .btn-antrian {
             background: var(--bg-card); border: 1.5px solid rgba(0,0,0,.12);
             border-radius: 7px; padding: 8px 16px;
@@ -202,55 +266,62 @@
         }
         .btn-antrian:hover { background: #dde0ea; }
 
-        /* DINE IN / TAKE AWAY — kecil rata kanan di bawah header */
         .dine-row {
-            display: inline-flex;
-            border-radius: 7px; overflow: hidden;
-            border: 1.5px solid rgba(26,45,82,0.15);
-            background: #ffffff;
+            display: inline-flex; border-radius: 7px; overflow: hidden;
+            border: 1.5px solid rgba(26,45,82,0.15); background: #ffffff;
         }
         .dine-btn {
-            padding: 7px 18px; border: none;
-            background: #ffffff;
+            padding: 7px 18px; border: none; background: #ffffff;
             font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
-            color: var(--text-muted); cursor: pointer; transition: background .2s, color .2s;
-            white-space: nowrap;
+            color: var(--text-muted); cursor: pointer; transition: all .2s; white-space: nowrap;
         }
-        .dine-btn:hover:not(.active) {
-            background: rgba(26,45,82,0.20);
-            color: var(--navy);
-        }
-        .dine-btn.active {
-            background: var(--gold-btn);
-            color: #fff;
-        }
+        .dine-btn:hover:not(.active) { background: rgba(26,45,82,.08); color: var(--navy); }
+        .dine-btn.active { background: var(--gold-btn); color: #fff; }
 
-        .order-items { flex: 1; overflow-y: auto; padding: 14px 22px; }
-        .empty-order {
-            display: flex; align-items: center; justify-content: center;
-            height: 100%; font-size: 18px; color: #a0a8bc; font-weight: 600;
+        .order-items {
+            flex: 1; overflow-y: auto; padding: 14px 22px;
+            scrollbar-width: thin; scrollbar-color: rgba(0,0,0,.1) transparent;
         }
+        .order-items::-webkit-scrollbar { width: 4px; }
+        .order-items::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 4px; }
+
+        .empty-order {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; gap: 12px; color: #a0a8bc;
+        }
+        .empty-order svg { opacity: .3; }
+        .empty-order span { font-size: 15px; font-weight: 600; }
 
         .order-item {
             display: flex; align-items: center; gap: 10px;
-            background: var(--bg-card); border-radius: 9px;
+            background: var(--bg-card); border-radius: 10px;
             padding: 10px 13px; margin-bottom: 8px;
             box-shadow: 0 1px 5px rgba(0,0,0,.07);
+            border: 1px solid rgba(0,0,0,.04);
+            animation: slideIn .25s ease;
         }
-        .oi-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .oi-name  { font-size: 14px; font-weight: 700; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .oi-price { font-size: 12px; color: var(--gold); font-weight: 700; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(14px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
 
-        .qty-ctrl { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .oi-info { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .oi-name  { font-size: 14px; font-weight: 700; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .oi-unit  { font-size: 11px; color: var(--text-muted); }
+        .oi-price { font-size: 13px; color: var(--gold); font-weight: 700; margin-top: 2px; }
+
+        .qty-ctrl { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
         .qty-btn {
             width: 28px; height: 28px;
-            background: var(--navy); color: #fff;
-            border: none; border-radius: 50%;
-            font-size: 18px; font-weight: 700; cursor: pointer;
+            background: linear-gradient(135deg, #1a2d52 0%, #0f1d3a 100%);
+            color: #fff; border: none; border-radius: 50%;
+            font-size: 16px; font-weight: 700; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            line-height: 1; transition: background .15s;
+            transition: filter .15s, transform .1s;
+            box-shadow: 0 2px 6px rgba(15,29,58,.35);
         }
-        .qty-btn:hover { background: #243360; }
+        .qty-btn:hover { filter: brightness(1.25); }
+        .qty-btn:active { transform: scale(.9); }
         .qty-num { font-size: 15px; font-weight: 700; min-width: 20px; text-align: center; color: var(--navy); }
 
         .btn-hapus {
@@ -286,57 +357,43 @@
         .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
         .total-label { font-size: 17px; font-weight: 800; color: var(--navy); }
         .total-value { font-size: 17px; font-weight: 800; color: var(--navy); }
+        .total-value.flash { animation: flashGold .4s ease; }
+        @keyframes flashGold {
+            0%   { color: var(--gold-btn); }
+            100% { color: var(--navy); }
+        }
 
         /* ══ PAY SECTION ══ */
         .pay-section { margin-top: 12px; }
-
-        .pay-header-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-        .pay-label {
-            font-size: 12px; font-weight: 800; letter-spacing: .07em; color: var(--text-dark);
-        }
-
-        .pay-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
+        .pay-header-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+        .pay-label { font-size: 12px; font-weight: 800; letter-spacing: .07em; color: var(--text-dark); }
+        .pay-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
         .btn-pay {
             width: 100%; padding: 11px; border: none; border-radius: 9px;
             font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 800;
-            letter-spacing: .06em; cursor: pointer; transition: opacity .2s, box-shadow .2s, background .2s;
+            letter-spacing: .06em; cursor: pointer; transition: filter .2s, box-shadow .2s, background .2s;
         }
-        .btn-pay:hover { opacity: .9; }
+        .btn-pay:hover { filter: brightness(1.08); }
 
-        /* TUNAI — biru samar saat tidak aktif */
         .btn-tunai {
-            background: rgba(26,45,82,0.18);
-            color: var(--navy);
+            background: rgba(26,45,82,0.18); color: var(--navy);
             border: 2px solid rgba(26,45,82,0.30);
         }
         .btn-tunai.active {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
+            background: linear-gradient(135deg, #1a2d52 0%, #0f1d3a 100%);
+            color: var(--white); border: 2px solid transparent;
+            box-shadow: 0 4px 14px rgba(15,29,58,.4);
         }
 
-        /* QRIS — biru samar saat tidak aktif */
         .btn-qris {
-            background: rgba(26,45,82,0.10);
-            border: 2px solid rgba(26,45,82,0.25);
-            color: var(--navy);
-            opacity: 0.7;
+            background: rgba(26,45,82,0.10); border: 2px solid rgba(26,45,82,0.25);
+            color: var(--navy); opacity: 0.7;
         }
         .btn-qris.active {
-            background: rgba(26,45,82,0.15);
-            border: 2.5px solid var(--gold-btn);
-            color: var(--gold-btn);
-            opacity: 1;
+            background: rgba(26,45,82,0.12); border: 2px solid var(--gold-btn);
+            color: var(--gold-btn); opacity: 1;
+            box-shadow: 0 0 12px rgba(224,168,58,.2);
         }
 
         .uang-input {
@@ -346,38 +403,53 @@
             font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none;
         }
         .uang-input:focus { box-shadow: 0 0 0 2px rgba(200,146,42,.3); border-color: var(--gold); }
+        .uang-input:disabled { background: #eaecf2; color: #a0a8bc; }
 
         .btn-proses {
-            width: 100%; border: none;
-            border-radius: 9px; padding: 11px;
+            width: 100%; border: none; border-radius: 9px; padding: 11px;
             font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 800;
             letter-spacing: .08em; color: var(--white);
-            background: var(--navy);
-            cursor: pointer; transition: background .2s;
+            background: linear-gradient(135deg, #1a2d52 0%, #0f1d3a 100%);
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(15,29,58,.4);
+            transition: filter .2s, transform .1s;
         }
-        .btn-proses:hover { background: var(--navy-deep); }
+        .btn-proses:hover  { filter: brightness(1.2); }
+        .btn-proses:active { transform: scale(.98); }
+        .btn-proses:disabled { background: #a0a8bc; cursor: not-allowed; box-shadow: none; filter: none; }
 
-        .kembalian-info {
-            font-size: 12px; margin-top: 6px; font-weight: 600; min-height: 18px;
+        .kembalian-info { font-size: 12px; margin-top: 6px; font-weight: 600; min-height: 18px; }
+
+        /* ══ TOAST ══ */
+        .toast-wrap {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
+        .toast {
+            background: linear-gradient(135deg, #1a2d52 0%, #0f1d3a 100%);
+            color: #fff; padding: 10px 20px; border-radius: 10px;
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+            box-shadow: 0 6px 24px rgba(0,0,0,.3); white-space: nowrap;
+            animation: toastIn .3s ease;
+        }
+        .toast.err { background: linear-gradient(135deg, #c0392b, #922b21); }
+        .toast.fade { animation: toastOut .3s ease forwards; }
+        @keyframes toastIn  { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity:1; } to { opacity:0; transform: translateY(-8px); } }
 
         /* ══ POPUP STRUK ══ */
         .popup-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,.75);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.75); z-index: 999;
+            align-items: center; justify-content: center;
             backdrop-filter: blur(5px);
         }
         .popup-overlay.show { display: flex; }
 
         .struk {
-            background: #ffffff;
-            border-radius: 20px;
-            width: 100%; max-width: 380px;
-            overflow: hidden;
+            background: #ffffff; border-radius: 20px;
+            width: 100%; max-width: 380px; overflow: hidden;
             box-shadow: 0 40px 100px rgba(0,0,0,.55);
             animation: popUp .35s cubic-bezier(.22,1,.36,1) both;
             margin: 16px;
@@ -388,16 +460,20 @@
         }
 
         .struk-header {
-            background: var(--navy);
-            padding: 24px 28px 20px;
-            text-align: center;
+            background: linear-gradient(135deg, #0f1d3a 0%, #1a2d52 50%, #0f1d3a 100%);
+            padding: 24px 28px 20px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .struk-header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(224,168,58,.7), transparent);
         }
         .struk-brand { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: .06em; margin-bottom: 4px; }
-        .struk-brand span { color: var(--gold-btn); }
+        .struk-brand span { color: var(--gold-btn); text-shadow: 0 0 16px rgba(224,168,58,.5); }
         .struk-alamat { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: .14em; text-transform: uppercase; }
 
         .struk-body { background: #ffffff; padding: 18px 24px 14px; }
-
         .struk-meta {
             display: grid; grid-template-columns: auto 1fr;
             gap: 6px 16px; margin-bottom: 14px;
@@ -405,21 +481,17 @@
         }
         .struk-meta-key { font-size: 13px; color: #8a93b0; font-weight: 600; }
         .struk-meta-val { font-size: 13px; color: #1a2d52; font-weight: 700; text-align: right; }
-
-        .struk-divider { border: none; border-top: 1.5px dashed #d8dce8; margin: 12px 0; }
-
+        .struk-divider  { border: none; border-top: 1.5px dashed #d8dce8; margin: 12px 0; }
         .struk-item-row {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 14px; font-weight: 700; color: #1a2d52; margin-bottom: 8px;
         }
         .struk-item-qty { color: #8a93b0; font-weight: 600; margin-left: 4px; }
-
         .struk-total-row {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 15px; font-weight: 800; color: #1a2d52;
             margin-top: 10px; padding-top: 11px; border-top: 2px solid #1a2d52;
         }
-
         .struk-bayar-row {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 13px; font-weight: 700; color: #1a2d52; margin-top: 9px;
@@ -428,29 +500,30 @@
             display: flex; justify-content: space-between; align-items: center;
             font-size: 14px; font-weight: 800; color: #3a8c3f; margin-top: 5px;
         }
-
         .struk-footer {
             background: #f5f7fb; border-top: 1.5px dashed #d8dce8;
             padding: 14px 24px 16px; text-align: center;
         }
         .struk-terima { font-size: 18px; font-weight: 800; color: #1a2d52; margin-bottom: 3px; }
-        .struk-sub { font-size: 12px; color: #8a93b0; letter-spacing: .03em; }
+        .struk-sub    { font-size: 12px; color: #8a93b0; letter-spacing: .03em; }
 
         .btn-transaksi-baru {
-            display: block; width: calc(100% - 48px);
-            margin: 16px 24px 20px;
-            background: var(--navy); color: var(--white);
-            border: none; border-radius: 10px; padding: 15px;
+            display: block; width: calc(100% - 48px); margin: 16px 24px 20px;
+            background: linear-gradient(135deg, #1a2d52 0%, #0f1d3a 100%);
+            color: var(--white); border: none; border-radius: 10px; padding: 15px;
             font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 800;
             letter-spacing: .06em; cursor: pointer;
-            transition: background .2s, transform .1s;
-            text-align: center;
+            box-shadow: 0 4px 14px rgba(15,29,58,.35);
+            transition: filter .2s, transform .1s;
         }
-        .btn-transaksi-baru:hover { background: #0f1d3a; transform: translateY(-1px); }
+        .btn-transaksi-baru:hover  { filter: brightness(1.2); transform: translateY(-1px); }
         .btn-transaksi-baru:active { transform: translateY(0); }
     </style>
 </head>
 <body>
+
+{{-- ══ TOAST CONTAINER ══ --}}
+<div class="toast-wrap" id="toastWrap"></div>
 
 {{-- ══ NAVBAR ══ --}}
 <nav class="navbar">
@@ -461,16 +534,6 @@
     <div class="nav-divider"></div>
     <span class="nav-role">KASIR</span>
     <div class="nav-spacer"></div>
-
-    {{-- ✅ Tombol ADMIN muncul untuk role admin DAN kasir --}}
-    @if(in_array(auth()->user()->role, ['admin', 'kasir']))
-        <a href="{{ route('admin.dashboard') }}" class="btn-admin">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"/>
-            </svg>
-            ADMIN
-        </a>
-    @endif
 
     <form method="POST" action="{{ route('logout') }}" style="margin:0">
         @csrf
@@ -578,7 +641,7 @@
                     @else
                         <span class="badge-tersedia">Tersedia</span>
                         <button class="btn-tambah"
-                            onclick="tambahItem({{ $menu->id }}, '{{ addslashes($menu->nama) }}', {{ $menu->harga }})">
+                            onclick="tambahItem({{ $menu->id }}, '{{ addslashes($menu->nama) }}', {{ $menu->harga }}, this)">
                             + Tambahkan
                         </button>
                     @endif
@@ -598,6 +661,7 @@
                     <path d="M16 10a4 4 0 01-8 0"/>
                 </svg>
                 PESANAN
+                <span class="badge-count" id="badgeCount">0</span>
             </div>
             <a href="{{ route('kasir.antrian') }}" class="btn-antrian">Antrian Pesanan</a>
         </div>
@@ -610,7 +674,14 @@
         </div>
 
         <div class="order-items" id="orderItems">
-            <div class="empty-order">Belum Ada Pesanan</div>
+            <div class="empty-order">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+                <span>Belum Ada Pesanan</span>
+            </div>
         </div>
 
         <div class="order-bottom">
@@ -640,7 +711,7 @@
                     <input type="number" class="uang-input" id="uangDiterima" placeholder="0" oninput="hitungKembalian()">
 
                     <button class="btn-pay btn-qris" id="btnQris" onclick="setPay('qris')">QRIS</button>
-                    <button class="btn-proses" onclick="prosesPembayaran()">PROSES PEMBAYARAN</button>
+                    <button class="btn-proses" id="btnProses" onclick="prosesPembayaran()">PROSES PEMBAYARAN</button>
                 </div>
 
                 <div class="kembalian-info" id="kembalianInfo"></div>
@@ -654,6 +725,20 @@ let cart      = [];
 let payMethod = 'tunai';
 let dineType  = 'dine_in';
 
+/* ── TOAST ── */
+function showToast(msg, type) {
+    const w = document.getElementById('toastWrap');
+    const t = document.createElement('div');
+    t.className = 'toast' + (type === 'err' ? ' err' : '');
+    t.textContent = msg;
+    w.appendChild(t);
+    setTimeout(() => {
+        t.classList.add('fade');
+        setTimeout(() => t.remove(), 300);
+    }, 2200);
+}
+
+/* ── STRUK DARI SESSION ── */
 @if(session('struk'))
 window.addEventListener('DOMContentLoaded', () => {
     const s = @json(session('struk'));
@@ -696,19 +781,28 @@ function transaksiBaru() {
     renderCart();
     document.getElementById('orderNote').value           = '';
     document.getElementById('uangDiterima').value        = '';
+    document.getElementById('uangDiterima').disabled     = false;
     document.getElementById('kembalianInfo').textContent = '';
     document.getElementById('btnTunai').classList.add('active');
     document.getElementById('btnQris').classList.remove('active');
-    document.getElementById('dineIn').classList.add('active');
+    document.getElementById('dineIn').classList.remove('active');
     document.getElementById('takeAway').classList.remove('active');
-    document.getElementById('uangDiterima').disabled = false;
+    showToast('Siap transaksi baru!');
 }
 
-function tambahItem(id, nama, harga) {
+/* ── CART ── */
+function tambahItem(id, nama, harga, btn) {
     const existing = cart.find(i => i.id === id);
     if (existing) { existing.qty++; }
     else { cart.push({ id, nama, harga, qty: 1 }); }
+
+    if (btn) {
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 300);
+    }
+
     renderCart();
+    showToast(nama + ' ditambahkan');
 }
 
 function ubahQty(id, delta) {
@@ -726,41 +820,63 @@ function hapusItem(id) {
 
 function renderCart() {
     const container = document.getElementById('orderItems');
-    if (cart.length === 0) {
-        container.innerHTML = '<div class="empty-order">Belum Ada Pesanan</div>';
-        updateTotals();
-        return;
-    }
-    container.innerHTML = cart.map(item => `
-        <div class="order-item">
-            <div class="oi-info">
-                <div class="oi-name">${item.nama}</div>
-                <div class="oi-price">Rp. ${formatRp(item.harga * item.qty)}</div>
-            </div>
-            <div class="qty-ctrl">
-                <button class="qty-btn" onclick="ubahQty(${item.id}, -1)">−</button>
-                <span class="qty-num">${item.qty}</span>
-                <button class="qty-btn" onclick="ubahQty(${item.id}, 1)">+</button>
-            </div>
-            <button class="btn-hapus" onclick="hapusItem(${item.id})" title="Hapus Item">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                    <path d="M10 11v6M14 11v6"/>
-                    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
-                </svg>
-            </button>
-        </div>
-    `).join('');
-    updateTotals();
-}
-
-function updateTotals() {
+    const badge     = document.getElementById('badgeCount');
     const total     = cart.reduce((s, i) => s + i.harga * i.qty, 0);
     const itemCount = cart.reduce((s, i) => s + i.qty, 0);
-    document.getElementById('itemCount').textContent  = itemCount + ' item';
-    document.getElementById('subTotal').textContent   = 'Rp. ' + formatRp(total);
-    document.getElementById('totalPrice').textContent = 'Rp. ' + formatRp(total);
+
+    if (itemCount > 0) {
+        badge.classList.add('visible');
+        badge.textContent = itemCount;
+        badge.classList.remove('bump');
+        void badge.offsetWidth;
+        badge.classList.add('bump');
+    } else {
+        badge.classList.remove('visible');
+    }
+
+    if (cart.length === 0) {
+        container.innerHTML = `<div class="empty-order">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <span>Belum Ada Pesanan</span>
+        </div>`;
+    } else {
+        container.innerHTML = cart.map(item => `
+            <div class="order-item">
+                <div class="oi-info">
+                    <div class="oi-name">${item.nama}</div>
+                    <div class="oi-unit">Rp. ${formatRp(item.harga)} / pcs</div>
+                    <div class="oi-price">Rp. ${formatRp(item.harga * item.qty)}</div>
+                </div>
+                <div class="qty-ctrl">
+                    <button class="qty-btn" onclick="ubahQty(${item.id}, -1)">−</button>
+                    <span class="qty-num">${item.qty}</span>
+                    <button class="qty-btn" onclick="ubahQty(${item.id}, 1)">+</button>
+                </div>
+                <button class="btn-hapus" onclick="hapusItem(${item.id})" title="Hapus Item">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                        <path d="M10 11v6M14 11v6"/>
+                        <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                    </svg>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('itemCount').textContent = itemCount + ' item';
+    document.getElementById('subTotal').textContent  = 'Rp. ' + formatRp(total);
+
+    const tv = document.getElementById('totalPrice');
+    tv.textContent = 'Rp. ' + formatRp(total);
+    tv.classList.remove('flash');
+    void tv.offsetWidth;
+    tv.classList.add('flash');
+
     hitungKembalian();
 }
 
@@ -814,12 +930,17 @@ function filterMenu() {
 }
 
 function prosesPembayaran() {
-    if (cart.length === 0) { alert('Belum ada pesanan!'); return; }
+    if (cart.length === 0) { showToast('Belum ada pesanan!', 'err'); return; }
+
     const total = cart.reduce((s, i) => s + i.harga * i.qty, 0);
     if (payMethod === 'tunai') {
         const uang = parseInt(document.getElementById('uangDiterima').value) || 0;
-        if (uang < total) { alert('Uang yang diterima kurang!'); return; }
+        if (uang < total) { showToast('Uang yang diterima kurang!', 'err'); return; }
     }
+
+    const btn = document.getElementById('btnProses');
+    btn.textContent = 'Memproses...';
+    btn.disabled    = true;
 
     const form = document.createElement('form');
     form.method = 'POST';

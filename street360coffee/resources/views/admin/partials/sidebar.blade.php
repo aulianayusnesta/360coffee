@@ -45,10 +45,6 @@
 
     <div class="sidebar-section">AKSI</div>
     <nav class="sidebar-nav">
-        <a href="{{ route('kasir.pos') }}" class="nav-item">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            Buka Kasir
-        </a>
         <form method="POST" action="{{ route('logout') }}" style="margin:0">
             @csrf
             <button type="submit" class="nav-item" style="width:100%;background:none;border:none;text-align:left;">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\StokBahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,20 +12,22 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::all();
-        return view('admin.menu', compact('menus'));
+        $menus  = Menu::orderBy('kategori')->orderBy('nama')->get();
+        $bahans = StokBahan::orderBy('nama')->get(); // ← tambah ini
+        return view('admin.menu', compact('menus', 'bahans'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama'     => 'required|string|max:255',
-            'harga'    => 'required|numeric',
-            'kategori' => 'required|in:kopi,non-kopi,snack',
-            'gambar'   => 'nullable|image|max:2048',
+            'nama'          => 'required|string|max:255',
+            'harga'         => 'required|numeric',
+            'kategori'      => 'required|in:kopi,non-kopi,snack',
+            'gambar'        => 'nullable|image|max:2048',
+            'stok_bahan_id' => 'nullable|exists:stok_bahan,id',
         ]);
 
-        $data = $request->only(['nama', 'harga', 'deskripsi', 'kategori', 'badge']);
+        $data = $request->only(['nama', 'harga', 'deskripsi', 'kategori', 'badge', 'stok_bahan_id']);
         $data['tersedia'] = true;
 
         if ($request->hasFile('gambar')) {
@@ -41,13 +44,14 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($id);
 
         $request->validate([
-            'nama'     => 'required|string|max:255',
-            'harga'    => 'required|numeric',
-            'kategori' => 'required|in:kopi,non-kopi,snack',
-            'gambar'   => 'nullable|image|max:2048',
+            'nama'          => 'required|string|max:255',
+            'harga'         => 'required|numeric',
+            'kategori'      => 'required|in:kopi,non-kopi,snack',
+            'gambar'        => 'nullable|image|max:2048',
+            'stok_bahan_id' => 'nullable|exists:stok_bahan,id',
         ]);
 
-        $data = $request->only(['nama', 'harga', 'deskripsi', 'kategori', 'badge']);
+        $data = $request->only(['nama', 'harga', 'deskripsi', 'kategori', 'badge', 'stok_bahan_id']);
 
         if ($request->hasFile('gambar')) {
             if ($menu->gambar) {

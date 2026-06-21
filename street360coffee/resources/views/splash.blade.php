@@ -55,18 +55,20 @@
             margin-bottom:clamp(20px,3vh,36px);
             animation:fadeDown .9s cubic-bezier(.22,1,.36,1) both;
             position:relative;
+            display:flex; align-items:center; justify-content:center;
         }
         .logo-wrap::before {
             content:''; position:absolute; inset:-18px; border-radius:50%;
             background:radial-gradient(circle,rgba(140,170,255,.22) 0%,transparent 68%);
             animation:glowP 3.5s ease-in-out infinite;
+            z-index:0;
         }
         @keyframes glowP { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.18);opacity:1} }
-        .logo-wrap svg { width:100%; height:100%; }
-
-        /* PANAH BERPUTAR — transform-origin di tengah viewBox 160,160 */
-        .spin-me { animation:rot 6s linear infinite; transform-origin:160px 160px; }
-        @keyframes rot { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .logo-wrap img {
+            width:100%; height:100%; object-fit:contain;
+            position:relative; z-index:1;
+            filter:drop-shadow(0 8px 20px rgba(0,0,0,0.45));
+        }
 
         /* ── WELCOME ── */
         .welcome-row {
@@ -158,74 +160,8 @@
 
 <div class="splash">
 
-    <!-- LOGO PERSIS SAMA DENGAN FOTO -->
     <div class="logo-wrap">
-        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="bgC" cx="40%" cy="35%" r="65%">
-                    <stop offset="0%"   stop-color="#2a3fa8"/>
-                    <stop offset="100%" stop-color="#141e6e"/>
-                </radialGradient>
-                <filter id="dropSh">
-                    <feDropShadow dx="6" dy="9" stdDeviation="12" flood-color="rgba(0,0,0,0.65)"/>
-                </filter>
-            </defs>
-
-            <!-- Bayangan -->
-            <circle cx="164" cy="168" r="146" fill="rgba(0,0,0,0.45)" filter="url(#dropSh)"/>
-
-            <!-- Rim abu-abu luar tebal — persis seperti foto -->
-            <circle cx="160" cy="160" r="148" fill="#c2c8d8"/>
-
-            <!-- Background lingkaran biru -->
-            <circle cx="160" cy="160" r="134" fill="url(#bgC)"/>
-
-            <!-- Ring dalam abu tipis -->
-            <circle cx="160" cy="160" r="134" fill="none"
-                    stroke="#a8b0c4" stroke-width="2.5" opacity="0.4"/>
-
-            <!-- PANAH BERPUTAR PERSIS SEPERTI FOTO -->
-            <g class="spin-me">
-
-                <!-- Lengkungan BESAR utama ~300°
-                     dari kiri atas melingkar searah jam, kepala panah kanan atas -->
-                <path d="M 68 58
-                         A 130 130 0 1 1 252 100"
-                      stroke="#c2c8d8" stroke-width="18"
-                      fill="none" stroke-linecap="round"/>
-                <!-- Kepala panah — mengarah ke bawah kanan seperti foto -->
-                <polygon points="252,100  232,70  268,66"
-                         fill="#c2c8d8"/>
-
-                <!-- Lengkungan KECIL aksen kiri bawah — seperti foto -->
-                <path d="M 44 205
-                         A 75 75 0 0 0 132 274"
-                      stroke="#c2c8d8" stroke-width="13"
-                      fill="none" stroke-linecap="round" opacity="0.65"/>
-
-            </g>
-
-            <!-- Teks 360 -->
-            <text x="150" y="182"
-                  text-anchor="middle"
-                  font-family="Poppins, sans-serif"
-                  font-size="74" font-weight="900"
-                  fill="white">360</text>
-
-            <!-- Superscript ° -->
-            <text x="220" y="142"
-                  text-anchor="middle"
-                  font-family="Poppins, sans-serif"
-                  font-size="34" font-weight="700"
-                  fill="white">°</text>
-
-            <!-- Coffee -->
-            <text x="160" y="228"
-                  text-anchor="middle"
-                  font-family="Poppins, sans-serif"
-                  font-size="33" font-weight="700"
-                  fill="white" letter-spacing="2">Coffee</text>
-        </svg>
+        <img src="{{ asset('logo-360.png') }}" alt="Street 360 Coffee">
     </div>
 
     <div class="welcome-row">

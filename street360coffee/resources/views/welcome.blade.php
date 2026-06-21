@@ -17,6 +17,7 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--font);color:var(--text);background:var(--white);overflow-x:hidden}
 
+/* ── NAVBAR ── */
 .navbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:0 40px;height:62px;
@@ -25,13 +26,9 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
   border-bottom:1.5px solid rgba(212,168,67,0.35);
   box-shadow:0 4px 32px rgba(0,0,0,0.55);
 }
-.navbar::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;
-  background:linear-gradient(90deg,transparent,rgba(240,201,106,1) 50%,transparent);
-  pointer-events:none;
-}
-.brand{text-decoration:none;display:flex;align-items:center;gap:1px}
-.b1{font-size:18px;font-weight:900;background:linear-gradient(135deg,#fff,#e8dfc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.navbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(240,201,106,1) 50%,transparent);pointer-events:none;}
+.brand{text-decoration:none;display:flex;align-items:center;gap:0}
+.b1{font-size:18px;font-weight:900;margin-right:4px;background:linear-gradient(135deg,#fff,#e8dfc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .b2{font-size:18px;font-weight:900;color:#fff}
 .b3{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--gold2),var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .nav-menu{display:flex;list-style:none;gap:38px}
@@ -39,59 +36,62 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .nav-menu a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .25s;border-radius:2px}
 .nav-menu a:hover::after,.nav-menu a.active::after{width:100%}
 .nav-menu a:hover,.nav-menu a.active{color:var(--gold2)}
-.btn-login{
-  background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);
-  color:#0d1526;font-size:13px;font-weight:800;
-  padding:9px 26px;border-radius:30px;text-decoration:none;letter-spacing:0.5px;
-  box-shadow:0 2px 12px rgba(212,168,67,0.45);
-  transition:box-shadow .2s,transform .15s;border:none;
-}
+.btn-login{background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);color:#0d1526;font-size:13px;font-weight:800;padding:9px 26px;border-radius:30px;text-decoration:none;letter-spacing:0.5px;box-shadow:0 2px 12px rgba(212,168,67,0.45);transition:box-shadow .2s,transform .15s;border:none;}
 .btn-login:hover{box-shadow:0 4px 22px rgba(212,168,67,0.65);transform:translateY(-1px)}
 
+/* ── HERO ── */
 .hero{
-  position:relative;min-height:480px;overflow:hidden;
+  position:relative;min-height:460px;overflow:hidden;
   display:flex;align-items:center;padding:56px 6% 80px;
-  background:linear-gradient(135deg,#b8bab5 0%,#c8cac4 40%,#b8bab5 100%);
+  background:linear-gradient(135deg,#c5c7c2 0%,#d0d2cc 40%,#c5c7c2 100%);
 }
 .hero-overlay{
   position:absolute;inset:0;z-index:2;
-  background:linear-gradient(90deg,rgba(170,165,150,0.55) 0%,rgba(140,135,122,0.15) 55%,transparent 75%);
+  background:linear-gradient(90deg,rgba(180,175,165,0.65) 0%,rgba(150,145,132,0.25) 50%,transparent 72%);
   pointer-events:none;
 }
-.hero-beans{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.82;pointer-events:none;z-index:1}
-.hero-content{flex:1;max-width:50%;z-index:3;position:relative;animation:hIn .9s cubic-bezier(.22,1,.36,1) both}
+
+/* Biji kopi — 1 gambar jadi background menyebar */
+.hero-beans-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  opacity:0.35;pointer-events:none;z-index:1;
+}
+
+/* Konten kiri */
+.hero-content{flex:1;max-width:48%;z-index:3;position:relative;animation:hIn .9s cubic-bezier(.22,1,.36,1) both}
 @keyframes hIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
 .hero-label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#2a2620;margin-bottom:16px}
 .lline{display:inline-block;width:36px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;flex-shrink:0}
 .hero-title{font-size:clamp(30px,4.5vw,58px);font-weight:900;line-height:1.1;color:#1a1a1a;margin-bottom:6px}
 .hero-acc{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-desc{font-size:clamp(13px,1.2vw,15px);color:#333;line-height:1.8;margin-top:16px;max-width:420px}
-.hero-right{position:absolute;right:4%;bottom:0;width:clamp(200px,30%,400px);height:100%;z-index:3;display:flex;align-items:flex-end;justify-content:center;animation:hInR 1s cubic-bezier(.22,1,.36,1) .2s both}
-@keyframes hInR{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.hero-cup{width:100%;max-height:110%;object-fit:contain;object-position:bottom center;display:block}
+.hero-desc{font-size:clamp(13px,1.2vw,15px);color:#333;line-height:1.8;margin-top:16px;max-width:400px}
 
-.bubbles{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
-.bubble{position:absolute;bottom:-80px;border-radius:50%;background:rgba(212,168,67,0.13);border:1px solid rgba(212,168,67,0.28);animation:floatUp linear infinite}
-@keyframes floatUp{0%{transform:translateY(0);opacity:0}10%{opacity:0.7}90%{opacity:0.3}100%{transform:translateY(-550px);opacity:0}}
-.steam-wrap{position:absolute;bottom:51%;right:calc(4% + clamp(200px,30%,400px)*0.4);z-index:4;pointer-events:none;display:flex;gap:8px}
-.steam{width:5px;height:36px;background:linear-gradient(to top,rgba(255,255,255,0.55),transparent);border-radius:50px;animation:steamUp 2.4s ease-in-out infinite;filter:blur(2.5px)}
+/* Gelas kanan — kecil dan rapi */
+.hero-right{
+  position:absolute;right:5%;bottom:0;
+  width:clamp(260px,32vw,420px);
+  height:100%;z-index:3;
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:hInR 1s cubic-bezier(.22,1,.36,1) .2s both;
+}
+.hero-cup{
+  width:100%;height:auto;
+  max-height:95%;
+  object-fit:contain;object-position:bottom center;display:block;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,0.32));
+}
+
+/* Efek uap */
+.steam-wrap{position:absolute;bottom:52%;right:calc(5% + clamp(110px,12vw,170px)*0.5);z-index:4;pointer-events:none;display:flex;gap:8px}
+.steam{width:5px;height:36px;background:linear-gradient(to top,rgba(255,255,255,0.5),transparent);border-radius:50px;animation:steamUp 2.4s ease-in-out infinite;filter:blur(2.5px)}
 .steam:nth-child(2){animation-delay:.5s;height:26px}
 .steam:nth-child(3){animation-delay:1s;height:46px}
-@keyframes steamUp{0%{transform:translateY(0) scaleX(1);opacity:0}20%{opacity:0.7}80%{opacity:0.2}100%{transform:translateY(-56px) scaleX(1.7);opacity:0}}
+@keyframes steamUp{0%{transform:translateY(0) scaleX(1);opacity:0}20%{opacity:0.65}80%{opacity:0.15}100%{transform:translateY(-56px) scaleX(1.7);opacity:0}}
 
-.info-wrap{
-  background:linear-gradient(180deg,#b8bab5 0%,#c8cac4 25%,#eeede7 100%);
-  padding:0 6% 50px;display:flex;justify-content:center;
-}
-.info-bar{
-  width:100%;max-width:860px;
-  display:flex;align-items:stretch;
-  background:linear-gradient(135deg,#070e1e 0%,#101828 25%,#1a2340 55%,#111b33 80%,#070e1e 100%);
-  border-radius:20px;
-  border:1px solid rgba(212,168,67,0.4);
-  box-shadow:0 12px 48px rgba(0,0,0,0.5),0 0 0 1px rgba(212,168,67,0.08) inset,0 1.5px 0 rgba(240,201,106,0.55) inset;
-  margin-top:-38px;z-index:10;position:relative;overflow:hidden;
-}
+/* ── INFO BAR ── */
+.info-wrap{background:linear-gradient(180deg,#c5c7c2 0%,#d0d2cc 25%,#eeede7 100%);padding:0 6% 50px;display:flex;justify-content:center;}
+.info-bar{width:100%;max-width:860px;display:flex;align-items:stretch;background:linear-gradient(135deg,#070e1e 0%,#101828 25%,#1a2340 55%,#111b33 80%,#070e1e 100%);border-radius:20px;border:1px solid rgba(212,168,67,0.4);box-shadow:0 12px 48px rgba(0,0,0,0.5),0 0 0 1px rgba(212,168,67,0.08) inset,0 1.5px 0 rgba(240,201,106,0.55) inset;margin-top:-38px;z-index:10;position:relative;overflow:hidden;}
 .info-bar::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 38% 110% at 17% 50%,rgba(212,168,67,0.1) 0%,transparent 70%),radial-gradient(ellipse 28% 90% at 50% 50%,rgba(212,168,67,0.07) 0%,transparent 70%),radial-gradient(ellipse 38% 110% at 83% 50%,rgba(212,168,67,0.1) 0%,transparent 70%);pointer-events:none}
 .info-bar::after{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(240,201,106,0.9),transparent);pointer-events:none}
 .info-item{text-align:center;flex:1;padding:36px 20px;position:relative;transition:background .3s;cursor:default}
@@ -100,6 +100,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .info-value{font-size:18px;font-weight:800;color:#fff;line-height:1.4;letter-spacing:0.5px}
 .info-div{width:1px;background:linear-gradient(to bottom,transparent,rgba(212,168,67,0.5) 25%,rgba(212,168,67,0.5) 75%,transparent);margin:14px 0}
 
+/* ── MENU ── */
 .menu-section{padding:72px 6%;background:linear-gradient(180deg,#eeede7 0%,#f5f5f0 50%,#eceae4 100%)}
 .sec-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;color:#aaa;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
 .sec-title{font-size:clamp(24px,3vw,40px);font-weight:800;color:var(--text);margin-bottom:8px}
@@ -124,6 +125,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .btn-all{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px;background:transparent;border:2px solid var(--navy);color:var(--navy);font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:1.5px;border-radius:10px;text-decoration:none;transition:background .2s,color .2s,border-color .2s;overflow:hidden;position:relative}
 .btn-all:hover{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;border-color:transparent}
 
+/* ── ABOUT ── */
 .about{padding:72px 6%;position:relative;background:linear-gradient(160deg,#080f1f 0%,#101828 20%,#1a2340 50%,#141f38 80%,#080f1f 100%)}
 .about::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 45% at 78% 18%,rgba(212,168,67,0.07) 0%,transparent 60%),radial-gradient(ellipse 35% 55% at 8% 82%,rgba(212,168,67,0.05) 0%,transparent 60%);pointer-events:none}
 .about::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,201,106,0.85) 50%,transparent);pointer-events:none}
@@ -140,9 +142,11 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .feat-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
 .feat-desc{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.65}
 
+/* ── FOOTER ── */
 .footer{background:linear-gradient(135deg,var(--navy2),var(--navy),var(--navy3));text-align:center;padding:32px 6%;border-top:1px solid rgba(212,168,67,0.2)}
 .footer p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.9}
 
+/* ── ANIMASI ── */
 .rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .rv.vis{opacity:1;transform:translateY(0)}
 .ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,0.28);animation:rip .55s linear;pointer-events:none}
@@ -150,6 +154,24 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .cdots{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .dot{position:absolute;border-radius:50%;background:rgba(212,168,67,0.09);animation:dotF linear infinite}
 @keyframes dotF{0%{transform:translateY(0);opacity:0.4}50%{opacity:0.7}100%{transform:translateY(-38px);opacity:0}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .navbar{padding:0 18px}
+  .nav-menu{display:none}
+  .hero{flex-direction:column;text-align:center;padding:32px 6% 40px;min-height:auto}
+  .hero-content{max-width:100%}
+  .hero-label{justify-content:center}
+  .hero-right{position:static;width:120px;height:auto;margin:20px auto 0;animation:none}
+  .hero-cup{max-height:none;height:auto;width:100%}
+  .steam-wrap{display:none}
+  .info-bar{flex-wrap:wrap}
+  .info-item{flex:1 1 50%}
+}
+@media(max-width:420px){
+  .info-bar{flex-direction:column}
+  .info-div{width:100%;height:1px;margin:0}
+}
 </style>
 </head>
 <body>
@@ -170,21 +192,22 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 </nav>
 
 <section class="hero" id="home">
-  <div class="bubbles" id="bubblesWrap"></div>
   <div class="steam-wrap">
-    <div class="steam"></div>
-    <div class="steam"></div>
-    <div class="steam"></div>
+    <div class="steam"></div><div class="steam"></div><div class="steam"></div>
   </div>
   <div class="hero-overlay"></div>
-  <img class="hero-beans" src="{{ asset('hero-beans.png') }}" alt="" aria-hidden="true">
+
+  {{-- Foto biji kopi jadi background menyebar tipis --}}
+  <img class="hero-beans-bg" src="{{ asset('hero-beans.png') }}" alt="" aria-hidden="true">
+
   <div class="hero-content">
     <p class="hero-label"><span class="lline"></span>Kopi Lokal · Est. 2025</p>
     <h1 class="hero-title">Dari biji terbaik<br><span class="hero-acc">Pilihan.</span></h1>
     <p class="hero-desc">Pengalaman ngopi yang jujur dan autentik — diseduh dengan teliti, disajikan dengan hangat. Cek menu kami dan temukan favoritmu.</p>
   </div>
+
   <div class="hero-right">
-    <img class="hero-cup" src="{{ asset('hero-cup.png') }}" alt="Street 360 Coffee Cup">
+    <img class="hero-cup" src="{{ asset('minuman.png') }}" alt="Street 360 Coffee Cup">
   </div>
 </section>
 
@@ -211,7 +234,6 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
   <p class="sec-label rv"><span class="lline" style="background:linear-gradient(90deg,#bbb,#ddd)"></span>PILIHAN KAMI</p>
   <h2 class="sec-title rv">Menu <span class="acc">Unggulan</span></h2>
   <p class="sec-desc rv">Yang paling banyak dipesan pelanggan kami setiap malam.</p>
-
   <div class="menu-grid">
     @forelse($unggulan as $item)
     <div class="menu-card rv">
@@ -233,9 +255,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
       </div>
       <div class="menu-info">
         <p class="menu-name">{{ $item->nama }}</p>
-        @if($item->deskripsi)
-          <p class="menu-desc">{{ $item->deskripsi }}</p>
-        @endif
+        @if($item->deskripsi)<p class="menu-desc">{{ $item->deskripsi }}</p>@endif
         <div class="menu-foot">
           <span class="menu-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
           <span class="menu-tag">{{ $item->kategori }}</span>
@@ -243,12 +263,9 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
       </div>
     </div>
     @empty
-    <div style="grid-column:span 4;text-align:center;color:#aaa;padding:40px 0">
-      Belum ada menu tersedia.
-    </div>
+    <div style="grid-column:span 4;text-align:center;color:#aaa;padding:40px 0">Belum ada menu tersedia.</div>
     @endforelse
   </div>
-
   <a href="{{ route('menu.index') }}" class="btn-all rv">LIHAT SEMUA MENU →</a>
 </section>
 
@@ -269,7 +286,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
     <div class="feat rv"><p class="feat-title">Menu Digital</p><p class="feat-desc">Informasi menu tersedia online, mudah diakses kapan saja.</p></div>
     <div class="feat rv"><p class="feat-title">Stok Real-time</p><p class="feat-desc">Menu yang habis langsung diperbarui otomatis dari admin.</p></div>
     <div class="feat rv"><p class="feat-title">Tunai &amp; QRIS</p><p class="feat-desc">Bayar mudah dengan berbagai metode pembayaran pilihanmu.</p></div>
-    <div class="feat rv"><p class="feat-title">Kopi Lokal</p><p class="feat-desc">Biji kopi pilihan dari petani terbaik Kaltim.</p></div>
+    <div class="feat rv"><p class="feat-title">Kopi Lokal</p><p class="feat-desc">Biji kopi pilihan dari petani lokal pilihan terbaik.</p></div>
   </div>
 </section>
 
@@ -280,15 +297,8 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 
 <script>
 (function(){
-  const w=document.getElementById('bubblesWrap');
-  [18,26,14,34,20,12,28,16,22,10].forEach((s,i)=>{
-    const b=document.createElement('div');b.className='bubble';
-    b.style.cssText=`width:${s}px;height:${s}px;left:${[5,12,22,32,42,52,62,70,80,90][i]}%;animation-duration:${4+(i%4)}s;animation-delay:${i*0.6}s`;
-    w.appendChild(b);
-  });
-})();
-(function(){
   const w=document.getElementById('coffeeDots');
+  if(!w) return;
   for(let i=0;i<14;i++){
     const d=document.createElement('div');d.className='dot';
     const s=4+Math.random()*10;
@@ -298,9 +308,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 })();
 (function(){
   const io=new IntersectionObserver((entries)=>{
-    entries.forEach((e,i)=>{
-      if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*70);io.unobserve(e.target);}
-    });
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*70);io.unobserve(e.target);}});
   },{threshold:0.1});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 })();

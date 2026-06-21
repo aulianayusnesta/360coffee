@@ -299,6 +299,9 @@
                         $barClass = $bahan->getBarClass();
                         $status   = $bahan->getStatus();
                         $isKritis = $status === 'kritis';
+                        // Hapus trailing zero: 5.00 → 5, 1.50 → 1.5
+                        $stokTampil = $bahan->stok_saat_ini + 0;
+                        $maksTampil = $bahan->stok_maks + 0;
                     @endphp
                     <tr id="row-{{ $bahan->id }}" class="{{ $isKritis ? 'row-kritis' : '' }}">
                         <td>
@@ -315,7 +318,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="stok-angka" id="angka-{{ $bahan->id }}">{{ $bahan->stok_saat_ini }} / {{ $bahan->stok_maks }} {{ $bahan->satuan }}</div>
+                            <div class="stok-angka" id="angka-{{ $bahan->id }}">{{ $stokTampil }} / {{ $maksTampil }} {{ $bahan->satuan }}</div>
                             <span class="stok-edit" onclick="bukaEdit({{ $bahan->id }}, {{ $bahan->stok_saat_ini }}, {{ $bahan->stok_maks }})">Edit stok</span>
                         </td>
                         <td>
@@ -395,7 +398,6 @@
                         <option value="sachet">sachet</option>
                     </select>
                 </div>
-                {{-- Pesan error validasi stok_maks < stok_saat_ini --}}
                 @error('stok_maks')
                     <div style="color:var(--red);font-size:12px;margin-bottom:8px;">{{ $message }}</div>
                 @enderror
@@ -428,7 +430,6 @@
                         <input type="number" name="stok_maks" id="editStokMaks" class="form-input" min="1" step="0.1" required>
                     </div>
                 </div>
-                {{-- Error validasi client-side --}}
                 <div id="editError" style="display:none;color:var(--red);font-size:12px;margin-bottom:8px;"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
@@ -454,8 +455,8 @@
 $bahansData = $bahans->map(fn($b) => [
     'id'     => $b->id,
     'nama'   => $b->nama,
-    'stok'   => $b->stok_saat_ini,
-    'maks'   => $b->stok_maks,
+    'stok'   => $b->stok_saat_ini + 0,
+    'maks'   => $b->stok_maks + 0,
     'satuan' => $b->satuan,
     'persen' => round($b->getPersen()),
     'status' => $b->getStatus(),
@@ -468,6 +469,9 @@ const barColors  = { aman:'var(--green)', hampir_habis:'var(--yellow)', kritis:'
 const badgeLabel = { aman:'Aman', hampir_habis:'Hampir Habis', kritis:'Kritis' };
 const titleMap   = { aman:'🟢 Stok Aman', hampir_habis:'🟡 Hampir Habis', kritis:'🔴 Stok Kritis' };
 const colorMap   = { aman:'green', hampir_habis:'yellow', kritis:'red' };
+
+/* Hapus trailing zero: 5.00 → 5, 1.50 → 1.5 */
+function fmt(n) { return parseFloat(n); }
 
 /* ── Modal helpers ── */
 function bukaModal(id)  { document.getElementById(id).classList.add('show'); }
@@ -504,8 +508,7 @@ document.getElementById('formEdit').addEventListener('submit', function(e) {
     errEl.style.display = 'none';
 });
 
-/* ── Adjust stok ±1 via AJAX
-     FIX: sinkronisasi bahansData setelah response ── */
+/* ── Adjust stok ±1 via AJAX ── */
 async function adjustStok(id, delta) {
     try {
         const res  = await fetch(`/admin/stok/${id}/adjust`, {
@@ -519,8 +522,8 @@ async function adjustStok(id, delta) {
         const data = await res.json();
         if (!data.success) return;
 
-        /* Update teks stok / maks */
-        document.getElementById(`angka-${id}`).textContent = `${data.stok} / ${data.maks} ${data.satuan}`;
+        /* Update teks stok / maks (tanpa trailing zero) */
+        document.getElementById(`angka-${id}`).textContent = `${fmt(data.stok)} / ${fmt(data.maks)} ${data.satuan}`;
 
         /* Update progress bar */
         const bar = document.getElementById(`bar-${id}`);
@@ -535,10 +538,11 @@ async function adjustStok(id, delta) {
         if (data.bar_class === 'bar-kritis') row.classList.add('row-kritis');
         else row.classList.remove('row-kritis');
 
-        /* FIX: sinkronisasi bahansData agar modal detail tidak stale */
+        /* Sinkronisasi bahansData agar modal detail tidak stale */
         const idx = bahansData.findIndex(b => b.id === id);
         if (idx !== -1) {
-            bahansData[idx].stok   = data.stok;
+            bahansData[idx].stok   = fmt(data.stok);
+            bahansData[idx].maks   = fmt(data.maks);
             bahansData[idx].persen = Math.round(data.persen);
             bahansData[idx].status = data.status;
         }
@@ -566,7 +570,7 @@ function bukaDetailStok(filter) {
             html += `<div class="sid-row">
                 <div style="min-width:120px">
                     <div class="sid-name">${b.nama}</div>
-                    <div class="sid-qty">${b.stok} / ${b.maks} ${b.satuan} · ${b.persen}%</div>
+                    <div class="sid-qty">${fmt(b.stok)} / ${fmt(b.maks)} ${b.satuan} · ${b.persen}%</div>
                 </div>
                 <div class="sid-bar">
                     <div class="sid-bar-track">

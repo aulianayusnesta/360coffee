@@ -292,7 +292,7 @@
 <!-- STATS BAR -->
 <div class="stats-bar">
     <div class="stat-item">
-        <p class="stat-number">15+</p>
+        <p class="stat-number">10+</p>
         <p class="stat-label">MENU PILIHAN</p>
     </div>
     <div class="stat-divider"></div>
@@ -391,7 +391,7 @@
         <div class="keunggulan-card rv">
             <div class="keunggulan-icon">☕</div>
             <p class="keunggulan-title">Kopi Lokal</p>
-            <p class="keunggulan-desc">Biji kopi pilihan dari petani terbaik Kalimantan Timur.</p>
+            <p class="keunggulan-desc">Biji kopi pilihan dari petani lokal pilihan terbaik.</p>
         </div>
     </div>
 </section>

@@ -84,7 +84,7 @@
 
         /* ─── Summary Cards ─── */
         .summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:26px; }
-        .summary-card { position:relative; overflow:hidden; cursor:pointer; text-decoration:none; display:block; background:var(--navy-3); border:1px solid var(--border); border-radius:18px; padding:24px 26px 20px; transition:all .28s cubic-bezier(.34,1.2,.64,1); }
+        .summary-card { position:relative; overflow:hidden; cursor:pointer; text-decoration:none; display:block; background:var(--navy-3); border:1px solid var(--border); border-radius:18px; padding:24px 26px 20px; transition:all .28s cubic-bezier(.34,1.2,.64,1); font-family:'DM Sans',sans-serif; }
         .summary-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent); border-radius:18px 18px 0 0; transform:scaleX(0); transform-origin:left; transition:transform .35s cubic-bezier(.34,1.2,.64,1); }
         .summary-card::after { content:''; position:absolute; inset:0; border-radius:18px; background:radial-gradient(ellipse at 30% 0%,rgba(232,176,75,.1) 0%,transparent 65%); opacity:0; transition:opacity .28s; }
         .summary-card:hover { border-color:rgba(232,176,75,.35); transform:translateY(-4px); box-shadow:0 16px 44px rgba(0,0,0,.35),0 0 0 1px rgba(232,176,75,.15); }
@@ -140,7 +140,7 @@
         /* ─── Popup ─── */
         .popup-overlay { display:none; position:fixed; inset:0; background:rgba(8,15,30,.72); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
         .popup-overlay.show { display:flex; }
-        .popup-box { background:var(--navy-3); border:1px solid var(--border-2); border-radius:20px; width:100%; max-width:440px; margin:16px; max-height:86vh; overflow-y:auto; animation:slideUp .22s cubic-bezier(.34,1.4,.64,1) both; }
+        .popup-box { background:var(--navy-3); border:1px solid var(--border-2); border-radius:20px; width:100%; max-width:460px; margin:16px; max-height:86vh; overflow-y:auto; animation:slideUp .22s cubic-bezier(.34,1.4,.64,1) both; }
         @keyframes slideUp { from{opacity:0;transform:translateY(20px) scale(.96)} to{opacity:1;transform:none} }
         .popup-head { display:flex; justify-content:space-between; align-items:center; padding:20px 22px 18px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--navy-3); z-index:1; border-radius:20px 20px 0 0; }
         .popup-nomor { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:800; color:#fff; letter-spacing:.02em; }
@@ -148,25 +148,37 @@
         .popup-close { width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--muted-2); display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; transition:all .15s; line-height:1; flex-shrink:0; }
         .popup-close:hover { background:var(--red-dim); border-color:var(--red); color:var(--red); }
         .popup-body { padding:20px 22px 26px; }
+
+        /* Popup chips */
         .popup-chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px; }
         .p-chip { background:var(--navy-4); border:1px solid var(--border); border-radius:10px; padding:10px 14px; }
         .p-chip-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
         .p-chip-value { font-size:13px; font-weight:600; color:var(--text); }
+
+        /* Popup section divider */
         .popup-section { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:10px; margin:16px 0 10px; }
         .popup-section::after { content:''; flex:1; height:1px; background:var(--border); }
+
+        /* Popup items */
         .popup-items { display:flex; flex-direction:column; gap:5px; }
         .popup-item { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--navy-4); border:1px solid var(--border); border-radius:10px; gap:12px; transition:border-color .15s; }
         .popup-item:hover { border-color:rgba(232,176,75,.2); }
         .pi-nama { font-size:13px; font-weight:600; color:var(--text); }
         .pi-qty  { font-size:11px; color:var(--muted); margin-top:2px; }
         .pi-sub  { font-size:13px; font-weight:800; color:var(--gold); white-space:nowrap; }
+
+        /* Popup pembayaran */
         .popup-pay { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px; }
         .pp-chip { background:var(--navy-4); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:center; }
         .pp-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
         .pp-value { font-size:12px; font-weight:700; color:var(--text); }
+
+        /* Popup total */
         .popup-total { background:var(--gold-dim); border:1px solid rgba(232,176,75,.22); border-radius:12px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
         .pt-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
         .pt-value { font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:var(--gold); }
+
+        /* Popup catatan */
         .popup-catatan { background:var(--navy-4); border:1px solid var(--border); border-radius:10px; padding:11px 14px; font-size:13px; color:var(--muted-2); font-style:italic; }
     </style>
 </head>
@@ -228,8 +240,8 @@
         @endphp
         <div class="summary-grid">
 
-            <a href="{{ route('admin.transaksi') }}{{ request('tanggal') ? '?tanggal='.request('tanggal') : '' }}"
-               class="summary-card">
+            {{-- Card 1: Total Transaksi --}}
+            <button type="button" class="summary-card" onclick="bukaPopupSummary('semua')">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -247,12 +259,12 @@
                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    Klik untuk lihat semua
+                    Klik untuk lihat detail
                 </div>
-            </a>
+            </button>
 
-            <a href="{{ route('admin.transaksi') }}?status=selesai{{ request('tanggal') ? '&tanggal='.request('tanggal') : '' }}{{ request('metode') && request('metode') !== 'semua' ? '&metode='.request('metode') : '' }}"
-               class="summary-card">
+            {{-- Card 2: Total Pendapatan --}}
+            <button type="button" class="summary-card" onclick="bukaPopupSummary('pendapatan')">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -270,12 +282,12 @@
                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"/>
                     </svg>
-                    Klik untuk filter selesai
+                    Klik untuk lihat detail
                 </div>
-            </a>
+            </button>
 
-            <a href="{{ route('admin.transaksi') }}?status=antrian{{ request('tanggal') ? '&tanggal='.request('tanggal') : '' }}{{ request('metode') && request('metode') !== 'semua' ? '&metode='.request('metode') : '' }}"
-               class="summary-card">
+            {{-- Card 3: Rata-rata --}}
+            <button type="button" class="summary-card" onclick="bukaPopupSummary('rata')">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -296,9 +308,9 @@
                         <circle cx="12" cy="12" r="10"/>
                         <polyline points="12 6 12 12 16 14"/>
                     </svg>
-                    Klik untuk filter antrian
+                    Klik untuk lihat detail
                 </div>
-            </a>
+            </button>
 
         </div>
 
@@ -338,7 +350,7 @@
                         if (!is_array($rawItems)) $rawItems = [];
                         $namaItems = collect($rawItems)->pluck('nama')->filter()->join(', ');
                     @endphp
-                    <tr data-trxid="{{ (string) $trx->id }}" style="cursor:pointer">
+                    <tr data-trxid="{{ (string) $trx->id }}">
                         <td class="td-nomor">{{ $trx->nomor }}</td>
                         <td>
                             <div class="td-date">{{ $trx->created_at->format('d/m/Y') }}</div>
@@ -389,7 +401,7 @@
     </main>
 </div>
 
-{{-- ── Popup Detail ── --}}
+{{-- ── Popup Detail Transaksi (klik baris) ── --}}
 <div class="popup-overlay" id="popupDetail">
     <div class="popup-box">
         <div class="popup-head">
@@ -397,14 +409,29 @@
                 <div class="popup-nomor" id="popNomor">—</div>
                 <div class="popup-waktu" id="popWaktu">—</div>
             </div>
-            <button class="popup-close" id="btnTutup" aria-label="Tutup">×</button>
+            <button class="popup-close" id="btnTutupDetail" aria-label="Tutup">×</button>
         </div>
-        <div class="popup-body" id="popBody">
+        <div class="popup-body" id="popBodyDetail">
             <div style="text-align:center;padding:40px;color:var(--muted)">Memuat…</div>
         </div>
     </div>
 </div>
 
+{{-- ── Popup Summary (klik kartu) ── --}}
+<div class="popup-overlay" id="popupSummary">
+    <div class="popup-box">
+        <div class="popup-head">
+            <div>
+                <div class="popup-nomor" id="popSumTitle">—</div>
+                <div class="popup-waktu" id="popSumMeta">—</div>
+            </div>
+            <button class="popup-close" id="btnTutupSummary" aria-label="Tutup">×</button>
+        </div>
+        <div class="popup-body" id="popBodySummary"></div>
+    </div>
+</div>
+
+{{-- Data JSON untuk popup detail baris --}}
 <script id="trxData" type="application/json">
 {!! json_encode(
     $transaksis->mapWithKeys(function($trx) {
@@ -442,14 +469,26 @@
 ) !!}
 </script>
 
-<script>
-var TRX = {};
-try {
-    TRX = JSON.parse(document.getElementById('trxData').textContent.trim());
-} catch(e) {
-    console.error('Gagal parse TRX:', e);
-}
+{{-- Data summary untuk popup kartu --}}
+<script id="summaryData" type="application/json">
+{!! json_encode([
+    'totalCount'      => $totalCount,
+    'selesaiCount'    => $selesaiCount,
+    'antriCount'      => $antriCount,
+    'totalPendapatan' => $totalPendapatan,
+    'rataRata'        => $totalCount > 0 ? round($totalPendapatan / $totalCount) : 0,
+], JSON_UNESCAPED_UNICODE) !!}
+</script>
 
+<script>
+/* ── Data ── */
+var TRX     = {};
+var SUMMARY = {};
+
+try { TRX     = JSON.parse(document.getElementById('trxData').textContent.trim()); }     catch(e){ console.error('TRX parse error:', e); }
+try { SUMMARY = JSON.parse(document.getElementById('summaryData').textContent.trim()); } catch(e){ console.error('SUMMARY parse error:', e); }
+
+/* ── Helper ── */
 function rp(n) {
     return 'Rp ' + parseInt(n || 0).toLocaleString('id-ID');
 }
@@ -459,9 +498,12 @@ function esc(str) {
     return d.innerHTML;
 }
 
-function bukaPopup(id) {
+/* ══════════════════════════════════════
+   POPUP DETAIL TRANSAKSI (klik baris)
+══════════════════════════════════════ */
+function bukaPopupDetail(id) {
     var t = TRX[String(id)];
-    if (!t) return;
+    if (!t) { console.warn('Data tidak ditemukan untuk id:', id); return; }
 
     document.getElementById('popNomor').textContent = t.nomor;
     document.getElementById('popWaktu').textContent = t.waktu + ' · ' + t.jam;
@@ -470,18 +512,23 @@ function bukaPopup(id) {
     var statusCls = t.status.toLowerCase() === 'selesai' ? 'badge badge-selesai' : 'badge badge-antrian';
     var metodeCls = t.metode.toLowerCase() === 'tunai'   ? 'badge badge-tunai'   : 'badge badge-qris';
 
-    var html = '<div class="popup-chips">'
-        + '<div class="p-chip"><div class="p-chip-label">Tipe</div>'
-        + '<div class="p-chip-value"><span class="' + tipeCls + '">' + esc(t.tipe) + '</span></div></div>'
-        + '<div class="p-chip"><div class="p-chip-label">Status</div>'
-        + '<div class="p-chip-value"><span class="' + statusCls + '">' + esc(t.status) + '</span></div></div>'
-        + '</div>';
+    var html = '';
 
+    /* Chips: Tipe & Status */
+    html += '<div class="popup-chips">'
+          + '<div class="p-chip"><div class="p-chip-label">Tipe</div>'
+          + '<div class="p-chip-value"><span class="' + tipeCls + '">' + esc(t.tipe) + '</span></div></div>'
+          + '<div class="p-chip"><div class="p-chip-label">Status</div>'
+          + '<div class="p-chip-value"><span class="' + statusCls + '">' + esc(t.status) + '</span></div></div>'
+          + '</div>';
+
+    /* Catatan */
     if (t.catatan && t.catatan.trim()) {
         html += '<div class="popup-section">Catatan</div>'
               + '<div class="popup-catatan">' + esc(t.catatan) + '</div>';
     }
 
+    /* Item Pesanan */
     html += '<div class="popup-section">Item Pesanan</div><div class="popup-items">';
     if (t.items && t.items.length) {
         t.items.forEach(function(i) {
@@ -496,6 +543,7 @@ function bukaPopup(id) {
     }
     html += '</div>';
 
+    /* Pembayaran */
     html += '<div class="popup-section">Pembayaran</div>'
           + '<div class="popup-pay">'
           + '<div class="pp-chip"><div class="pp-label">Metode</div>'
@@ -506,35 +554,116 @@ function bukaPopup(id) {
           + '<div class="pp-value">' + rp(t.kembalian) + '</div></div>'
           + '</div>';
 
+    /* Total */
     html += '<div class="popup-total">'
           + '<div class="pt-label">Total</div>'
           + '<div class="pt-value">' + rp(t.total) + '</div>'
           + '</div>';
 
-    document.getElementById('popBody').innerHTML = html;
+    document.getElementById('popBodyDetail').innerHTML = html;
     document.getElementById('popupDetail').classList.add('show');
 }
 
-function tutupPopup() {
-    document.getElementById('popupDetail').classList.remove('show');
+/* ══════════════════════════════════════
+   POPUP SUMMARY (klik kartu)
+══════════════════════════════════════ */
+function bukaPopupSummary(tipe) {
+    var s     = SUMMARY;
+    var title = '';
+    var meta  = '';
+    var html  = '';
+
+    function chipRow(arr) {
+        var h = '<div class="popup-chips">';
+        arr.forEach(function(c) {
+            h += '<div class="p-chip"><div class="p-chip-label">' + c[0] + '</div>'
+               + '<div class="p-chip-value" style="' + (c[2] ? 'color:var(--gold);font-size:16px;font-weight:800;' : '') + '">' + c[1] + '</div></div>';
+        });
+        h += '</div>';
+        return h;
+    }
+
+    if (tipe === 'semua') {
+        title = 'Ringkasan Transaksi';
+        meta  = s.totalCount + ' transaksi tercatat';
+        html  = chipRow([
+            ['Total Transaksi', s.totalCount + ' transaksi', false],
+            ['Transaksi Selesai', s.selesaiCount + ' transaksi', false],
+            ['Dalam Antrian', s.antriCount + ' transaksi', false],
+            ['Total Pendapatan', rp(s.totalPendapatan), true],
+        ]);
+        /* mini breakdown */
+        var pctSelesai = s.totalCount > 0 ? Math.round(s.selesaiCount / s.totalCount * 100) : 0;
+        html += '<div class="popup-section">Breakdown Status</div>';
+        html += '<div style="background:var(--navy-4);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">';
+        html += '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">'
+              + '<span style="font-size:12px;color:var(--muted)">Selesai</span>'
+              + '<span style="font-size:12px;font-weight:700;color:var(--green)">' + pctSelesai + '%</span></div>';
+        html += '<div style="height:6px;background:var(--navy-5);border-radius:3px;overflow:hidden;">'
+              + '<div style="height:100%;width:' + pctSelesai + '%;background:var(--green);border-radius:3px;transition:width .4s;"></div></div>';
+        html += '</div>';
+
+    } else if (tipe === 'pendapatan') {
+        title = 'Detail Pendapatan';
+        meta  = s.selesaiCount + ' transaksi selesai';
+        html  = chipRow([
+            ['Total Pendapatan', rp(s.totalPendapatan), true],
+            ['Transaksi Selesai', s.selesaiCount + ' transaksi', false],
+            ['Rata-rata / Trx', rp(s.rataRata), true],
+            ['Dalam Antrian', s.antriCount + ' transaksi', false],
+        ]);
+
+    } else if (tipe === 'rata') {
+        title = 'Rata-rata per Transaksi';
+        meta  = 'Dari ' + s.totalCount + ' total transaksi';
+        html  = chipRow([
+            ['Rata-rata / Trx', rp(s.rataRata), true],
+            ['Total Transaksi', s.totalCount + ' transaksi', false],
+            ['Total Pendapatan', rp(s.totalPendapatan), true],
+            ['Transaksi Selesai', s.selesaiCount + ' transaksi', false],
+        ]);
+    }
+
+    document.getElementById('popSumTitle').textContent = title;
+    document.getElementById('popSumMeta').textContent  = meta;
+    document.getElementById('popBodySummary').innerHTML = html;
+    document.getElementById('popupSummary').classList.add('show');
 }
 
+/* ── Tutup Popup ── */
+function tutupPopupDetail()   { document.getElementById('popupDetail').classList.remove('show'); }
+function tutupPopupSummary()  { document.getElementById('popupSummary').classList.remove('show'); }
+
+/* ── Event Listeners ── */
 document.addEventListener('DOMContentLoaded', function () {
+    /* Klik baris tabel → popup detail */
     var tbody = document.querySelector('#trxTable tbody');
     if (tbody) {
         tbody.addEventListener('click', function (e) {
             var row = e.target.closest('tr[data-trxid]');
-            if (row) bukaPopup(row.getAttribute('data-trxid'));
+            if (row) bukaPopupDetail(row.getAttribute('data-trxid'));
         });
     }
-    document.getElementById('btnTutup').addEventListener('click', tutupPopup);
+
+    /* Tutup popup detail */
+    document.getElementById('btnTutupDetail').addEventListener('click', tutupPopupDetail);
     document.getElementById('popupDetail').addEventListener('click', function (e) {
-        if (e.target === this) tutupPopup();
+        if (e.target === this) tutupPopupDetail();
+    });
+
+    /* Tutup popup summary */
+    document.getElementById('btnTutupSummary').addEventListener('click', tutupPopupSummary);
+    document.getElementById('popupSummary').addEventListener('click', function (e) {
+        if (e.target === this) tutupPopupSummary();
     });
 });
 
+/* Escape key */
 document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') tutupPopup();
+    if (e.key === 'Escape') {
+        tutupPopupDetail();
+        tutupPopupSummary();
+    }
 });
 </script>
 </body>

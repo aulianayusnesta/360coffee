@@ -78,19 +78,11 @@
         /* ── Menu Grid ── */
         .menu-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
 
-        .menu-card {
-            background:var(--navy-3); border-radius:14px; overflow:hidden;
-            border:1px solid var(--border); position:relative;
-            transition:all .25s cubic-bezier(.34,1.2,.64,1);
-        }
-        .menu-card::before {
-            content:''; position:absolute; top:0; left:0; right:0; height:2px;
-            background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent);
-            border-radius:14px 14px 0 0; transform:scaleX(0); transform-origin:left;
-            transition:transform .3s cubic-bezier(.34,1.2,.64,1); z-index:1;
-        }
+        .menu-card { background:var(--navy-3); border-radius:14px; overflow:hidden; border:1px solid var(--border); position:relative; transition:all .25s cubic-bezier(.34,1.2,.64,1); }
+        .menu-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),transparent); border-radius:14px 14px 0 0; transform:scaleX(0); transform-origin:left; transition:transform .3s cubic-bezier(.34,1.2,.64,1); z-index:1; }
         .menu-card:hover { border-color:rgba(232,176,75,.28); transform:translateY(-3px); box-shadow:0 10px 32px rgba(0,0,0,.3),0 0 0 1px rgba(232,176,75,.1); }
         .menu-card:hover::before { transform:scaleX(1); }
+        .menu-card.tidak-tersedia { opacity:.5; }
 
         .menu-card-img { width:100%; height:150px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; }
         .menu-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .3s; }
@@ -98,14 +90,21 @@
         .no-img { display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:var(--navy-4); }
         .no-img svg { opacity:.2; }
 
+        .badge-tidak-tersedia { position:absolute; top:8px; left:8px; background:rgba(248,113,113,.9); color:#fff; font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; z-index:2; }
+
         .menu-card-body { padding:13px 15px 14px; }
         .menu-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; gap:8px; }
         .menu-card-name { font-size:14px; font-weight:700; color:#fff; line-height:1.3; }
         .menu-card-price { font-size:13px; font-weight:800; color:var(--gold); white-space:nowrap; flex-shrink:0; }
-        .menu-card-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
+        .menu-card-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
         .badge-kategori { font-size:11px; color:var(--muted); font-weight:600; }
         .badge-bestseller { background:var(--gold-dim); color:var(--gold); border:1px solid rgba(232,176,75,.2); font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
         .badge-new { background:var(--navy-5); color:var(--muted-2); border:1px solid var(--border-2); font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
+
+        /* Info bahan terhubung */
+        .menu-card-bahan { font-size:11px; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:4px; }
+        .menu-card-bahan span { color:var(--gold); font-weight:600; }
+
         .menu-card-desc { font-size:11px; color:var(--muted); line-height:1.5; margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:32px; }
 
         .menu-card-actions { display:flex; gap:8px; }
@@ -134,18 +133,20 @@
         .foto-upload img { width:100%; height:100%; object-fit:cover; }
         .foto-placeholder { color:var(--muted); font-size:13px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:6px; }
         .foto-placeholder svg { opacity:.4; }
-        .foto-upload input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
 
         .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
         .form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
         .form-group:last-child { margin-bottom:0; }
         .form-label { font-size:12px; font-weight:700; color:var(--muted-2); letter-spacing:.04em; }
-        .form-input { background:var(--navy-4); border:1px solid var(--border-2); border-radius:9px; padding:10px 13px; font-family:'DM Sans',sans-serif; font-size:13px; color:#fff; outline:none; transition:border-color .18s,box-shadow .18s; }
+        .form-input { background:var(--navy-4); border:1px solid var(--border-2); border-radius:9px; padding:10px 13px; font-family:'DM Sans',sans-serif; font-size:13px; color:#fff; outline:none; transition:border-color .18s,box-shadow .18s; width:100%; }
         .form-input:focus { border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
-        .form-input::placeholder { color:var(--navy-5); }
-        .form-select { background:var(--navy-4); border:1px solid var(--border-2); border-radius:9px; padding:10px 13px; font-family:'DM Sans',sans-serif; font-size:13px; color:#fff; outline:none; cursor:pointer; transition:border-color .18s; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7fa0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 13px center; background-color:var(--navy-4); }
+        .form-input::placeholder { color:var(--muted); }
+        .form-select { background:var(--navy-4); border:1px solid var(--border-2); border-radius:9px; padding:10px 13px; font-family:'DM Sans',sans-serif; font-size:13px; color:#fff; outline:none; cursor:pointer; transition:border-color .18s; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7fa0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 13px center; background-color:var(--navy-4); width:100%; }
         .form-select:focus { border-color:var(--gold); }
         option { background:#162440; }
+
+        /* Info box bahan */
+        .bahan-info { background:var(--gold-dim); border:1px solid rgba(232,176,75,.2); border-radius:9px; padding:9px 13px; font-size:12px; color:var(--gold); margin-top:6px; display:none; }
 
         .btn-simpan { width:100%; padding:12px; background:linear-gradient(135deg,var(--gold),var(--gold-l)); border:none; border-radius:10px; color:var(--navy); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:800; cursor:pointer; margin-top:14px; transition:all .2s; box-shadow:0 4px 16px var(--gold-glow); }
         .btn-simpan:hover { transform:translateY(-1px); box-shadow:0 6px 24px var(--gold-glow); }
@@ -195,8 +196,11 @@
 
         <div class="menu-grid" id="menuGrid">
             @forelse($menus as $menu)
-            <div class="menu-card" data-cat="{{ $menu->kategori }}">
+            <div class="menu-card {{ !$menu->tersedia ? 'tidak-tersedia' : '' }}" data-cat="{{ $menu->kategori }}">
                 <div class="menu-card-img">
+                    @if(!$menu->tersedia)
+                        <div class="badge-tidak-tersedia">Tidak Tersedia</div>
+                    @endif
                     @if($menu->gambar)
                         <img src="{{ asset('storage/'.$menu->gambar) }}" alt="{{ $menu->nama }}">
                     @else
@@ -218,11 +222,29 @@
                             <span class="badge-new">New</span>
                         @endif
                     </div>
+
+                    {{-- Info bahan terhubung --}}
+                    <div class="menu-card-bahan">
+                        @if($menu->stokBahan)
+                            Bahan: <span>{{ $menu->stokBahan->nama }}</span>
+                            ({{ $menu->stokBahan->stok_saat_ini }} {{ $menu->stokBahan->satuan }})
+                        @else
+                            <span style="color:var(--muted)">Belum terhubung ke stok</span>
+                        @endif
+                    </div>
+
                     <div class="menu-card-desc">{{ $menu->deskripsi ?: '—' }}</div>
                     <div class="menu-card-actions">
-                        <button class="btn-edit" onclick="bukaPopupEdit({{ $menu->id }},'{{ addslashes($menu->nama) }}',{{ $menu->harga }},'{{ addslashes($menu->deskripsi) }}','{{ $menu->kategori }}','{{ $menu->badge }}','{{ $menu->gambar ? asset('storage/'.$menu->gambar) : '' }}')">
-                            Edit
-                        </button>
+                        <button class="btn-edit" onclick="bukaPopupEdit(
+                            {{ $menu->id }},
+                            '{{ addslashes($menu->nama) }}',
+                            {{ $menu->harga }},
+                            '{{ addslashes($menu->deskripsi) }}',
+                            '{{ $menu->kategori }}',
+                            '{{ $menu->badge }}',
+                            '{{ $menu->gambar ? asset('storage/'.$menu->gambar) : '' }}',
+                            '{{ $menu->stok_bahan_id ?? '' }}'
+                        )">Edit</button>
                         <button class="btn-hapus" onclick="bukaPopupHapus({{ $menu->id }},'{{ addslashes($menu->nama) }}')">
                             Hapus
                         </button>
@@ -248,9 +270,10 @@
                 @csrf
                 <input type="hidden" name="_method" id="formMethod" value="POST">
 
+                {{-- Foto --}}
                 <div class="form-group">
                     <div class="form-label">Foto Menu</div>
-                    <div class="foto-upload" id="fotoUploadArea" onclick="document.getElementById('inputFoto').click()">
+                    <div class="foto-upload" onclick="document.getElementById('inputFoto').click()">
                         <img id="previewFoto" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
                         <div class="foto-placeholder" id="fotoPlaceholder">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -260,27 +283,25 @@
                     </div>
                 </div>
 
+                {{-- Nama & Harga --}}
                 <div class="form-row">
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Nama Menu</div>
-                        <input type="text" class="form-input" name="nama" id="inputNama"
-                            placeholder="Nama menu"
-                            value="{{ old('nama') }}" required>
+                        <input type="text" class="form-input" name="nama" id="inputNama" placeholder="Nama menu" value="{{ old('nama') }}" required>
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Harga (Rp)</div>
-                        <input type="number" class="form-input" name="harga" id="inputHarga"
-                            placeholder="0" min="0"
-                            value="{{ old('harga') }}" required>
+                        <input type="number" class="form-input" name="harga" id="inputHarga" placeholder="0" min="0" value="{{ old('harga') }}" required>
                     </div>
                 </div>
 
+                {{-- Deskripsi --}}
                 <div class="form-group">
                     <div class="form-label">Deskripsi</div>
-                    <textarea class="form-input" name="deskripsi" id="inputDeskripsi"
-                        placeholder="Deskripsi menu" rows="3" style="resize:none">{{ old('deskripsi') }}</textarea>
+                    <textarea class="form-input" name="deskripsi" id="inputDeskripsi" placeholder="Deskripsi menu" rows="3" style="resize:none">{{ old('deskripsi') }}</textarea>
                 </div>
 
+                {{-- Kategori & Label --}}
                 <div class="form-row">
                     <div class="form-group" style="margin-bottom:0">
                         <div class="form-label">Kategori</div>
@@ -301,6 +322,25 @@
                     </div>
                 </div>
 
+                {{-- ✅ Dropdown Bahan Stok --}}
+                <div class="form-group">
+                    <div class="form-label">Bahan Utama (Stok)</div>
+                    <select class="form-select" name="stok_bahan_id" id="inputStokBahan" onchange="tampilInfoBahan(this)">
+                        <option value="">— Tidak terhubung ke stok —</option>
+                        @foreach($bahans as $bahan)
+                            <option value="{{ $bahan->id }}"
+                                data-stok="{{ $bahan->stok_saat_ini }}"
+                                data-satuan="{{ $bahan->satuan }}"
+                                data-status="{{ $bahan->getStatus() }}">
+                                {{ $bahan->nama }} — {{ $bahan->stok_saat_ini }} {{ $bahan->satuan }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="bahan-info" id="bahanInfo">
+                        Stok terhubung: <strong id="bahanInfoText"></strong>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-simpan">Simpan Menu</button>
             </form>
         </div>
@@ -314,7 +354,7 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
         </div>
         <div class="hapus-title">Hapus Menu?</div>
-        <div class="hapus-sub" id="hapusNama">Menu ini akan dihapus permanen dan tidak dapat dikembalikan.</div>
+        <div class="hapus-sub" id="hapusNama">Menu ini akan dihapus permanen.</div>
         <div class="hapus-actions">
             <button class="btn-batal" onclick="tutupPopupHapus()">Batal</button>
             <form id="formHapus" method="POST" style="flex:1">
@@ -330,7 +370,6 @@
     const baseMenuUrl = '{{ url('admin/menu') }}';
     const storeUrl    = '{{ route('admin.menu.store') }}';
 
-    // ── Auto buka popup kalau ada error validasi ──
     @if($errors->any())
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('popupMenuTitle').textContent = 'Tambah Menu';
@@ -356,10 +395,11 @@
         document.getElementById('formMethod').value = 'POST';
         document.getElementById('previewFoto').style.display = 'none';
         document.getElementById('fotoPlaceholder').style.display = '';
+        document.getElementById('bahanInfo').style.display = 'none';
         document.getElementById('popupMenu').classList.add('show');
     }
 
-    function bukaPopupEdit(id, nama, harga, deskripsi, kategori, badge, gambarUrl) {
+    function bukaPopupEdit(id, nama, harga, deskripsi, kategori, badge, gambarUrl, stokBahanId) {
         document.getElementById('popupMenuTitle').textContent = 'Edit Menu';
         document.getElementById('formMenu').action = baseMenuUrl + '/' + id;
         document.getElementById('formMethod').value = 'PUT';
@@ -370,7 +410,12 @@
         document.getElementById('inputBadge').value     = badge;
         document.getElementById('inputFoto').value      = '';
 
-        // Tampilkan preview gambar yang sudah ada
+        // Set dropdown bahan
+        const selectBahan = document.getElementById('inputStokBahan');
+        selectBahan.value = stokBahanId || '';
+        tampilInfoBahan(selectBahan);
+
+        // Preview foto
         if (gambarUrl) {
             document.getElementById('previewFoto').src = gambarUrl;
             document.getElementById('previewFoto').style.display = 'block';
@@ -381,6 +426,26 @@
         }
 
         document.getElementById('popupMenu').classList.add('show');
+    }
+
+    // ✅ Tampilkan info stok bahan yang dipilih
+    function tampilInfoBahan(select) {
+        const opt     = select.options[select.selectedIndex];
+        const infoEl  = document.getElementById('bahanInfo');
+        const textEl  = document.getElementById('bahanInfoText');
+
+        if (!select.value) {
+            infoEl.style.display = 'none';
+            return;
+        }
+
+        const stok   = opt.dataset.stok;
+        const satuan = opt.dataset.satuan;
+        const status = opt.dataset.status;
+
+        const warna = status === 'kritis' ? '#f87171' : status === 'hampir_habis' ? '#fbbf24' : '#4ade80';
+        textEl.innerHTML = `<span style="color:${warna}">${stok} ${satuan}</span> (${status.replace('_', ' ')})`;
+        infoEl.style.display = 'block';
     }
 
     function tutupPopup() {

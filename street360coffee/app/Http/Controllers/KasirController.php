@@ -60,13 +60,15 @@ class KasirController extends Controller
         }
 
         // ✅ Kurangi stok otomatis & nonaktifkan menu jika stok = 0
+        $gelas      = StokBahan::whereRaw('LOWER(nama) = ?', ['gelas'])->first();
+        $totalGelas = 0;
+
         foreach ($cart as $item) {
             $menu = Menu::find($item['id']);
 
+            // Kurangi stok bahan utama menu
             if ($menu && $menu->stokBahan) {
                 $stok = $menu->stokBahan;
-
-                // Kurangi stok sejumlah qty dipesan, tidak boleh di bawah 0
                 $stok->stok_saat_ini = max(0, $stok->stok_saat_ini - $item['qty']);
                 $stok->save();
 
@@ -75,6 +77,17 @@ class KasirController extends Controller
                     $menu->update(['tersedia' => false]);
                 }
             }
+
+            // Hitung gelas: semua menu yang bukan snack pakai gelas
+            if ($menu && $menu->kategori !== 'snack') {
+                $totalGelas += $item['qty'];
+            }
+        }
+
+        // Kurangi stok gelas sekaligus
+        if ($gelas && $totalGelas > 0) {
+            $gelas->stok_saat_ini = max(0, $gelas->stok_saat_ini - $totalGelas);
+            $gelas->save();
         }
 
         return redirect()->route('kasir.pos')->with('struk', [

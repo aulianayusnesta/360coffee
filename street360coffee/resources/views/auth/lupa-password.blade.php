@@ -206,13 +206,8 @@
 <div class="page">
 
     <div class="top-bar">
-        @if(session('email_verified'))
-            @php $roleBack = \App\Models\User::where('email', session('email_verified'))->value('role'); @endphp
-            @if($roleBack === 'kasir')
-                <a href="{{ route('kasir.pos') }}" class="back-link">← Kelola Akun &nbsp; Kasir</a>
-            @else
-                <a href="{{ route('admin.akun') }}" class="back-link">← Kelola Akun Admin</a>
-            @endif
+        @if(session('email_verified') && !session('password_changed'))
+            <a href="{{ route('login') }}" class="back-link">← Kembali ke Login</a>
         @else
             <a href="{{ route('login') }}" class="back-link">← Kembali ke Login</a>
         @endif
@@ -220,11 +215,10 @@
 
     <div class="page-heading">
         <h1>Lupa Password</h1>
-        @if(session('email_verified') && !session('password_changed'))
-            @php $roleH = \App\Models\User::where('email', session('email_verified'))->value('role'); @endphp
-            <p>Ganti Password Akun {{ $roleH === 'kasir' ? 'Kasir' : 'Admin' }}</p>
-        @elseif(session('password_changed'))
+        @if(session('password_changed'))
             <p>Data akun berhasil diperbarui</p>
+        @elseif(session('email_verified'))
+            <p>Reset password akun Admin / Kasir</p>
         @else
             <p>Reset password akun Admin / Kasir</p>
         @endif
@@ -240,13 +234,19 @@
                 <div class="alert-error">⚠ {{ $errors->first('email') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('password.email.check') }}" novalidate>
+            <form method="POST" action="{{ route('password.email.check') }}" autocomplete="off" novalidate>
                 @csrf
+                {{-- Dummy fields untuk mencegah autofill browser --}}
+                <input type="text"     name="_dummy_user" style="display:none" tabindex="-1" autocomplete="off">
+                <input type="password" name="_dummy_pass" style="display:none" tabindex="-1" autocomplete="off">
+
                 <div class="field">
                     <label class="field-label">Email</label>
                     <input type="email" name="email" id="emailInput" class="field-input"
                            placeholder="Masukkan email terdaftar"
-                           value="{{ old('email') }}" autofocus>
+                           value="{{ old('email') }}"
+                           autocomplete="off"
+                           autofocus>
                     <div class="field-hint" id="emailHint"></div>
                 </div>
                 <button type="submit" class="btn-submit" onclick="return checkEmailFront()">Verifikasi Email</button>
@@ -270,8 +270,13 @@
                 <div class="alert-error">⚠ {{ $errors->first() }}</div>
             @endif
 
-            <form method="POST" action="{{ route('password.reset.save') }}" id="resetForm" novalidate>
+            <form method="POST" action="{{ route('password.reset.save') }}" id="resetForm"
+                  autocomplete="off" novalidate>
                 @csrf
+                {{-- Dummy fields untuk mencegah autofill browser --}}
+                <input type="text"     name="_dummy_user" style="display:none" tabindex="-1" autocomplete="off">
+                <input type="password" name="_dummy_pass" style="display:none" tabindex="-1" autocomplete="off">
+
                 <input type="hidden" name="email" value="{{ $em }}">
 
                 <div class="field">
@@ -279,6 +284,7 @@
                     <input type="text" name="name" id="nameInput" class="field-input"
                            placeholder="Nama Lengkap"
                            value="{{ old('name', $user->name ?? '') }}"
+                           autocomplete="off"
                            required oninput="validateAll()">
                     <div class="field-hint gold" id="nameHint">
                         Username: <span id="unameText">{{ strtolower(str_replace(' ', '', $user->name ?? $uname)) }}</span>
@@ -287,16 +293,23 @@
 
                 <div class="field">
                     <label class="field-label">Email</label>
-                    <input type="email" name="new_email" class="field-input"
-                           placeholder="Email"
-                           value="{{ old('new_email', $em) }}"
+                    <input type="text" name="akun_email" class="field-input"
+                           placeholder="Email baru"
+                           value="{{ old('akun_email', $em) }}"
+                           autocomplete="off"
                            required>
+                    {{-- name="akun_email" bukan "email"/"username" agar browser
+                         tidak mengenali field ini sebagai credential --}}
+                    @error('akun_email')
+                        <div class="field-hint error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="field">
                     <label class="field-label">Password Baru</label>
                     <input type="password" name="password" id="passInput" class="field-input"
-                           placeholder="Password Baru (maks. 8 karakter)"
+                           placeholder="Password Baru (min. 6 karakter)"
+                           autocomplete="new-password"
                            required maxlength="8" oninput="validateAll()">
                     <div class="field-hint" id="passHint"></div>
                 </div>
@@ -305,6 +318,7 @@
                     <label class="field-label">Konfirmasi Ulang</label>
                     <input type="password" name="password_confirmation" id="confirmInput" class="field-input"
                            placeholder="Ulangi Password"
+                           autocomplete="new-password"
                            required maxlength="8" oninput="validateAll()">
                     <div class="field-hint" id="confirmHint"></div>
                 </div>
@@ -319,6 +333,7 @@
                 <div class="success-icon">✓</div>
                 <p>Data akun berhasil diubah!<br>Silakan login dengan data baru berikut.</p>
                 <div class="info-box">
+                    {{-- ✅ Tampilkan USERNAME bukan email --}}
                     <p>Username &nbsp;: <span>{{ session('new_username') }}</span></p>
                     <p>Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>{{ session('new_email') }}</span></p>
                 </div>
@@ -330,15 +345,13 @@
 </div>
 
 <script>
-    /* ── Regex ── */
-    const HAS_SYMBOL      = /[^a-zA-Z0-9 ]/;   // untuk Nama (spasi boleh)
-    const HAS_SYMBOL_PASS = /[^a-zA-Z0-9]/;     // untuk Password (tanpa spasi)
+    const HAS_SYMBOL      = /[^a-zA-Z0-9 ]/;
+    const HAS_SYMBOL_PASS = /[^a-zA-Z0-9]/;
 
-    /* ── Step 1: validasi email sebelum submit ── */
     function checkEmailFront() {
         const el   = document.getElementById('emailInput');
         const hint = document.getElementById('emailHint');
-        if (!el) return true; // jika elemen tidak ada, biarkan form submit normal
+        if (!el) return true;
 
         const val = el.value.trim();
         if (val === '') {
@@ -361,11 +374,9 @@
         return true;
     }
 
-    /* ── Step 2: validasi semua field ── */
     function validateAll() {
         let allOk = true;
 
-        /* — Nama — */
         const nameEl   = document.getElementById('nameInput');
         const nameHint = document.getElementById('nameHint');
         if (nameEl) {
@@ -388,7 +399,6 @@
             }
         }
 
-        /* — Password Baru — */
         const passEl   = document.getElementById('passInput');
         const passHint = document.getElementById('passHint');
         if (passEl) {
@@ -413,11 +423,9 @@
                 passHint.className = 'field-hint ok';
                 passHint.textContent = '✓ Password valid (' + passVal.length + '/8 karakter)';
             }
-            // re-validasi konfirmasi setiap kali password berubah
             validateConfirmOnly();
         }
 
-        /* — Konfirmasi — */
         const confOk = validateConfirmOnly();
         if (!confOk) allOk = false;
 
@@ -457,10 +465,9 @@
         return true;
     }
 
-    /* ── Submit form step 2 ── */
     function submitForm() {
         const ok = validateAll();
-        if (!ok) return false; // cegah submit jika ada error
+        if (!ok) return false;
         return true;
     }
 </script>

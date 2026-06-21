@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\StokBahan;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
 class StokController extends Controller
@@ -23,7 +24,6 @@ class StokController extends Controller
 
     /* ─────────────────────────────────────────────
      │  STORE — tambah bahan baru
-     │  FIX: tambah rule stok_maks >= stok_saat_ini
      ───────────────────────────────────────────── */
     public function store(Request $request)
     {
@@ -41,8 +41,7 @@ class StokController extends Controller
 
     /* ─────────────────────────────────────────────
      │  EDIT STOK — update stok_saat_ini & stok_maks
-     │  FIX: stok_saat_ini tidak boleh > stok_maks
-     │       stok_maks tidak boleh < stok_saat_ini
+     │  ✅ FIX: aktifkan/nonaktifkan menu otomatis
      ───────────────────────────────────────────── */
     public function editStok(Request $request, $id)
     {
@@ -51,15 +50,22 @@ class StokController extends Controller
             'stok_maks'     => 'required|numeric|min:1|gte:stok_saat_ini',
         ]);
 
-        StokBahan::findOrFail($id)->update($request->only('stok_saat_ini', 'stok_maks'));
+        $bahan = StokBahan::findOrFail($id);
+        $bahan->update($request->only('stok_saat_ini', 'stok_maks'));
+
+        // ✅ Aktifkan menu jika stok > 0, nonaktifkan jika stok = 0
+        if ($bahan->stok_saat_ini > 0) {
+            Menu::where('stok_bahan_id', $bahan->id)->update(['tersedia' => true]);
+        } else {
+            Menu::where('stok_bahan_id', $bahan->id)->update(['tersedia' => false]);
+        }
 
         return redirect()->route('admin.stok')->with('success', 'Stok berhasil diperbarui.');
     }
 
     /* ─────────────────────────────────────────────
      │  ADJUST — tambah/kurang stok ±1 via AJAX
-     │  FIX: tambah field 'status' di response JSON
-     │       agar bahansData di JS blade ikut sinkron
+     │  ✅ FIX: aktifkan/nonaktifkan menu otomatis
      ───────────────────────────────────────────── */
     public function adjust(Request $request, $id)
     {
@@ -70,6 +76,13 @@ class StokController extends Controller
         // Clamp: tidak boleh < 0 dan tidak boleh > stok_maks
         $bahan->stok_saat_ini = max(0, min($bahan->stok_maks, $bahan->stok_saat_ini + $request->delta));
         $bahan->save();
+
+        // ✅ Aktifkan menu jika stok > 0, nonaktifkan jika stok = 0
+        if ($bahan->stok_saat_ini > 0) {
+            Menu::where('stok_bahan_id', $bahan->id)->update(['tersedia' => true]);
+        } else {
+            Menu::where('stok_bahan_id', $bahan->id)->update(['tersedia' => false]);
+        }
 
         return response()->json([
             'success'   => true,
@@ -84,11 +97,15 @@ class StokController extends Controller
 
     /* ─────────────────────────────────────────────
      │  RESTOK — isi penuh ke stok_maks
+     │  ✅ FIX: aktifkan menu kembali setelah restok
      ───────────────────────────────────────────── */
     public function restok($id)
     {
         $bahan = StokBahan::findOrFail($id);
         $bahan->update(['stok_saat_ini' => $bahan->stok_maks]);
+
+        // ✅ Aktifkan kembali semua menu yang pakai bahan ini
+        Menu::where('stok_bahan_id', $bahan->id)->update(['tersedia' => true]);
 
         return redirect()->route('admin.stok')->with('success', "{$bahan->nama} berhasil direstok.");
     }

@@ -13,11 +13,6 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        // ✅ Admin bisa akses semua halaman
-        if (auth()->user()->role === 'admin') {
-            return $next($request);
-        }
-
         if (! in_array(auth()->user()->role, $roles)) {
             abort(403, 'Akses ditolak.');
         }

@@ -72,7 +72,7 @@
             padding: 52px 6% 72px;
             background: linear-gradient(135deg,#080f1f 0%,#0d1526 30%,#1a2340 60%,#101828 85%,#080f1f 100%);
         }
-        .menu-hero::after { display: none; } /* ← garis kuning bawah hero dihilangkan */
+        .menu-hero::after { display: none; }
         .hero-bg360 {
             position: absolute; right: -1%; top: 50%; transform: translateY(-50%);
             font-size: clamp(140px, 20vw, 300px); font-weight: 900;
@@ -104,7 +104,7 @@
             background: linear-gradient(105deg,#060d1c 0%,#111b33 40%,#1a2340 70%,#060d1c 100%);
             padding: 0 6% 20px;
             display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-            border-bottom: none; /* ← garis kuning dihilangkan */
+            border-bottom: none;
         }
         .filter-btn {
             padding: 8px 20px; border-radius: 20px;
@@ -162,7 +162,7 @@
             background: linear-gradient(160deg,#1e2a4a 0%,#1a2340 55%,#101828 100%);
             border-radius: 16px; overflow: hidden;
             position: relative;
-            border: none; /* ← garis hitam pinggir dihilangkan */
+            border: none;
             box-shadow: 0 4px 18px rgba(0,0,0,0.25);
             transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s;
             opacity: 0; transform: translateY(16px);
@@ -205,8 +205,7 @@
         .menu-footer { display: flex; align-items: center; justify-content: space-between; }
         .menu-price  {
             font-size: 13px; font-weight: 700;
-            background: linear-gradient(135deg,var(--gold2),var(--gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            color: var(--gold2);
         }
         .menu-tag { font-size: 9px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
         .tag-kopi    { background: linear-gradient(135deg,var(--gold2),var(--gold)); color: var(--navy2); }
