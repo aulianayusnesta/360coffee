@@ -101,7 +101,6 @@
         .badge-bestseller { background:var(--gold-dim); color:var(--gold); border:1px solid rgba(232,176,75,.2); font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
         .badge-new { background:var(--navy-5); color:var(--muted-2); border:1px solid var(--border-2); font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
 
-        /* Info bahan terhubung */
         .menu-card-bahan { font-size:11px; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:4px; }
         .menu-card-bahan span { color:var(--gold); font-weight:600; }
 
@@ -128,11 +127,27 @@
 
         .popup-body { padding:22px 24px 26px; }
 
-        .foto-upload { width:100%; height:130px; background:var(--navy-4); border:1.5px dashed var(--border-2); border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-bottom:18px; overflow:hidden; position:relative; transition:border-color .18s; }
+        /* ── Foto Upload — FIXED: input file TIDAK di dalam div ── */
+        .foto-upload {
+            width:100%; height:130px;
+            background:var(--navy-4);
+            border:1.5px dashed var(--border-2);
+            border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer;
+            margin-bottom:18px;
+            overflow:hidden;
+            position:relative;
+            transition:border-color .18s;
+            user-select:none;
+        }
         .foto-upload:hover { border-color:var(--gold); }
         .foto-upload img { width:100%; height:100%; object-fit:cover; }
-        .foto-placeholder { color:var(--muted); font-size:13px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:6px; }
+        .foto-placeholder { color:var(--muted); font-size:13px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:6px; pointer-events:none; }
         .foto-placeholder svg { opacity:.4; }
+
+        /* Label foto — dipakai sebagai wrapper klik, tanpa input di dalam div */
+        .foto-nama { font-size:11px; color:var(--gold); margin-top:-12px; margin-bottom:18px; font-weight:600; min-height:16px; }
 
         .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
         .form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
@@ -145,7 +160,6 @@
         .form-select:focus { border-color:var(--gold); }
         option { background:#162440; }
 
-        /* Info box bahan */
         .bahan-info { background:var(--gold-dim); border:1px solid rgba(232,176,75,.2); border-radius:9px; padding:9px 13px; font-size:12px; color:var(--gold); margin-top:6px; display:none; }
 
         .btn-simpan { width:100%; padding:12px; background:linear-gradient(135deg,var(--gold),var(--gold-l)); border:none; border-radius:10px; color:var(--navy); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:800; cursor:pointer; margin-top:14px; transition:all .2s; box-shadow:0 4px 16px var(--gold-glow); }
@@ -223,7 +237,6 @@
                         @endif
                     </div>
 
-                    {{-- Info bahan terhubung --}}
                     <div class="menu-card-bahan">
                         @if($menu->stokBahan)
                             Bahan: <span>{{ $menu->stokBahan->nama }}</span>
@@ -270,17 +283,37 @@
                 @csrf
                 <input type="hidden" name="_method" id="formMethod" value="POST">
 
-                {{-- Foto --}}
+                {{--
+                    ✅ FIX: input[type=file] DIPINDAH ke luar .foto-upload
+                    Sebelumnya input ada di dalam div dengan position:absolute inset:0,
+                    sehingga klik area foto memicu 2x dialog (onclick div + klik langsung input).
+                    Sekarang: div hanya onclick → trigger inputFoto.click(), input tersembunyi di luar.
+                --}}
+
+                {{-- Input file — tersembunyi, di luar div foto --}}
+                <input type="file"
+                       id="inputFoto"
+                       name="gambar"
+                       accept="image/*"
+                       onchange="previewImage(this)"
+                       style="display:none;">
+
+                {{-- Area klik foto --}}
                 <div class="form-group">
                     <div class="form-label">Foto Menu</div>
-                    <div class="foto-upload" onclick="document.getElementById('inputFoto').click()">
+                    <div class="foto-upload" id="fotoUploadArea" onclick="document.getElementById('inputFoto').click()">
                         <img id="previewFoto" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
                         <div class="foto-placeholder" id="fotoPlaceholder">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
                             Klik untuk pilih foto
                         </div>
-                        <input type="file" id="inputFoto" name="gambar" accept="image/*" onchange="previewImage(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
                     </div>
+                    {{-- Nama file yang dipilih --}}
+                    <div class="foto-nama" id="fotoNama"></div>
                 </div>
 
                 {{-- Nama & Harga --}}
@@ -322,7 +355,7 @@
                     </div>
                 </div>
 
-                {{-- ✅ Dropdown Bahan Stok --}}
+                {{-- Dropdown Bahan Stok --}}
                 <div class="form-group">
                     <div class="form-label">Bahan Utama (Stok)</div>
                     <select class="form-select" name="stok_bahan_id" id="inputStokBahan" onchange="tampilInfoBahan(this)">
@@ -388,13 +421,22 @@
         });
     }
 
+    function resetFoto() {
+        // Reset input file dengan cara buat ulang value-nya
+        const input = document.getElementById('inputFoto');
+        input.value = '';
+        document.getElementById('previewFoto').src = '';
+        document.getElementById('previewFoto').style.display = 'none';
+        document.getElementById('fotoPlaceholder').style.display = '';
+        document.getElementById('fotoNama').textContent = '';
+    }
+
     function bukaPopupTambah() {
         document.getElementById('popupMenuTitle').textContent = 'Tambah Menu';
         document.getElementById('formMenu').reset();
         document.getElementById('formMenu').action = storeUrl;
         document.getElementById('formMethod').value = 'POST';
-        document.getElementById('previewFoto').style.display = 'none';
-        document.getElementById('fotoPlaceholder').style.display = '';
+        resetFoto();
         document.getElementById('bahanInfo').style.display = 'none';
         document.getElementById('popupMenu').classList.add('show');
     }
@@ -408,31 +450,30 @@
         document.getElementById('inputDeskripsi').value = deskripsi;
         document.getElementById('inputKategori').value  = kategori;
         document.getElementById('inputBadge').value     = badge;
-        document.getElementById('inputFoto').value      = '';
+
+        // Reset input file (kosongkan pilihan sebelumnya)
+        resetFoto();
 
         // Set dropdown bahan
         const selectBahan = document.getElementById('inputStokBahan');
         selectBahan.value = stokBahanId || '';
         tampilInfoBahan(selectBahan);
 
-        // Preview foto
+        // Preview foto dari server jika ada
         if (gambarUrl) {
             document.getElementById('previewFoto').src = gambarUrl;
             document.getElementById('previewFoto').style.display = 'block';
             document.getElementById('fotoPlaceholder').style.display = 'none';
-        } else {
-            document.getElementById('previewFoto').style.display = 'none';
-            document.getElementById('fotoPlaceholder').style.display = '';
+            document.getElementById('fotoNama').textContent = 'Foto saat ini (pilih untuk ganti)';
         }
 
         document.getElementById('popupMenu').classList.add('show');
     }
 
-    // ✅ Tampilkan info stok bahan yang dipilih
     function tampilInfoBahan(select) {
-        const opt     = select.options[select.selectedIndex];
-        const infoEl  = document.getElementById('bahanInfo');
-        const textEl  = document.getElementById('bahanInfoText');
+        const opt    = select.options[select.selectedIndex];
+        const infoEl = document.getElementById('bahanInfo');
+        const textEl = document.getElementById('bahanInfoText');
 
         if (!select.value) {
             infoEl.style.display = 'none';
@@ -462,15 +503,18 @@
         document.getElementById('popupHapus').classList.remove('show');
     }
 
+    // ✅ FIX: fungsi preview — hanya dipanggil dari onchange input file
     function previewImage(input) {
         if (input.files && input.files[0]) {
+            const file   = input.files[0];
             const reader = new FileReader();
             reader.onload = e => {
                 document.getElementById('previewFoto').src = e.target.result;
                 document.getElementById('previewFoto').style.display = 'block';
                 document.getElementById('fotoPlaceholder').style.display = 'none';
+                document.getElementById('fotoNama').textContent = '📎 ' + file.name;
             };
-            reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(file);
         }
     }
 

@@ -215,7 +215,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
   <div class="info-bar rv">
     <div class="info-item">
       <p class="info-label">JAM BUKA</p>
-      <p class="info-value">17.30 – CLOSE</p>
+      <p class="info-value">17.30 – 01.00</p>
     </div>
     <div class="info-div"></div>
     <div class="info-item">
@@ -278,7 +278,7 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
     <p>Semua kopi kami bersumber dari petani lokal pilihan — diolah dengan standar tinggi untuk menghadirkan cita rasa yang konsisten di setiap cangkir.</p>
   </div>
   <div class="about-stats">
-    <div class="rv"><p class="stat-num">15+</p><p class="stat-lbl">MENU PILIHAN</p></div>
+    <div class="rv"><p class="stat-num">10+</p><p class="stat-lbl">MENU PILIHAN</p></div>
     <div class="rv"><p class="stat-num">2025</p><p class="stat-lbl">BERDIRI SEJAK</p></div>
     <div class="rv"><p class="stat-num">100%</p><p class="stat-lbl">KOPI LOKAL</p></div>
   </div>
