@@ -257,8 +257,69 @@
         .rv { opacity:0; transform:translateY(22px); transition:opacity .65s ease, transform .65s ease; }
         .rv.vis { opacity:1; transform:translateY(0); }
 
-        @media(max-width:768px) { .navbar { padding:0 20px; } .section { padding:48px 5%; } .misi-card { padding:28px; } }
-        @media(max-width:480px) { .navbar-menu { display:none; } }
+        /* ══ HAMBURGER MENU ══ */
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;z-index:201;position:relative}
+        .hamburger span{display:block;width:22px;height:2.5px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s}
+        .hamburger span+span{margin-top:5px}
+        .hamburger.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+        .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:linear-gradient(180deg,#0d1526 0%,#1a2340 100%);padding:0;z-index:199;border-bottom:1.5px solid rgba(212,168,67,0.35);box-shadow:0 8px 32px rgba(0,0,0,0.5);max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+        .mobile-menu.open{max-height:400px;padding:20px 0}
+        .mobile-menu ul{list-style:none;padding:0;margin:0}
+        .mobile-menu li{border-bottom:1px solid rgba(255,255,255,0.06)}
+        .mobile-menu li:last-child{border-bottom:none}
+        .mobile-menu a{display:block;padding:14px 28px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:15px;font-weight:600;transition:background .2s,color .2s}
+        .mobile-menu a:hover,.mobile-menu a.active{color:var(--gold2);background:rgba(212,168,67,0.08)}
+        .mobile-menu .mobile-login{display:block;margin:16px 28px 8px;text-align:center;background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);color:#0d1526;font-size:13px;font-weight:800;padding:12px 26px;border-radius:30px;text-decoration:none}
+        .mobile-overlay{display:none;position:fixed;inset:0;top:62px;background:rgba(0,0,0,0.5);z-index:198}
+        .mobile-overlay.open{display:block}
+
+        /* ══ RESPONSIVE ══ */
+        @media(max-width:1024px){
+            .section{padding:52px 6%}
+            .about-hero{padding:56px 6% 64px}
+        }
+        @media(max-width:768px){
+            .hamburger{display:flex;flex-direction:column;justify-content:center}
+            .mobile-menu{display:block}
+            .navbar-menu{display:none}
+            .btn-login{display:none}
+            .navbar{padding:0 20px}
+            .section{padding:40px 5%}
+            .about-hero{padding:44px 5% 52px}
+            .about-title{font-size:clamp(26px,6vw,44px)}
+            .stats-bar{flex-wrap:wrap}
+            .stat-item{flex:1 1 33%;padding:24px 14px}
+            .stat-divider{display:none}
+            .cerita-card{padding:24px}
+            .owner-card{flex-direction:column;align-items:center;text-align:center;padding:24px 20px}
+            .tim-grid{grid-template-columns:1fr 1fr;gap:14px}
+            .keunggulan-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+            .misi-card{padding:28px 20px}
+        }
+        @media(max-width:480px){
+            .about-hero{padding:32px 4% 40px}
+            .about-title{font-size:clamp(22px,7vw,36px)}
+            .section{padding:32px 4%}
+            .stats-bar{flex-direction:column}
+            .stat-item{flex:1 1 100%;padding:20px 16px}
+            .stat-number{font-size:clamp(20px,5vw,32px)}
+            .tim-grid{grid-template-columns:1fr;gap:12px}
+            .tim-card{padding:24px 18px}
+            .keunggulan-grid{grid-template-columns:1fr 1fr;gap:10px}
+            .keunggulan-card{padding:20px 16px}
+            .misi-card{padding:22px 16px}
+            .owner-card{padding:20px 16px}
+            .footer{padding:24px 4%}
+        }
+        @media(max-width:360px){
+            .about-title{font-size:20px}
+            .about-tagline{font-size:12px}
+            .cerita-card p{font-size:13px}
+            .keunggulan-title{font-size:13px}
+            .keunggulan-desc{font-size:11px}
+        }
     </style>
 </head>
 <body>
@@ -275,7 +336,20 @@
         <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
     </ul>
     <a href="{{ route('login') }}" class="btn-login">LOGIN</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="{{ route('home') }}">Beranda</a></li>
+        <li><a href="{{ route('menu.index') }}">Menu</a></li>
+        <li><a href="{{ route('tentang') }}" class="active">Tentang</a></li>
+        <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
+    </ul>
+    <a href="{{ route('login') }}" class="mobile-login">LOGIN</a>
+</div>
 
 <!-- HERO -->
 <section class="about-hero">
@@ -451,6 +525,16 @@ document.querySelectorAll('.btn-login').forEach(btn=>{
         btn.appendChild(r); setTimeout(()=>r.remove(),600);
     });
 });
+/* ── Hamburger toggle ── */
+(function(){
+    const btn=document.getElementById('hamburgerBtn');
+    const menu=document.getElementById('mobileMenu');
+    const overlay=document.getElementById('mobileOverlay');
+    if(!btn||!menu) return;
+    function toggle(){btn.classList.toggle('active');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
+    btn.addEventListener('click',toggle);
+    overlay.addEventListener('click',toggle);
+})();
 </script>
 
 </body>

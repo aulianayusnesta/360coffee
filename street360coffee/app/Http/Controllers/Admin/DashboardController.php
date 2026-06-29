@@ -14,6 +14,11 @@ class DashboardController extends Controller
         $bahans          = StokBahan::orderBy('nama')->get();
         $stokKritis      = $bahans->filter(fn($b) => $b->getStatus() === 'kritis')->values();
         $stokKritisCount = $stokKritis->count();
+        $statusOrder      = ['kritis' => 0, 'hampir_habis' => 1, 'aman' => 2];
+        $bahansDashboard = $bahans
+            ->sortBy(fn($b) => $statusOrder[$b->getStatus()] ?? 3)
+            ->take(6)
+            ->values();
 
         // ✅ Hitung hanya yang sudah selesai atau arsip (bukan antrian)
         $statusSelesai = ['selesai', 'arsip'];
@@ -76,6 +81,7 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact(
             'bahans',
+            'bahansDashboard',
             'stokKritis',
             'stokKritisCount',
             'pendapatanHariIni',

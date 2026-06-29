@@ -218,7 +218,63 @@
         .footer { background: linear-gradient(135deg,var(--navy2),var(--navy),var(--navy3)); text-align: center; padding: 32px 6%; border-top: 1px solid rgba(212,168,67,0.2); }
         .footer p { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.9; }
 
-        @media(max-width:480px) { .navbar-menu { display: none; } .navbar { padding: 0 20px; } }
+        /* ══ HAMBURGER MENU ══ */
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;z-index:201;position:relative}
+        .hamburger span{display:block;width:22px;height:2.5px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s}
+        .hamburger span+span{margin-top:5px}
+        .hamburger.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+        .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:linear-gradient(180deg,#0d1526 0%,#1a2340 100%);padding:0;z-index:199;border-bottom:1.5px solid rgba(212,168,67,0.35);box-shadow:0 8px 32px rgba(0,0,0,0.5);max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+        .mobile-menu.open{max-height:400px;padding:20px 0}
+        .mobile-menu ul{list-style:none;padding:0;margin:0}
+        .mobile-menu li{border-bottom:1px solid rgba(255,255,255,0.06)}
+        .mobile-menu li:last-child{border-bottom:none}
+        .mobile-menu a{display:block;padding:14px 28px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:15px;font-weight:600;transition:background .2s,color .2s}
+        .mobile-menu a:hover,.mobile-menu a.active{color:var(--gold2);background:rgba(212,168,67,0.08)}
+        .mobile-menu .mobile-login{display:block;margin:16px 28px 8px;text-align:center;background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);color:#0d1526;font-size:13px;font-weight:800;padding:12px 26px;border-radius:30px;text-decoration:none}
+        .mobile-overlay{display:none;position:fixed;inset:0;top:62px;background:rgba(0,0,0,0.5);z-index:198}
+        .mobile-overlay.open{display:block}
+
+        /* ══ RESPONSIVE ══ */
+        @media(max-width:1024px){
+            .menu-hero{padding:44px 5% 60px}
+            .filter-wrap{padding:0 5% 16px}
+            .search-wrap{padding:16px 5% 8px}
+            .menu-content{padding:20px 5% 48px}
+        }
+        @media(max-width:768px){
+            .hamburger{display:flex;flex-direction:column;justify-content:center}
+            .mobile-menu{display:block}
+            .navbar-menu{display:none}
+            .btn-login{display:none}
+            .navbar{padding:0 20px}
+            .menu-hero{padding:36px 5% 48px}
+            .hero-title{font-size:clamp(22px,5vw,36px)}
+            .filter-wrap{gap:8px;padding:0 5% 16px}
+            .filter-btn{padding:7px 16px;font-size:12px}
+            .menu-count{font-size:11px;margin-left:0;width:100%;text-align:right;margin-top:4px}
+            .items-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+        }
+        @media(max-width:480px){
+            .menu-hero{padding:28px 4% 36px}
+            .filter-wrap{padding:0 4% 12px}
+            .search-wrap{padding:12px 4% 6px}
+            .menu-content{padding:16px 4% 40px}
+            .items-grid{gap:10px}
+            .menu-info{padding:10px 10px 12px}
+            .menu-name{font-size:13px}
+            .menu-price{font-size:12px}
+            .menu-tag{font-size:8px;padding:2px 8px}
+            .category-name{font-size:12px}
+            .footer{padding:24px 4%}
+        }
+        @media(max-width:360px){
+            .hero-title{font-size:20px}
+            .filter-btn{padding:6px 12px;font-size:11px}
+            .items-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+            .menu-name{font-size:12px}
+        }
     </style>
 </head>
 <body>
@@ -235,7 +291,20 @@
         <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
     </ul>
     <a href="{{ route('login') }}" class="btn-login">LOGIN</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="{{ route('home') }}">Beranda</a></li>
+        <li><a href="{{ route('menu.index') }}" class="active">Menu</a></li>
+        <li><a href="{{ route('tentang') }}">Tentang</a></li>
+        <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
+    </ul>
+    <a href="{{ route('login') }}" class="mobile-login">LOGIN</a>
+</div>
 
 <!-- HERO -->
 <div class="menu-hero">
@@ -409,6 +478,16 @@ function searchMenu(){
     });
     document.getElementById('menuCount').textContent = count + ' Menu Tersedia';
 }
+/* ── Hamburger toggle ── */
+(function(){
+    const btn=document.getElementById('hamburgerBtn');
+    const menu=document.getElementById('mobileMenu');
+    const overlay=document.getElementById('mobileOverlay');
+    if(!btn||!menu) return;
+    function toggle(){btn.classList.toggle('active');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
+    btn.addEventListener('click',toggle);
+    overlay.addEventListener('click',toggle);
+})();
 </script>
 
 </body>

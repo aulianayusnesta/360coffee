@@ -60,7 +60,7 @@
         .nav-item svg { flex-shrink:0; }
 
         /* ── Main ── */
-        .main { flex:1; overflow-y:auto; padding:30px 32px; background:var(--navy); }
+        .main { flex:1; min-width:0; overflow-y:auto; padding:30px 32px; background:var(--navy); }
 
         /* ── Header ── */
         .page-header { margin-bottom:22px; }
@@ -99,28 +99,34 @@
         .stat-card:hover .stat-footer { color:var(--gold); }
 
         /* ── Mid row ── */
-        .mid-row { display:grid; grid-template-columns:1fr 320px; gap:14px; margin-bottom:14px; }
-        .bot-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .mid-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,320px); gap:14px; margin-bottom:14px; align-items:start; }
+        .bot-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; }
 
         /* ── Cards ── */
-        .card { background:var(--navy-3); border-radius:14px; border:1px solid var(--border); padding:20px 22px; }
-        .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-        .card-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; color:#fff; }
-        .toggle-group { display:flex; gap:5px; }
+        .card { background:var(--navy-3); border-radius:14px; border:1px solid var(--border); padding:20px 22px; min-width:0; }
+        .card-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; min-width:0; }
+        .card-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; color:#fff; min-width:0; }
+        .toggle-group { display:flex; gap:5px; flex-shrink:0; }
         .toggle-btn { padding:5px 13px; border-radius:7px; border:none; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; cursor:pointer; background:var(--navy-4); color:var(--muted); transition:all .18s; }
         .toggle-btn.active { background:var(--gold); color:var(--navy); }
 
         /* Stok bars */
         .stok-item { margin-bottom:13px; }
         .stok-item:last-child { margin-bottom:0; }
-        .stok-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
-        .stok-name { font-weight:600; color:var(--text); }
-        .stok-qty  { color:var(--muted); font-size:11px; }
+        .stok-row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; font-size:12px; margin-bottom:5px; min-width:0; }
+        .stok-name { font-weight:600; color:var(--text); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .stok-qty  { color:var(--muted); font-size:11px; flex-shrink:0; white-space:nowrap; }
         .stok-bar  { height:5px; background:rgba(255,255,255,.08); border-radius:3px; overflow:hidden; }
         .stok-fill { height:100%; border-radius:3px; transition:width .4s; }
         .fill-green  { background:var(--green); }
         .fill-yellow { background:var(--yellow); }
         .fill-red    { background:var(--red); }
+        .stok-summary { display:flex; flex-direction:column; min-height:0; }
+        .stok-summary .card-header { margin-bottom:12px; }
+        .stok-list { max-height:246px; overflow-y:auto; overflow-x:hidden; padding-right:6px; margin-right:-6px; }
+        .stok-more { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); color:var(--muted); font-size:11px; font-weight:600; }
+        .stok-link { color:var(--gold); text-decoration:none; white-space:nowrap; transition:color .18s; }
+        .stok-link:hover { color:var(--gold-l); }
 
         /* Menu terlaris */
         .menu-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
@@ -292,6 +298,23 @@
         .m-total-val { font-family:'Plus Jakarta Sans',sans-serif; font-size: 18px; font-weight: 800; color: var(--gold); }
 
         .m-empty { font-size: 13px; color: var(--muted); padding: 18px 0; text-align: center; }
+
+        @media (max-width: 1180px) {
+            .mid-row { grid-template-columns:1fr; }
+            .stok-list { max-height:220px; }
+        }
+
+        @media (max-width: 980px) {
+            .stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+            .bot-row { grid-template-columns:1fr; }
+        }
+
+        @media (max-width: 760px) {
+            .main { padding:22px 16px; }
+            .stat-grid { grid-template-columns:1fr; }
+            .card { padding:18px 16px; }
+            .card-header { align-items:flex-start; flex-wrap:wrap; }
+        }
     </style>
 </head>
 <body>
@@ -388,31 +411,40 @@
                 </div>
                 <canvas id="chartPenjualan" height="140"></canvas>
             </div>
-            <div class="card">
+            <div class="card stok-summary">
                 <div class="card-header">
                     <div class="card-title">Stok Bahan</div>
+                    <span style="font-size:11px;color:var(--muted);font-weight:600">{{ $bahans->count() }} bahan</span>
                 </div>
-                @forelse($bahans as $bahan)
-                @php
-                    $persen   = $bahan->getPersen();
-                    $barClass = match($bahan->getStatus()) {
-                        'kritis'       => 'fill-red',
-                        'hampir_habis' => 'fill-yellow',
-                        default        => 'fill-green',
-                    };
-                @endphp
-                <div class="stok-item">
-                    <div class="stok-row">
-                        <span class="stok-name">{{ $bahan->nama }}</span>
-                        <span class="stok-qty">{{ $bahan->stok_saat_ini }}/{{ $bahan->stok_maks }} {{ $bahan->satuan }}</span>
+                <div class="stok-list">
+                    @forelse($bahansDashboard as $bahan)
+                    @php
+                        $persen   = $bahan->getPersen();
+                        $barClass = match($bahan->getStatus()) {
+                            'kritis'       => 'fill-red',
+                            'hampir_habis' => 'fill-yellow',
+                            default        => 'fill-green',
+                        };
+                    @endphp
+                    <div class="stok-item">
+                        <div class="stok-row">
+                            <span class="stok-name">{{ $bahan->nama }}</span>
+                            <span class="stok-qty">{{ $bahan->stok_saat_ini }}/{{ $bahan->stok_maks }} {{ $bahan->satuan }}</span>
+                        </div>
+                        <div class="stok-bar">
+                            <div class="stok-fill {{ $barClass }}" style="width:{{ $persen }}%"></div>
+                        </div>
                     </div>
-                    <div class="stok-bar">
-                        <div class="stok-fill {{ $barClass }}" style="width:{{ $persen }}%"></div>
-                    </div>
+                    @empty
+                    <div class="empty-state">Belum ada data stok.</div>
+                    @endforelse
                 </div>
-                @empty
-                <div class="empty-state">Belum ada data stok.</div>
-                @endforelse
+                @if($bahans->count() > 6)
+                <div class="stok-more">
+                    <span>Menampilkan 6 bahan prioritas</span>
+                    <a href="{{ route('admin.stok') }}" class="stok-link">Lihat semua</a>
+                </div>
+                @endif
             </div>
         </div>
 

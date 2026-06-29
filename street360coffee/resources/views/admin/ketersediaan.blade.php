@@ -133,9 +133,9 @@
         .status-label.habis::before    { background: var(--red); }
 
         /* Toggle switch — lebih menyala */
-        .toggle-wrap { position: relative; width: 46px; height: 26px; flex-shrink: 0; }
-        .toggle-wrap input { opacity: 0; width: 0; height: 0; position: absolute; }
-        .toggle-slider { position: absolute; inset: 0; border-radius: 99px; background: var(--red-dim); border: 1px solid rgba(248,113,113,.35); cursor: pointer; transition: all .3s; }
+        .toggle-wrap { position: relative; width: 46px; height: 26px; flex-shrink: 0; display: inline-block; cursor: pointer; }
+        .toggle-wrap input { opacity: 0; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2; cursor: pointer; margin: 0; }
+        .toggle-slider { position: absolute; inset: 0; border-radius: 99px; background: var(--red-dim); border: 1px solid rgba(248,113,113,.35); transition: all .3s; pointer-events: none; }
         .toggle-slider::before { content: ''; position: absolute; width: 20px; height: 20px; left: 2px; top: 2px; background: var(--red); border-radius: 50%; transition: all .3s; box-shadow: 0 0 8px rgba(248,113,113,.5); }
         .toggle-wrap input:checked + .toggle-slider { background: var(--green-dim); border-color: rgba(74,222,128,.35); }
         .toggle-wrap input:checked + .toggle-slider::before { transform: translateX(20px); background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,.5); }

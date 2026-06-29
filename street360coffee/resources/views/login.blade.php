@@ -391,6 +391,19 @@
             .form-panel { padding: 22px 18px; }
             .card-header h1 { font-size: 24px; }
         }
+        @media (max-width: 360px) {
+            .top-bar { padding: 14px 4%; }
+            .main { padding: 8px 4% 16px; }
+            .form-panel { padding: 18px 14px; }
+            .card-header h1 { font-size: 22px; }
+            .card-header p { font-size: 12px; }
+            .role-tab { padding: 10px 6px; font-size: 12px; }
+            .role-tab-sub { font-size: 9px; }
+            .field-input { padding: 12px 14px; font-size: 13px; }
+            .btn-submit { padding: 14px; font-size: 14px; }
+            .security-note { padding: 10px 12px; }
+            .security-text { font-size: 10px; }
+        }
 
         @keyframes shake {
             0%,100% { transform: translateX(0); }

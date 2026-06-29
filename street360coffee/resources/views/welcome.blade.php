@@ -155,22 +155,76 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
 .dot{position:absolute;border-radius:50%;background:rgba(212,168,67,0.09);animation:dotF linear infinite}
 @keyframes dotF{0%{transform:translateY(0);opacity:0.4}50%{opacity:0.7}100%{transform:translateY(-38px);opacity:0}}
 
+/* ── HAMBURGER MENU ── */
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;z-index:201;position:relative}
+.hamburger span{display:block;width:22px;height:2.5px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s}
+.hamburger span+span{margin-top:5px}
+.hamburger.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:linear-gradient(180deg,#0d1526 0%,#1a2340 100%);padding:0;z-index:199;border-bottom:1.5px solid rgba(212,168,67,0.35);box-shadow:0 8px 32px rgba(0,0,0,0.5);max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+.mobile-menu.open{max-height:400px;padding:20px 0}
+.mobile-menu ul{list-style:none;padding:0;margin:0}
+.mobile-menu li{border-bottom:1px solid rgba(255,255,255,0.06)}
+.mobile-menu li:last-child{border-bottom:none}
+.mobile-menu a{display:block;padding:14px 28px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:15px;font-weight:600;transition:background .2s,color .2s}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--gold2);background:rgba(212,168,67,0.08)}
+.mobile-menu .mobile-login{display:block;margin:16px 28px 8px;text-align:center;background:linear-gradient(135deg,#f5ca5e 0%,#d4a843 55%,#b8882a 100%);color:#0d1526;font-size:13px;font-weight:800;padding:12px 26px;border-radius:30px;text-decoration:none}
+.mobile-overlay{display:none;position:fixed;inset:0;top:62px;background:rgba(0,0,0,0.5);z-index:198}
+.mobile-overlay.open{display:block}
+
 /* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero{padding:48px 5% 64px}
+  .hero-content{max-width:55%}
+  .hero-right{width:clamp(220px,28vw,360px)}
+  .about{padding:56px 5%}
+  .menu-section{padding:56px 5%}
+}
 @media(max-width:768px){
-  .navbar{padding:0 18px}
+  .hamburger{display:flex;flex-direction:column;justify-content:center}
+  .mobile-menu{display:block}
   .nav-menu{display:none}
-  .hero{flex-direction:column;text-align:center;padding:32px 6% 40px;min-height:auto}
+  .btn-login{display:none}
+  .navbar{padding:0 18px}
+  .hero{flex-direction:column;text-align:center;padding:32px 5% 40px;min-height:auto}
   .hero-content{max-width:100%}
   .hero-label{justify-content:center}
-  .hero-right{position:static;width:120px;height:auto;margin:20px auto 0;animation:none}
+  .hero-desc{margin-left:auto;margin-right:auto}
+  .hero-right{position:static;width:160px;height:auto;margin:24px auto 0;animation:none}
   .hero-cup{max-height:none;height:auto;width:100%}
   .steam-wrap{display:none}
-  .info-bar{flex-wrap:wrap}
-  .info-item{flex:1 1 50%}
+  .info-bar{flex-wrap:wrap;border-radius:16px}
+  .info-item{flex:1 1 50%;padding:24px 16px}
+  .info-div{display:none}
+  .about-stats{gap:28px;flex-wrap:wrap;justify-content:center}
+  .features{grid-template-columns:repeat(2,1fr);gap:10px}
+  .menu-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .about-title{font-size:clamp(24px,6vw,40px)}
 }
-@media(max-width:420px){
-  .info-bar{flex-direction:column}
-  .info-div{width:100%;height:1px;margin:0}
+@media(max-width:480px){
+  .hero{padding:24px 4% 32px}
+  .hero-title{font-size:clamp(24px,7vw,36px)}
+  .info-bar{flex-direction:column;border-radius:14px}
+  .info-item{flex:1 1 100%;padding:20px 16px}
+  .about{padding:40px 4%}
+  .about-stats{gap:20px}
+  .stat-num{font-size:clamp(20px,5vw,32px)}
+  .features{grid-template-columns:1fr 1fr;gap:8px}
+  .feat{padding:16px 12px}
+  .menu-section{padding:40px 4%}
+  .menu-grid{gap:10px}
+  .menu-info{padding:10px 10px 12px}
+  .menu-name{font-size:13px}
+  .menu-price{font-size:12px}
+  .footer{padding:24px 4%}
+}
+@media(max-width:360px){
+  .hero-title{font-size:22px}
+  .hero-desc{font-size:12px}
+  .info-value{font-size:15px}
+  .sec-title{font-size:20px}
+  .about-title{font-size:22px}
 }
 </style>
 </head>
@@ -189,7 +243,20 @@ body{font-family:var(--font);color:var(--text);background:var(--white);overflow-
     <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
   </ul>
   <a href="{{ route('login') }}" class="btn-login">LOGIN</a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
+    <li><a href="{{ route('menu.index') }}">Menu</a></li>
+    <li><a href="{{ route('tentang') }}">Tentang</a></li>
+    <li><a href="{{ route('lokasi') }}">Lokasi</a></li>
+  </ul>
+  <a href="{{ route('login') }}" class="mobile-login">LOGIN</a>
+</div>
 
 <section class="hero" id="home">
   <div class="steam-wrap">
@@ -328,6 +395,16 @@ document.querySelectorAll('.menu-card').forEach(card=>{
   });
   card.addEventListener('mouseleave',()=>card.style.transform='');
 });
+/* ── Hamburger toggle ── */
+(function(){
+  const btn=document.getElementById('hamburgerBtn');
+  const menu=document.getElementById('mobileMenu');
+  const overlay=document.getElementById('mobileOverlay');
+  if(!btn||!menu) return;
+  function toggle(){btn.classList.toggle('active');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
+  btn.addEventListener('click',toggle);
+  overlay.addEventListener('click',toggle);
+})();
 </script>
 </body>
 </html>
