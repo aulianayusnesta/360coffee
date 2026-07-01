@@ -493,33 +493,68 @@ L.circle([LAT, LNG], {
     fillOpacity: 1, radius: 120, weight: 1.5
 }).addTo(map);
 
-(function(){
+/* ══ CEK STATUS BUKA/TUTUP — WITA (UTC+8) ══
+   Mendukung rentang melewati tengah malam, misal 17.30 – 01.00
+   ================================================ */
+(function () {
+
+    /* Konversi string jam "17.30" atau "17,30" → total menit */
+    function parseJam(s) {
+        var clean = s.toString().replace(',', '.');
+        var parts = clean.split('.');
+        var jam   = parseInt(parts[0], 10) || 0;
+        var menit = parseInt(parts[1] || '0', 10) || 0;
+        return jam * 60 + menit;
+    }
+
+    /* Ambil waktu WITA saat ini (UTC+8) */
+    var nowWITA  = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Makassar' }));
+    var menitNow = nowWITA.getHours() * 60 + nowWITA.getMinutes();
+
     var jamBukaStr  = "{{ $jam_buka }}";
     var jamTutupStr = "{{ $jam_tutup }}";
-    function parseJam(s){ var p=s.replace(',','.').split('.'); return parseInt(p[0])*60+parseInt(p[1]||0); }
-    var now   = new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Makassar'}));
-    var menit = now.getHours()*60+now.getMinutes();
-    var isOpen = menit>=parseJam(jamBukaStr) && menit<parseJam(jamTutupStr);
 
+    var buka  = parseJam(jamBukaStr);
+    var tutup = parseJam(jamTutupStr);
+
+    var isOpen;
+    if (tutup <= buka) {
+        /*
+         * Rentang melewati tengah malam (contoh: 17.30 → 01.00)
+         * Buka jika sekarang >= jam buka  ATAU  sekarang < jam tutup
+         */
+        isOpen = menitNow >= buka || menitNow < tutup;
+    } else {
+        /* Rentang normal dalam satu hari (contoh: 08.00 → 22.00) */
+        isOpen = menitNow >= buka && menitNow < tutup;
+    }
+
+    /* Terapkan ke semua elemen status */
     var badge = document.getElementById('status-badge');
     var bdot  = document.getElementById('status-bdot');
     var text  = document.getElementById('status-text');
     var mBdot = document.getElementById('map-bdot');
     var mText = document.getElementById('map-status-text');
 
-    if(isOpen){
-        badge.className='badge badge-open';
-        bdot.className='bdot bdot-open'; text.textContent='Sedang Buka';
-        mBdot.className='bdot bdot-open'; mText.textContent='Sedang Buka';
-        mText.style.color='#10b981';
+    if (isOpen) {
+        badge.className          = 'badge badge-open';
+        bdot.className           = 'bdot bdot-open';
+        text.textContent         = 'Sedang Buka';
+        mBdot.className          = 'bdot bdot-open';
+        mText.textContent        = 'Sedang Buka';
+        mText.style.color        = '#10b981';
     } else {
-        badge.className='badge badge-closed';
-        bdot.className='bdot bdot-closed'; text.textContent='Sedang Tutup';
-        mBdot.className='bdot bdot-closed'; mText.textContent='Sedang Tutup';
-        mText.style.color='#ef4444';
+        badge.className          = 'badge badge-closed';
+        bdot.className           = 'bdot bdot-closed';
+        text.textContent         = 'Sedang Tutup';
+        mBdot.className          = 'bdot bdot-closed';
+        mText.textContent        = 'Sedang Tutup';
+        mText.style.color        = '#ef4444';
     }
+
 })();
 
+/* ══ ANIMASI HERO ══ */
 (function(){
     var w=document.getElementById('heroBubbles');
     [16,24,12,30,18,10,26,14,20,9].forEach(function(s,i){
@@ -539,6 +574,7 @@ L.circle([LAT, LNG], {
     }
 })();
 
+/* ══ SCROLL REVEAL CARDS ══ */
 (function(){
     var io=new IntersectionObserver(function(entries){
         entries.forEach(function(e,i){
@@ -548,6 +584,7 @@ L.circle([LAT, LNG], {
     document.querySelectorAll('.card,.warning-box,.btn-maps').forEach(function(el){ io.observe(el); });
 })();
 
+/* ══ RIPPLE EFFECT LOGIN BTN ══ */
 document.querySelectorAll('.btn-login').forEach(function(btn){
     btn.addEventListener('click',function(e){
         var r=document.createElement('span');
@@ -565,15 +602,21 @@ document.querySelectorAll('.btn-login').forEach(function(btn){
         btn.appendChild(r); setTimeout(function(){r.remove();},600);
     });
 });
-/* ── Hamburger toggle ── */
+
+/* ══ HAMBURGER TOGGLE ══ */
 (function(){
-    const btn=document.getElementById('hamburgerBtn');
-    const menu=document.getElementById('mobileMenu');
-    const overlay=document.getElementById('mobileOverlay');
+    const btn     = document.getElementById('hamburgerBtn');
+    const menu    = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('mobileOverlay');
     if(!btn||!menu) return;
-    function toggle(){btn.classList.toggle('active');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
-    btn.addEventListener('click',toggle);
-    overlay.addEventListener('click',toggle);
+    function toggle(){
+        btn.classList.toggle('active');
+        menu.classList.toggle('open');
+        overlay.classList.toggle('open');
+        document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+    }
+    btn.addEventListener('click', toggle);
+    overlay.addEventListener('click', toggle);
 })();
 </script>
 </body>
